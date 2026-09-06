@@ -1,0 +1,2556 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>فني</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-deep: #0E2A2C;
+    --bg-panel: #123338;
+    --teal: #2DD4BF;
+    --teal-dim: #1B5E58;
+    --amber: #F5A524;
+    --danger: #E5484D;
+    --cream: #F4F7F6;
+    --ink: #0E2A2C;
+    --muted: #7FA9A6;
+    --radius: 14px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Tajawal', sans-serif;
+    background: radial-gradient(circle at 50% 0%, #163f42 0%, var(--bg-deep) 55%);
+    color: var(--cream);
+    min-height:100vh;
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+    padding: 28px 14px 60px;
+  }
+  .app{
+    width:100%;
+    max-width:480px;
+  }
+  header{
+    text-align:center;
+    margin-bottom:22px;
+  }
+  .tag{
+    display:inline-block;
+    font-size:12px;
+    letter-spacing:0.3px;
+    color: var(--teal);
+    background: rgba(45,212,191,0.1);
+    border:1px solid rgba(45,212,191,0.3);
+    padding:4px 12px;
+    border-radius:999px;
+    margin-bottom:10px;
+  }
+  .lang-btn{
+    font-family:'Tajawal', sans-serif;
+    font-size:12px;
+    padding:5px 14px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,0.15);
+    background:transparent;
+    color: var(--muted);
+    cursor:pointer;
+  }
+  .lang-btn.active{
+    background: var(--teal);
+    color:#0a2a26;
+    border-color: var(--teal);
+    font-weight:700;
+  }
+  h1{
+    font-family:'Almarai', sans-serif;
+    font-weight:800;
+    font-size:22px;
+    margin:0 0 6px;
+    line-height:1.4;
+  }
+  .sub{
+    color: var(--muted);
+    font-size:14px;
+    margin:0;
+  }
+  .progress-wrap{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin: 20px 0 18px;
+  }
+  .progress-track{
+    flex:1;
+    height:6px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 6px;
+    overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;
+    background: var(--teal);
+    border-radius:6px;
+    transition: width 0.35s ease;
+  }
+  .progress-label{
+    font-size:12px;
+    color: var(--muted);
+    white-space:nowrap;
+  }
+  .card{
+    background: var(--bg-panel);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: var(--radius);
+    padding: 22px 20px;
+    box-shadow: 0 20px 40px -20px rgba(0,0,0,0.5);
+  }
+  .q-title{
+    font-family:'Almarai', sans-serif;
+    font-weight:700;
+    font-size:18px;
+    line-height:1.6;
+    margin: 0 0 18px;
+  }
+  .q-hint{
+    font-size:13px;
+    color: var(--muted);
+    margin: -12px 0 16px;
+  }
+  .options{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .opt-btn{
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--cream);
+    font-family:'Tajawal', sans-serif;
+    font-size:15px;
+    padding: 14px 16px;
+    border-radius: 10px;
+    text-align:start;
+    cursor:pointer;
+    transition: border-color 0.15s ease, background 0.15s ease, transform 0.1s ease;
+  }
+  .opt-btn:hover{
+    border-color: var(--teal);
+    background: rgba(45,212,191,0.08);
+  }
+  .opt-btn:active{
+    transform: scale(0.98);
+  }
+  .back-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background:none;
+    border:none;
+    color: var(--muted);
+    font-family:'Tajawal', sans-serif;
+    font-size:13px;
+    cursor:pointer;
+    margin-bottom:14px;
+    padding:0;
+  }
+  .back-btn:hover{ color: var(--teal); }
+
+  /* Result screens */
+  .result-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-size:13px;
+    font-weight:700;
+    padding:6px 14px;
+    border-radius:999px;
+    margin-bottom:16px;
+  }
+  .badge-high{ background: rgba(45,212,191,0.15); color: var(--teal); border:1px solid rgba(45,212,191,0.4); }
+  .badge-mid{ background: rgba(245,165,36,0.15); color: var(--amber); border:1px solid rgba(245,165,36,0.4); }
+  .badge-danger{ background: rgba(229,72,77,0.18); color: #ff8a8d; border:1px solid rgba(229,72,77,0.5); }
+
+  .result-title{
+    font-family:'Almarai', sans-serif;
+    font-weight:800;
+    font-size:20px;
+    margin: 0 0 10px;
+    line-height:1.5;
+  }
+  .result-desc{
+    font-size:14px;
+    color: var(--muted);
+    line-height:1.8;
+    margin: 0 0 18px;
+  }
+  .part-box{
+    background: rgba(255,255,255,0.04);
+    border: 1px dashed rgba(45,212,191,0.4);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 18px;
+  }
+  .part-label{
+    font-size:12px;
+    color: var(--muted);
+    margin:0 0 4px;
+  }
+  .part-name{
+    font-family:'Almarai', sans-serif;
+    font-weight:700;
+    font-size:17px;
+    color: var(--cream);
+    margin:0;
+  }
+  .cta-btn{
+    width:100%;
+    background: var(--teal);
+    color: var(--ink);
+    font-family:'Almarai', sans-serif;
+    font-weight:700;
+    font-size:15px;
+    border:none;
+    padding: 14px;
+    border-radius: 10px;
+    cursor:pointer;
+    margin-bottom:10px;
+  }
+  .cta-btn.danger{
+    background: var(--danger);
+    color: white;
+  }
+  .cta-btn.ghost{
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.15);
+    color: var(--cream);
+  }
+  .feedback-row{
+    display:flex;
+    gap:10px;
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .feedback-row p{
+    font-size:13px;
+    color: var(--muted);
+    margin:0 0 10px;
+    width:100%;
+  }
+  .fb-btn{
+    flex:1;
+    background: rgba(255,255,255,0.04);
+    border:1px solid rgba(255,255,255,0.12);
+    color: var(--cream);
+    padding:10px;
+    border-radius:8px;
+    font-family:'Tajawal', sans-serif;
+    font-size:14px;
+    cursor:pointer;
+  }
+  .fb-btn.selected-yes{ border-color: var(--teal); background: rgba(45,212,191,0.15); }
+  .fb-btn.selected-no{ border-color: var(--danger); background: rgba(229,72,77,0.15); }
+  .thanks{
+    font-size:13px;
+    color: var(--teal);
+    margin-top:10px;
+  }
+  footer{
+    text-align:center;
+    margin-top:22px;
+    font-size:11px;
+    color: rgba(255,255,255,0.25);
+  }
+  .stats{
+    display:flex;
+    gap:10px;
+    margin-top:14px;
+    font-size:11px;
+    color: var(--muted);
+    justify-content:center;
+  }
+  .part-icon{
+    width:56px;
+    height:56px;
+    margin:0 auto 10px;
+    color: var(--teal);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background: rgba(45,212,191,0.08);
+    border-radius:12px;
+    padding:8px;
+  }
+  .part-icon svg{ width:100%; height:100%; }
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <img src="data:image/png;base64,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" alt="فني" style="width:110px;height:auto;margin-bottom:8px;" />
+    <div style="display:flex; justify-content:center; gap:8px; margin-bottom:8px;">
+      <button id="langArBtn" onclick="setLang('ar')" class="lang-btn active">العربية</button>
+      <button id="langEnBtn" onclick="setLang('en')" class="lang-btn">English</button>
+    </div>
+    <span class="tag" id="headerTag">تجربة مجانية — فني</span>
+    <h1 id="headerTitle">وش سبب عطل جهازك؟</h1>
+    <p class="sub" id="headerSub">أجب على بعض الأسئلة البسيطة لمعرفة السبب المحتمل والقطعة المطلوبة</p>
+    <p id="usageBadge" style="font-size:12px;color:var(--teal);margin-top:8px;"></p>
+  </header>
+
+  <div class="progress-wrap" id="progressWrap">
+    <span class="progress-label" id="progressLabel">الخطوة 1</span>
+    <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:12%"></div></div>
+  </div>
+
+  <div class="card" id="cardRoot"></div>
+
+  <div class="stats" id="statsBar"></div>
+  <footer>نموذج اختباري — النتائج تقديرية ولا تغني عن فحص فني عند الشك</footer>
+</div>
+
+<script>
+// ============ نظام اللغة ============
+let lang = "ar";
+function t(str){
+  if(lang === "en" && translations[str]) return translations[str];
+  return str;
+}
+function setLang(newLang){
+  lang = newLang;
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === "en" ? "ltr" : "rtl";
+  const tagEl = document.getElementById('headerTag');
+  const titleEl = document.getElementById('headerTitle');
+  const subEl = document.getElementById('headerSub');
+  if(tagEl) tagEl.textContent = t('تجربة مجانية — فني');
+  if(titleEl) titleEl.textContent = t('وش سبب عطل جهازك؟');
+  if(subEl) subEl.textContent = t('أجب على بعض الأسئلة البسيطة لمعرفة السبب المحتمل والقطعة المطلوبة');
+  const arBtn = document.getElementById('langArBtn');
+  const enBtn = document.getElementById('langEnBtn');
+  if(arBtn && enBtn){
+    arBtn.classList.toggle('active', lang === 'ar');
+    enBtn.classList.toggle('active', lang === 'en');
+  }
+  render();
+}
+
+// ============ شجرة القرار ============
+let selectedBrand = null;
+let currentAppliance = null;
+
+// ============ مكتبة أيقونات القطع (رسم أصلي بسيط) ============
+const partIcons = {
+  fuse: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><rect x="8" y="24" width="10" height="16" rx="2" fill="currentColor" stroke="none"/><rect x="46" y="24" width="10" height="16" rx="2" fill="currentColor" stroke="none"/><rect x="16" y="20" width="32" height="24" rx="10"/><path d="M24 32h4l3-8 4 16 3-8h6" stroke-width="2.5"/></svg>`,
+  pcb: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><rect x="10" y="10" width="44" height="44" rx="4"/><circle cx="24" cy="24" r="3" fill="currentColor" stroke="none"/><circle cx="40" cy="24" r="3" fill="currentColor" stroke="none"/><path d="M24 24v10h16v-10M18 40h10M36 40h10" stroke-width="2.5"/></svg>`,
+  capacitor: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><rect x="16" y="10" width="32" height="40" rx="5"/><path d="M32 10v8M26 14h12" stroke-width="2.5"/><path d="M24 50l-4 8M32 50v8M40 50l4 8" stroke-width="2.5"/></svg>`,
+  contactor: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><rect x="10" y="14" width="44" height="36" rx="3"/><circle cx="20" cy="24" r="3"/><circle cx="44" cy="24" r="3"/><circle cx="20" cy="40" r="3"/><circle cx="44" cy="40" r="3"/><path d="M26 32h12" stroke-width="2.5"/></svg>`,
+  relay: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><rect x="16" y="10" width="32" height="30" rx="3"/><path d="M23 20h6M23 28h6M35 20h6M35 28h6" stroke-width="2.5"/><path d="M22 40v8M30 40v10M38 40v8M46 40v6" stroke-width="2.5"/></svg>`,
+  filter: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><rect x="10" y="12" width="44" height="40" rx="3"/><path d="M18 12v40M26 12v40M34 12v40M42 12v40" stroke-width="2"/></svg>`,
+  fan: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><circle cx="32" cy="32" r="26" stroke-width="2" opacity="0.45"/><circle cx="32" cy="32" r="4" fill="currentColor" stroke="none"/><path d="M32 32c0-9 5-15 5-15s5 5-5 15Z"/><path d="M32 32c9 0 15 5 15 5s-5 5-15-5Z"/><path d="M32 32c0 9-5 15-5 15s-5-5 5-15Z"/><path d="M32 32c-9 0-15-5-15-5s5-5 15 5Z"/></svg>`,
+  drain: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M18 8v22a14 14 0 0028 0V8"/><path d="M32 44v6"/><path d="M32 50c-4 4-4 8 0 10s4-6 0-10Z" fill="currentColor" stroke="none"/></svg>`,
+  remote: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><rect x="22" y="8" width="20" height="48" rx="6"/><circle cx="32" cy="18" r="2" fill="currentColor" stroke="none"/><path d="M27 28h10M27 36h10M27 44h10"/></svg>`,
+  sensor: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><circle cx="32" cy="18" r="8"/><path d="M26 24l-6 30M38 24l6 30" stroke-width="2.5"/></svg>`,
+  gasket: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><rect x="8" y="8" width="48" height="48" rx="6"/><rect x="16" y="16" width="32" height="32" rx="16" stroke-width="4"/></svg>`,
+  watervalve: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 32h14M44 32h14"/><circle cx="32" cy="32" r="12"/><path d="M32 20v-6M32 44v6M20 32h-4M44 32h4" stroke-width="2.5"/></svg>`,
+  heater: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><rect x="8" y="26" width="48" height="12" rx="6"/><path d="M15 32h4l3-5 4 10 4-10 4 10 4-10 4 10 4-5h4" stroke-width="2"/><path d="M20 17c2-3 2 3 4 0M32 17c2-3 2 3 4 0M44 17c2-3 2 3 4 0" stroke-width="2"/></svg>`,
+  thermostat: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><circle cx="32" cy="32" r="22"/><circle cx="32" cy="32" r="3" fill="currentColor" stroke="none"/><path d="M32 14v6M32 32l10 6"/></svg>`,
+  damper: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><rect x="8" y="18" width="48" height="28" rx="3"/><path d="M14 26h36M14 38h36" stroke-width="2"/><path d="M32 18v28" stroke-width="2.5"/></svg>`,
+  icemaker: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><rect x="12" y="24" width="16" height="16" rx="2"/><rect x="36" y="24" width="16" height="16" rx="2"/><path d="M20 24v-6M44 24v-6" stroke-width="2"/></svg>`,
+  floatswitch: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M10 44h44" stroke-width="2" opacity="0.45"/><circle cx="22" cy="38" r="8"/><path d="M30 34l16-14" stroke-width="2.5"/><rect x="46" y="14" width="10" height="8" rx="2"/></svg>`,
+  motor: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><rect x="10" y="18" width="34" height="28" rx="6"/><rect x="44" y="28" width="10" height="8" rx="2"/><path d="M18 18v-4M30 18v-4M18 46v4M30 46v4" stroke-width="2.5"/></svg>`,
+  doorlock: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><rect x="16" y="26" width="32" height="26" rx="4"/><path d="M24 26v-8a8 8 0 0116 0v8" stroke-width="3"/><circle cx="32" cy="38" r="3" fill="currentColor" stroke="none"/></svg>`,
+  generic: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><circle cx="32" cy="32" r="10"/><path d="M32 14v6M32 44v6M14 32h6M44 32h6M19 19l4 4M45 45l-4-4M19 45l4-4M45 19l-4 4" stroke-width="2.5"/></svg>`
+};
+
+
+const translations = {
+  "تجربة مجانية — فني": "Free trial — Fanni",
+  "وش سبب عطل جهازك؟": "What's wrong with your appliance?",
+  "أجب على بعض الأسئلة البسيطة لمعرفة السبب المحتمل والقطعة المطلوبة": "Answer a few simple questions to find the likely cause and the part you need",
+  "الخطوة": "Step",
+  "النتيجة": "Result",
+  "‹ رجوع": "‹ Back",
+  "القطعة المقترحة": "Suggested part",
+  "متوافقة مع": "Compatible with",
+  "اتصل بفني معتمد الآن": "Call a certified technician now",
+  "جاري التحقق...": "Checking...",
+  "✅ نعم صحيح": "✅ Yes, correct",
+  "❌ غير دقيق": "❌ Not accurate",
+  "شكراً، تم تسجيل ملاحظتك — هذا يساعد على تحسين دقة الأداة.": "Thanks, your feedback has been recorded — this helps improve the tool's accuracy.",
+  "وش كانت المشكلة الفعلية؟ (اختياري، يساعدنا كثير نطوّر الدقة)": "What was the actual problem? (optional, really helps us improve accuracy)",
+  "مثال: طلع فعلياً موتور تالف مو كباستور": "Example: it actually turned out to be a failed motor, not a capacitor",
+  "إرسال": "Submit",
+  "شكراً على ملاحظتك التفصيلية — هذا يساعدنا كثير نطوّر الدقة.": "Thanks for your detailed feedback — this really helps us improve accuracy.",
+  "دقة السبب المحدد": "Specific cause confidence",
+  "متبقي لك": "You have",
+  "من": "of",
+  "تشخيصات مجانية": "free diagnoses left",
+  "انتهت تشخيصاتك المجانية لهذه الفترة": "Your free diagnoses for this period have ended",
+  "شكراً لكم لاستخدام الأداة 🙏": "Thank you for using the tool 🙏",
+  "الأداة حالياً تحت التجربة لغرض التطوير، وانتهت محاولاتك المجانية المتاحة بهذه المرحلة.": "The tool is currently under testing for development purposes, and your available free attempts for this stage have ended.",
+  "تابعنا لمعرفة موعد الإطلاق الكامل قريباً.": "Follow us to know the full launch date soon.",
+  "انتهت تشخيصاتك المجانية 🙏": "Your free diagnoses have ended 🙏",
+  "استخدمت الـ": "You've used the",
+  "تشخيصات المجانية المتاحة حالياً بفترة الاختبار.": "free diagnoses available during this testing period.",
+  "نشكرك على تجربة الأداة! تابعنا لمعرفة موعد إطلاق الاشتراك الكامل بسعر رمزي لكل تشخيص.": "Thanks for trying the tool! Follow us to know when the full subscription launches at a token price per diagnosis.",
+  "ابدأ من جديد (لأغراض العرض فقط)": "Start over (demo purposes only)",
+  "عدد التقييمات هذه الجلسة": "Ratings this session",
+  "دقة مؤكدة": "Confirmed accuracy",
+  "الجهاز": "Device",
+  "هذه الحالة تحتاج فحص فني مباشر": "This case needs a direct technician inspection",
+  "ابدأ تشخيص جديد": "Start a new diagnosis",
+  "هل كان هذا التشخيص صحيحاً؟": "Was this diagnosis correct?",
+  "✓ مؤكد": "✓ Confirmed",
+  "رسم توضيحي تخطيطي — ليس صورة للقطعة الفعلية": "Illustrative schematic drawing — not a photo of the actual part",
+  "1E / 14E / 15E — عطل بصانعة الثلج أو حساسها": "1E / 14E / 15E — Ice maker or sensor fault",
+  "33 — مشكلة ريلاي الكمبروسر": "33 — Compressor relay problem",
+  "4E / 1E — عطل تعبئة الماء": "4E / 1E — Water fill fault",
+  "5E / SE — عطل تصريف": "5E / SE — Drain fault",
+  "88 88 أو شرطات متكررة — فقدان اتصال باللوحة": "88 88 or repeated dashes — Board communication lost",
+  "9C1 / UC — عطل بالتيار الكهربائي": "9C1 / UC — Electrical current fault",
+  "AE — تسريب ماء (إنذار أمان)": "AE — Water leak (safety alarm)",
+  "C-20 / tE — عطل حساس الحرارة": "C-20 / tE — Temperature sensor fault",
+  "C-21 — حرارة الفرن مرتفعة جداً": "C-21 — Oven temperature too high",
+  "C-F0 — فقدان اتصال بين اللوحات": "C-F0 — Board communication lost",
+  "CH04 / FL — مواسير التصريف": "CH04 / FL — Drain pipes",
+  "CH05 / E0 / CH53 — خطأ اتصال بين الوحدتين": "CH05 / E0 / CH53 — Communication error between units",
+  "CH10 / CA — حرارة تفريغ الكمبروسر عالية": "CH10 / CA — High compressor discharge temperature",
+  "CH21 / CH22 / CH23 / CH26 — كمبروسر أو فريون": "CH21 / CH22 / CH23 / CH26 — Compressor or refrigerant",
+  "CH30 — فولتية منخفضة من المصدر": "CH30 — Low supply voltage",
+  "CH38 — نقص فريون": "CH38 — Low refrigerant",
+  "CO — خطأ اتصال اللوحة والشاشة": "CO — Board/display communication error",
+  "E-08 — لم يصل للحرارة المطلوبة": "E-08 — Did not reach target temperature",
+  "E0 — عطل ذاكرة البطاقة الداخلية": "E0 — Indoor board memory fault",
+  "E1 — حماية ضغط عالٍ": "E1 — High pressure protection",
+  "E1 — خطأ اتصال بين الوحدتين": "E1 — Communication error between units",
+  "E1/21 أو E1/22 — عطل حساس حراري": "E1/21 or E1/22 — Temperature sensor fault",
+  "E1/54 — عطل موتور مروحة أو كباستور": "E1/54 — Fan motor or capacitor fault",
+  "E1/63 — عطل ذاكرة البطاقة الرئيسية": "E1/63 — Main board memory fault",
+  "E101 / E102 — خطأ اتصال بين الوحدتين": "E101 / E102 — Communication error between units",
+  "E2 — حماية تجمد بالوحدة الداخلية": "E2 — Indoor unit freeze protection",
+  "E3 — ضغط منخفض أو عطل مروحة خارجية": "E3 — Low pressure or outdoor fan fault",
+  "E3 — عطل سرعة المروحة الداخلية": "E3 — Indoor fan speed fault",
+  "E4 أو E5 — عطل حساس حراري": "E4 or E5 — Temperature sensor fault",
+  "E4 — حرارة تفريغ الكمبروسر عالية": "E4 — High compressor discharge temperature",
+  "E5 أو E6 — عطل حساس حراري بالمبادل": "E5 or E6 — Heat exchanger sensor fault",
+  "E5 — حماية تيار زائد": "E5 — Overcurrent protection",
+  "E6 — خطأ اتصال بين الوحدتين": "E6 — Communication error between units",
+  "EC — كشف تسريب فريون": "EC — Refrigerant leak detected",
+  "EE — إنذار مستوى الماء": "EE — Water level alarm",
+  "EID / EIU — عطل صانعة الثلج": "EID / EIU — Ice maker fault",
+  "F1 – F4 — عطل حساس الحرارة": "F1 – F4 — Temperature sensor fault",
+  "F1 — عطل حساس حرارة الهواء الداخل": "F1 — Indoor air temperature sensor fault",
+  "F11 — خطأ اتصال بين اللوحات": "F11 — Communication error between boards",
+  "F2 — قد يكون ارتفاع حرارة خطير": "F2 — May indicate dangerous overheating",
+  "F3 — زر عالق أو حساس حرارة (حسب الموديل)": "F3 — Stuck button or temperature sensor (model-dependent)",
+  "F9 / F10 / F20 — عطل قفل الباب": "F9 / F10 / F20 — Door lock fault",
+  "FE — امتلاء زائد بالماء": "FE — Overfilling with water",
+  "FF / rF — عطل مروحة الفريزر/الثلاجة": "FF / rF — Freezer/fridge fan fault",
+  "FS — عطل حساس حرارة الفريزر": "FS — Freezer temperature sensor fault",
+  "General / Midea": "General / Midea",
+  "Gree": "Gree",
+  "H3 — حماية حمل زائد للكمبروسر": "H3 — Compressor overload protection",
+  "IE — عطل تعبئة الماء": "IE — Water fill fault",
+  "LE — قفل الموتور أو حمولة زائدة": "LE — Motor lock or overload",
+  "LG": "LG",
+  "OE / 0E — امتلاء زائد": "OE / 0E — Overfilling",
+  "OE — عطل تصريف": "OE — Drain fault",
+  "OF OF / O FF — وضع العرض التجاري (Demo)": "OF OF / O FF — Store demo mode",
+  "PE — عطل حساس الضغط/مستوى الماء": "PE — Pressure/water level sensor fault",
+  "SE / C-F2 — زر لوحة تحكم عالق": "SE / C-F2 — Stuck control panel button",
+  "Samsung": "Samsung",
+  "UE / UR — حمولة غير متوازنة": "UE / UR — Unbalanced load",
+  "UE — حمولة غير متوازنة": "UE — Unbalanced load",
+  "dE / dC — عطل بالباب": "dE / dC — Door fault",
+  "dE — عطل بالباب": "dE — Door fault",
+  "dH / dS — فشل أو حساس الديفروست": "dH / dS — Defrost failure or sensor",
+  "gF — عطل حساس تدفق الماء": "gF — Water flow sensor fault",
+  "rS — قصر/انقطاع بحساس الثلاجة": "rS — Fridge sensor short/open",
+  "tE — عطل حساس الحرارة": "tE — Temperature sensor fault",
+  "أخرج القطعة العالقة وأعد إغلاق الباب بإحكام": "Remove the stuck item and close the door firmly again",
+  "أخرى": "Other",
+  "أسفل الثلاجة من الخلف": "Bottom of the fridge, at the back",
+  "أغلب أنواع الغسالات العادية لن تشغّل حوض التنشيف بدون إغلاق الغطاء تماماً لأسباب أمان": "Most twin-tub washers won't run the spin tub unless the lid is fully closed, for safety reasons",
+  "أغلب الغسالات العادية بها مفتاح أمان يمنع دوران حوض التنشيف إلا مع إغلاق الغطاء بالكامل. عدم الإغلاق الكامل يعني عدم تفعيل هذا المفتاح إطلاقاً.": "Most twin-tub washers have a safety switch that blocks the spin tub from turning unless the lid is fully closed. Not closing it completely means this switch never engages.",
+  "أغلق الباب الآن على ورقة نقدية (نصفها بالداخل ونصفها بالخارج)، ثم اسحبها: هل تخرج بسهولة تامة بدون أي مقاومة؟": "Close the door now on a banknote (half inside, half outside), then pull it: does it slide out completely freely with no resistance?",
+  "أغلق صمام الغاز الرئيسي فوراً، افتح النوافذ والأبواب، لا تشغّل أو تطفئ أي مفتاح كهربائي (حتى الإضاءة)، اخرج من المكان، واتصل بالدفاع المدني أو شركة الغاز فوراً من مكان آمن. لا تكمل أي خطوة تشخيصية أخرى.": "Shut off the main gas valve immediately, open windows and doors, do not switch any electrical switch on or off (not even lights), leave the area, and call civil defense or the gas company right away from a safe location. Do not continue any further diagnostic step.",
+  "أغلق غطاء حوض التنشيف تماماً وشغّله الآن: هل يُغلق الغطاء بإحكام كامل؟": "Close the spin tub lid completely and start it now: does the lid close fully and securely?",
+  "أكواد الحرارة الزائدة تحديداً خطرة — سنفحصها بعناية إن وُجدت": "Overheat codes specifically are dangerous — we'll check carefully if one appears",
+  "أوتوماتيك (حوض واحد)": "Automatic (single tub)",
+  "أوقف الثلاجة فوراً — احتمال تسريب غاز قابل للاشتعال": "Stop the fridge immediately — possible flammable gas leak",
+  "أوقف الجهاز فوراً": "Stop the appliance immediately",
+  "أوقف الغسالة فوراً — إنذار تسريب ماء": "Stop the washer immediately — water leak alarm",
+  "أوقف الفرن فوراً — خطر كهربائي": "Stop the oven immediately — electrical hazard",
+  "أوقف كل شيء فوراً — رائحة غاز": "Stop everything immediately — gas smell",
+  "أوقف وضع العرض من إعدادات الجهاز — لا حاجة لأي قطعة": "Turn off demo mode from the appliance settings — no part needed",
+  "أي جهاز تبغى تشخصه؟": "Which appliance do you want to diagnose?",
+  "أي نوع غسالة عندك؟": "What type of washing machine do you have?",
+  "أي نوع فرن عندك؟": "What type of oven do you have?",
+  "أي نوع مكيف عندك؟": "What type of AC unit do you have?",
+  "إذا توفر لديك ميزان حرارة للفرن، ضعه بالداخل وقارن القراءة بعد 20 دقيقة مع الإعداد: هل الفرق كبير (أكثر من 15-20 درجة)؟": "If you have an oven thermometer, place it inside and compare the reading after 20 minutes with the setting: is the difference large (more than 15-20 degrees)?",
+  "إذا لم يعمل أي من عنصري الخبز والشواء رغم توهج كلاهما جزئياً أو عدم استجابة الفرن للحرارة المطلوبة، فيوز الحرارة الواقي قد يكون مفتوحاً (قطع الدائرة أماناً). هذا يحتاج فحصاً فنياً للتأكيد لأنه غالباً بالداخل خلف عزل الفرن.": "If neither the bake nor broil element works despite both glowing partially, or the oven doesn't respond to the requested temperature, the protective thermal fuse may have tripped open (a safety circuit break). This needs a technician's check to confirm, since it's usually located behind the oven's insulation.",
+  "ابحث الآن عن غطاء فلتر مضخة التصريف (عادة بمقدمة الغسالة أسفلها) وافتحه بحذر بعد وضع منشفة: هل تجد انسداداً بخيوط أو عملات معدنية؟": "Now look for the drain pump filter cover (usually at the front bottom of the washer) and open it carefully after placing a towel: do you find a clog of lint or coins?",
+  "اتساخ أو انسداد المكثف الخارجي": "Dirty or blocked outdoor condenser",
+  "اتساخ ملف المكثف": "Dirty condenser coil",
+  "اتساخ ملف المكثف يقلل كفاءة تفريغ الحرارة بشكل كبير حتى مع سلامة باقي الأجزاء. نظّفه بفرشاة ناعمة أو مكنسة قبل أي شراء.": "A dirty condenser coil significantly reduces heat rejection efficiency even if every other part is fine. Clean it with a soft brush or vacuum before buying anything.",
+  "احتمال أعلى للكمبروسر — لكن التأكيد النهائي يحتاج فني": "Higher likelihood of the compressor — but final confirmation needs a technician",
+  "اختر الرمز الذي يظهر (LG):": "Select the code shown (LG):",
+  "اختر الرمز الذي يظهر (Samsung):": "Select the code shown (Samsung):",
+  "اختر الرمز الذي يظهر (فرن LG):": "Select the code shown (LG oven):",
+  "اختر الرمز الذي يظهر (فرن Samsung):": "Select the code shown (Samsung oven):",
+  "اختر الرمز الذي يظهر على جهازك (General/Midea):": "Select the code shown on your unit (General/Midea):",
+  "اختر الرمز الذي يظهر على جهازك (Gree):": "Select the code shown on your unit (Gree):",
+  "اختر الرمز الذي يظهر على جهازك (LG):": "Select the code shown on your unit (LG):",
+  "اختر الرمز الذي يظهر على جهازك (Samsung):": "Select the code shown on your unit (Samsung):",
+  "اذهب الآن بالقرب من الوحدة الخارجية واستمع جيداً: هل تسمع أي 'طنين' خفيف عند محاولة التشغيل، حتى لو لم تدُر؟": "Go near the outdoor unit now and listen closely: do you hear any faint 'hum' when it tries to start, even if it doesn't turn?",
+  "اذهب الآن وانظر للوحدة الخارجية والفلتر مباشرة: هل تراهما متسخين بصرياً (طبقة غبار أو أوساخ واضحة)؟": "Go look at the outdoor unit and the filter directly now: do they look visibly dirty (a clear layer of dust or grime)?",
+  "اذهب الآن وانظر لملف المكثف (خلف أو أسفل الثلاجة): هل متسخ بطبقة غبار واضحة؟": "Go look at the condenser coil now (behind or under the fridge): is it covered in a visible layer of dust?",
+  "اذهب الآن وتحقق فعلياً: هل القابس متصل جيداً والقاطع الكهربائي مرفوع؟ وهل تقدر تشغّل جهازاً آخر بنفس المقبس؟": "Go check for real right now: is the plug properly connected and the breaker up? Can you run another appliance on the same outlet?",
+  "اذهب الآن وتحقق فعلياً: هل القاطع الكهربائي (Breaker) الخاص بالمكيف بلوحة الكهرباء مرفوع (لم يفصل)؟ وهل تقدر تشغّل جهازاً كهربائياً آخر بنفس المصدر بنجاح؟": "Go check for real right now: is the AC's breaker in the panel up (not tripped)? Can you successfully run another electrical appliance on the same source?",
+  "اذهب الآن وتحقق فعلياً: هل القاطع الكهربائي مرفوع (لم يفصل)؟ وهل تقدر تشغّل جهازاً كهربائياً آخر بنفس المقبس بنجاح؟": "Go check for real right now: is the breaker up (not tripped)? Can you successfully run another electrical appliance on the same outlet?",
+  "اذهب للوحدة الخارجية الآن: استمع هل يوجد صوت 'فحيح' مستمر، وانظر للأنابيب النحاسية هل عليها تجمد ثلج؟": "Go to the outdoor unit now: listen for a continuous 'hissing' sound, and look at the copper pipes for ice buildup",
+  "ازدحام المحتوى أو إعداد حرارة غير مناسب": "Overcrowded contents or wrong temperature setting",
+  "استمع الآن بعناية: من أين يصدر الصوت الغريب بالضبط؟": "Listen carefully now: exactly where is the strange noise coming from?",
+  "استمع الآن بعناية: من أين يصدر الصوت الغريب؟": "Listen carefully now: where is the strange noise coming from?",
+  "استمع الآن جيداً للجهاز: هل تسمع أي صوت تشغيل (مروحة أو كمبروسر)؟": "Listen closely to the unit now: do you hear any running sound (fan or compressor)?",
+  "استمع الآن جيداً: هل تسمع صوت طنين من الموتور بدون أي حركة فعلية للحوض؟": "Listen closely now: do you hear a humming sound from the motor with no actual tub movement?",
+  "استمع الآن جيداً: هل يوجد صوت 'فحيح' مستمر من داخل الجهاز، أو تلاحظ تجمد ثلج على الملف الداخلي المكشوف؟": "Listen closely now: is there a continuous 'hissing' sound from inside the unit, or do you notice ice forming on the exposed indoor coil?",
+  "استمع الآن قرب الجزء الخلفي السفلي للثلاجة: هل تسمع نمط 'نقرة - طنين - نقرة' متكرر كل بضع دقائق؟": "Listen near the lower back of the fridge now: do you hear a repeating 'click - hum - click' pattern every few minutes?",
+  "اشتعال غير منتظم مع صوت 'بوووف' خفيف": "Irregular ignition with a faint 'whoosh' sound",
+  "افتح الغطاء الآن وانظر: هل الحمولة موزعة بشكل متساوٍ بالحوض، أم متكتلة بجهة واحدة؟": "Open the lid now and look: is the load evenly distributed in the tub, or bunched to one side?",
+  "افتح الفريزر الآن وانظر خلف اللوحة الداخلية: هل ملف الإيفابريتر مغطى بطبقة ثلج سميكة تسد كل شيء؟": "Open the freezer now and look behind the inner panel: is the evaporator coil covered by a thick layer of ice blocking everything?",
+  "افتح الفريزر والثلاجة الآن وتحقق من كل قسم بيدك، وراقب الإضاءة الداخلية:": "Open the freezer and fridge now and check each compartment by hand, and watch the interior light:",
+  "افتح باب الفرن الآن وانظر لعنصر التسخين السفلي (الحلزوني بقاع الفرن): هل يتوهج بلون أحمر-برتقالي عند التشغيل؟": "Open the oven door now and look at the bottom (coiled) heating element: does it glow red-orange when running?",
+  "افتح باب الفريزر الآن واستمع: هل تسمع صوت مروحة تدور بالداخل؟": "Open the freezer door now and listen: do you hear a fan spinning inside?",
+  "افتح غطاء الفلتر الآن وانظر إليه مباشرة: هل يبدو متسخاً (طبقة غبار كثيفة على الشبك)؟": "Open the filter cover now and look at it directly: does it look dirty (a thick layer of dust on the mesh)?",
+  "افتح غطاء الفلتر الآن وانظر إليه مباشرة: هل يبدو متسخاً (طبقة غبار كثيفة)؟": "Open the filter cover now and look at it directly: does it look dirty (a thick layer of dust)?",
+  "افتح غطاء الوحدة الداخلية الآن وانظر مباشرة لملف الألمنيوم الداخلي (الملف المموج): هل تراه مغطى بطبقة ثلج أو صقيع أبيض؟": "Open the indoor unit's cover now and look directly at the aluminum coil (the ridged coil): do you see it covered in ice or white frost?",
+  "افحص الباب الآن: هل يُغلق تماماً بإحكام، أم يوجد قطعة قماش أو جزء من الملابس عالق يمنع الإغلاق الكامل؟": "Check the door now: does it close completely and securely, or is there a piece of fabric or clothing stuck preventing full closure?",
+  "افصل الغسالة عن الكهرباء أولاً قبل فتح أي غطاء بالأسفل": "Unplug the washer from electricity first before opening any cover at the bottom",
+  "افصل الغسالة عن الكهرباء فوراً وأغلق صنبور تغذية الماء بالكامل. هذا إنذار أمان حساس مصمم لمنع أضرار مائية كبيرة، ويحتاج فحصاً فنياً مباشراً قبل أي استخدام آخر.": "Unplug the washer from electricity immediately and fully close the water supply tap. This is a sensitive safety alarm designed to prevent major water damage, and needs a direct technician's check before any further use.",
+  "افصل الكهرباء عن الجهاز بالكامل أولاً، ثم انظر الآن لجسم الكباستور (عادة قطعة أسطوانية واحدة تشغّل المروحة والكمبروسر معاً بمكيفات الشباك): هل شكله منتفخ من أعلى بدل مسطح، أو به تسريب سائل؟": "First disconnect all electricity from the unit, then look now at the capacitor body (usually one cylindrical part running both the fan and compressor in window units): does its top look bulged instead of flat, or is there liquid leaking from it?",
+  "افصل الكهرباء عن الجهاز بالكامل أولاً، ثم انظر الآن لجسم الكباستور (قطعة أسطوانية صغيرة داخل صندوق الكهرباء): هل شكله منتفخ من أعلى بدل مسطح، أو به تسريب سائل؟": "First disconnect all electricity from the unit, then look now at the capacitor body (a small cylindrical part inside the electrical box): does its top look bulged instead of flat, or is there liquid leaking from it?",
+  "افصل الكهرباء، أعد توصيل وصلة الأسلاك أعلى الباب بإحكام، ثم أعد التشغيل": "Disconnect the power, firmly reconnect the wire harness above the door, then power back on",
+  "الأغلب تسريب فريون أو ضعف كفاءة الكمبروسر داخلياً": "Most likely a refrigerant leak or internally weak compressor efficiency",
+  "الأغلب مشكلة حقيقية بدائرة الفريون أو كفاءة ضغط الكمبروسر": "Most likely a real issue with the refrigerant circuit or compressor compression efficiency",
+  "الأكواد تختلف حسب الماركة والموديل، وما عندنا قائمة مؤكدة لماركتك بعد.": "Codes vary by brand and model, and we don't have a confirmed list for your brand yet.",
+  "الأكواد تختلف كلياً حسب الماركة والموديل، وما عندنا قائمة مؤكدة لماركتك بعد.": "Codes vary completely by brand and model, and we don't have a confirmed list for your brand yet.",
+  "الأكواد تختلف كلياً حسب الماركة والموديل، وما عندنا قائمة مؤكدة لماركتك بعد. أفضل خطوة الآن:": "Codes vary completely by brand and model, and we don't have a confirmed list for your brand yet. The best step now:",
+  "الإضاءة الداخلية لا تعمل، لا صوت أي تشغيل": "Interior light doesn't work, no running sound at all",
+  "الإضاءة/الشاشة تعمل، لكن الجهاز لا يستجيب للتشغيل الفعلي (وقد يومض ضوء أو رمز)": "Display/light works, but the unit doesn't actually respond when started (a light or code may blink)",
+  "الاشتعال ثم الانطفاء السريع بالأفران القديمة ذات مقبض الإشعال اليدوي توقيع كلاسيكي لثرموكابل تالف لا يُبقي صمام الغاز مفتوحاً بعد تحرير المقبض.": "Ignition followed by quick shutoff in older ovens with a manual ignition knob is a classic sign of a failed thermocouple that doesn't keep the gas valve open after releasing the knob.",
+  "الاشتعال غير المنتظم مع صوت انفجار خفيف غالباً بسبب بقايا طعام أو أوساخ تسد بعض فتحات الحارق. نظّفها بفرشاة ناعمة قبل افتراض أي عطل بالقطع.": "Irregular ignition with a faint popping sound is often caused by food residue or dirt clogging some of the burner ports. Clean them with a soft brush before assuming any part is faulty.",
+  "الانتفاخ أو التسريب من جسم الكباستور دليل شبه مؤكد على تلفه فعلياً — هذا أعلى مستوى ثقة يمكن الوصول له بدون أجهزة قياس متخصصة.": "Bulging or leaking from the capacitor body is near-certain proof it has actually failed — this is the highest confidence level achievable without specialized measuring equipment.",
+  "الباب لا يقفل، أو يظهر خطأ متعلق بالباب": "Door doesn't lock, or a door-related error shows",
+  "التبريد يعمل لكن ضعيف نوعاً ما": "Cooling works but is somewhat weak",
+  "التوهج الخافت يعني أن الشمعة لا تسحب تياراً كافياً لفتح صمام الغاز رغم أنها لا تزال تعمل جزئياً. هذا نمط شائع جداً وموثق لشمعة إشعال متدهورة تحتاج استبدالاً.": "A weak glow means the igniter isn't drawing enough current to open the gas valve even though it's still partially working. This is a very common, well-documented sign of a degraded igniter that needs replacing.",
+  "الثلاجات الحديثة تستخدم غاز تبريد (R600a) قابل للاشتعال. رائحة كبريت أو ثوم قوية قرب الثلاجة (وليست من الطعام) مؤشر خطر حقيقي. افصل الثلاجة من القابس مباشرة فقط، لا تلمس أي مفتاح كهربائي قريب، هوّي المكان جيداً، واتصل بفني فوراً.": "Modern fridges use flammable refrigerant gas (R600a). A strong sulfur or garlic smell near the fridge (not from food) is a real danger sign. Only unplug the fridge from the socket directly, don't touch any nearby electrical switch, ventilate the area well, and call a technician immediately.",
+  "الرموز تختلف كلياً حسب الماركة، لذا اخترنا ماركتك أولاً": "Codes vary completely by brand, so we picked your brand first",
+  "الرموز تختلف كلياً حسب الماركة، لذا اخترنا ماركتك أولاً لعرض الأكواد الصحيحة": "Codes vary completely by brand, so we picked your brand first to show the correct codes",
+  "الريموت لا يستجيب": "The remote isn't responding",
+  "الشاشة تعمل لكن لا يسخن إطلاقاً": "Display works but it doesn't heat at all",
+  "الشمعة تعمل، لكن الغاز لا يصل أو لا يشتعل — 85%": "Igniter works, but gas isn't reaching or igniting — 85%",
+  "الصوت الغريب المستمر من الوحدة الداخلية غالباً سببه بيرنق أو موتور المروحة الداخلية.": "A continuous strange noise from the indoor unit is often caused by a bearing or the indoor fan motor.",
+  "الصوت موجود بكل المراحل بنفس المستوى تقريباً": "The noise is present at roughly the same level in every stage",
+  "الغسالة العادية وحدتان منفصلتان تماماً (غسيل وتنشيف)، فلكل منهما تشخيص خاص بها": "A twin-tub washer has two completely separate units (wash and spin), each with its own diagnosis",
+  "الفرق بسيط جداً، تقريباً نفس حرارة الغرفة": "The difference is very slight, almost the same as room temperature",
+  "الفريزر بارد جداً، لكن الثلاجة دافئة أو غير باردة كفاية": "Freezer is very cold, but the fridge is warm or not cold enough",
+  "الفريزر بارد لكن لا ثلج ينتج، وماء الباب يعمل طبيعي": "Freezer is cold but no ice is produced, and the door's water dispenser works normally",
+  "الفريزر بارد والمروحة تدور بشكل طبيعي، لكن الثلاجة لا تستقبل هواءً بارداً كافياً. السبب الأرجح فتحة تحويل الهواء (Damper) عالقة، أو حساس حراري لا يقرأ بدقة فيمنع فتح الدفروست بالوقت الصحيح.": "The freezer is cold and the fan spins normally, but the fridge isn't getting enough cold air. The most likely cause is a stuck air damper, or a temperature sensor reading inaccurately and preventing the damper from opening at the right time.",
+  "الفريزر بارد وماء الباب يعمل، لكن صانعة الثلج لا تستقبل ماء — الاحتمال الأرجح صمام المياه الخاص بصانعة الثلج لا يفتح بشكل صحيح.": "The freezer is cold and the door dispenser works, but the ice maker isn't receiving water — the most likely cause is the ice maker's water valve not opening properly.",
+  "الفلتر المتسخ يقيّد تدفق الهواء ويُسبب تبريد متقطع وتوقف متكرر. نظّف أو استبدل الفلتر أولاً قبل أي تشخيص إضافي.": "A dirty filter restricts airflow and causes intermittent cooling and repeated shutdowns. Clean or replace the filter first before any further diagnosis.",
+  "الفلتر نظيف، أو غير متوفر بهذا الموديل": "The filter is clean, or not available on this model",
+  "القاطع الرئيسي فصل بالكامل وبسرعة": "The main breaker tripped fully and quickly",
+  "القاطع الكهربائي يفصل فور التشغيل": "The breaker trips as soon as it's started",
+  "القاطع فصل بالكامل وبسرعة": "The breaker tripped fully and quickly",
+  "الكهرباء لا تصل للوحدة الخارجية إطلاقاً — 90%": "Power isn't reaching the outdoor unit at all — 90%",
+  "المروحة الداخلية تعمل بشكل طبيعي، لكن عدم وصول أي إشارة أو طنين للوحدة الخارجية يشير غالباً لقاطع تلامس تالف لا يمرر الكهرباء للوحدة الخارجية أصلاً، أو مشكلة بالأسلاك بين الوحدتين. هذه أرخص بكثير من البطاقة الإلكترونية، لذا يُنصح بفحصها أولاً.": "The indoor fan runs normally, but no signal or hum reaching the outdoor unit usually points to a failed contactor that isn't passing power to the outdoor unit at all, or a wiring issue between the units. This is much cheaper than the control board, so it's advisable to check it first.",
+  "المشكلة بمكونات تشغيل الكمبروسر الكهربائية — 95%": "The problem is with the compressor's electrical start components — 95%",
+  "الملف نظيف نسبياً لكن المروحة لا تدور أو تصدر صوت احتكاك — هذا يشير مباشرة لعطل بموتور مروحة الإيفابريتر نفسه.": "The coil is relatively clean but the fan doesn't spin or makes a grinding noise — this points directly to a fault in the evaporator fan motor itself.",
+  "امتلاء زائد بالماء": "Overfilling with water",
+  "امسح لوحة التحكم أولاً وأعد المحاولة": "Wipe the control panel first and try again",
+  "انسداد الصرف وتفعيل مفتاح أمان مستوى المياه": "Drain blockage triggering the water level safety switch",
+  "انسداد فلتر الماء": "Clogged water filter",
+  "انسداد فلتر الهواء": "Clogged air filter",
+  "انسداد فلتر مضخة التصريف": "Clogged drain pump filter",
+  "انسداد فوهة الحارق بالأوساخ": "Burner port clogged with debris",
+  "انسداد قناة التصريف الخارجية": "Blocked outdoor drain channel",
+  "انسداد مواسير الصرف": "Blocked drain pipes",
+  "انظر الآن بدقة: من أين يتسرب الماء بالضبط؟": "Look closely now: exactly where is the water leaking from?",
+  "انظر الآن خلف اللوحة الداخلية بالفريزر (إن أمكن الوصول): هل ملف الإيفابريتر مغطى بطبقة ثلج كثيفة تسد المروحة؟": "Look behind the freezer's inner panel now (if accessible): is the evaporator coil covered in a thick layer of ice blocking the fan?",
+  "انظر الآن لشاشة الثلاجة: هل يظهر أي رمز خطأ (حروف وأرقام)؟": "Look at the fridge display now: does any error code (letters and numbers) appear?",
+  "انظر الآن لشاشة الغسالة: هل يظهر أي رمز خطأ (حروف وأرقام)؟": "Look at the washer's display now: does any error code (letters and numbers) appear?",
+  "انظر الآن لشاشة الفرن: هل يظهر أي رمز خطأ (حروف وأرقام)؟": "Look at the oven's display now: does any error code (letters and numbers) appear?",
+  "انظر الآن لشاشة الوحدة الداخلية أو الريموت: هل يظهر أي رمز خطأ (حروف وأرقام تومض)؟": "Look at the indoor unit's display or remote now: does any error code (blinking letters and numbers) appear?",
+  "انظر الآن لشاشة الوحدة الداخلية مباشرة: هل يوجد ضوء يومض أو رمز خطأ؟ وهل لاحظت مؤخراً تسريب ماء أو بطء بمواسير الصرف؟": "Look directly at the indoor unit's display now: is there a blinking light or error code? Have you recently noticed a water leak or slow drainage?",
+  "انظر الآن لمروحة المكثف الخلفية (إن أمكن الوصول): هل تدور بشكل طبيعي؟": "Look at the rear condenser fan now (if accessible): does it spin normally?",
+  "انظر الآن لمروحة الوحدة الخارجية مباشرة: هل تدور بشكل طبيعي؟": "Look directly at the outdoor unit's fan now: does it spin normally?",
+  "انظر الآن مباشرة: أين موقع تسرب الماء بالضبط؟": "Look directly now: exactly where is the water leak located?",
+  "انظر الآن مباشرة: هل الماء يتساقط للخارج من تحت الجهاز خارج النافذة، أم يتسرب لداخل الغرفة؟": "Look directly now: is water dripping outward from under the unit outside the window, or leaking into the room?",
+  "انظر واستمع الآن لفتحة الوحدة الداخلية بالغرفة: هل ترى/تسمع المروحة تدور عند التشغيل؟": "Look and listen at the indoor unit's vent in the room now: can you see/hear the fan spinning when it's on?",
+  "اهتزاز أو صوت قوي بحوض التنشيف تحديداً أثناء الدوران السريع يشير لتآكل بالبلي الداعم للحوض الداخلي.": "Vibration or a loud noise specifically in the spin tub during fast spinning points to worn bearings supporting the inner tub.",
+  "اهتزاز شديد تحديداً أثناء التنشيف السريع يشير لتآكل بلي الحوض أو ضعف بمساعدات التعليق (Shock Absorbers) بالغسالات الأمامية التحميل. هذا يحتاج فحصاً فنياً لتحديد أيهما بالضبط، لأن كليهما يتطلب فك الغسالة جزئياً للتأكيد.": "Severe vibration specifically during high-speed spin points to worn tub bearings or weakened shock absorbers in front-load washers. This needs a technician's check to pinpoint which one exactly, since both require partially disassembling the washer to confirm.",
+  "بالداخل (بالفريزر أو الثلاجة)": "Inside (in the freezer or fridge)",
+  "بطاقة تحكم": "Control board",
+  "بطاقة تحكم (PCB) أو تايمر": "Control board (PCB) or timer",
+  "بطاقة تحكم / تايمر": "Control board / timer",
+  "بطاقة تحكم — خطأ اتصال داخلي": "Control board — internal communication error",
+  "بعد التأكد، أعد التشخيص من جديد": "After confirming, restart the diagnosis",
+  "بعض القطع (خصوصاً الكباستور المزدوج) تختلف مواصفاتها حسب الماركة والسعة": "Some parts (especially dual capacitors) have specifications that vary by brand and capacity",
+  "بلي (Bearing) الحوض أو نظام التعليق (Suspension)": "Tub bearing or suspension system",
+  "بلي (Bearing) حوض التنشيف متآكل": "Spin tub bearing worn out",
+  "بلي حوض التنشيف": "Spin tub bearing",
+  "تأكد من ميلان الجهاز للخلف قليلاً، ونظّف قناة التصريف الداخلية": "Make sure the unit tilts slightly backward, and clean the internal drain channel",
+  "تابع التشخيص بالأعراض بدل الكود": "Continue diagnosis by symptoms instead of the code",
+  "تجمد الملف الداخلي بكثافة يمنع تدفق الهواء البارد بالكامل. السبب الأرجح عنصر تسخين الديفروست لا يعمل، أو حساس/تايمر الديفروست تالف، فلا يذوب الثلج المتراكم دورياً كما يجب.": "Heavy frost on the indoor coil completely blocks cold air flow. The most likely cause is a non-working defrost heater, or a faulty defrost sensor/timer, so accumulated ice doesn't melt periodically as it should.",
+  "تجمد الملف الداخلي مع سلامة الفلتر والمكثف الخارجي (تم استبعادهما) يشير غالباً لنقص طفيف بشحنة الفريون لم يصل بعد لدرجة إحداث صوت فحيح واضح، أو انسداد جزئي بتدفق الهواء الداخلي. كلا الاحتمالين يحتاج فحص فني بمعدات ضغط لتأكيد السبب الدقيق، ولا يمكن اقتراح قطعة بثقة قبل هذا الفحص.": "Indoor coil frosting with a clean filter and outdoor condenser (both ruled out) usually points to a slight refrigerant shortage not yet severe enough to cause an audible hiss, or a partial blockage in indoor airflow. Both possibilities need a technician's pressure gauge check to confirm the exact cause, and no part can be confidently suggested before that check.",
+  "تجمد الملف الداخلي — غالباً نقص طفيف بالفريون": "Indoor coil frosting — likely a slight refrigerant shortage",
+  "تحقق الآن من خرطوم التصريف الخلفي: هل هو ملتوٍ، أو مدخل بعمق أكثر من 15 سم داخل أنبوب الصرف بالحائط؟": "Check the rear drain hose now: is it kinked, or inserted more than 15 cm into the wall drain pipe?",
+  "تحقق من القابس والقاطع الكهربائي أولاً": "Check the plug and breaker first",
+  "تحقق من القاطع الكهربائي والمصدر أولاً": "Check the breaker and power source first",
+  "تحققت الآن، والكهرباء سليمة تماماً": "I've checked now, and the power is completely fine",
+  "تدور بشكل طبيعي": "Spins normally",
+  "تدور بشكل طبيعي، لكن لا صوت إطلاقاً من الوحدة الخارجية": "Spins normally, but there's no sound at all from the outdoor unit",
+  "تسريب الماء من أسفل الثلاجة من الخلف شبه دائماً بسبب انسداد قناة أو صمام التصريف الخارجي.": "Water leaking from under the back of the fridge is almost always caused by a blocked drain channel or the outdoor drain valve.",
+  "تسريب الماء من الوحدة الداخلية شبه دائماً بسبب انسداد قناة تصريف المياه المتكاثفة.": "Water leaking from the indoor unit is almost always caused by a blocked condensate drain channel.",
+  "تسريب حول الباب أثناء الغسيل تحديداً (بالغسالات الأمامية التحميل) يشير مباشرة لحلقة إحكام الباب المطاطية التالفة أو المتسخة بجسم غريب يمنع الإغلاق الكامل.": "Leaking around the door specifically during washing (front-load washers) points directly to a damaged rubber door seal, or one dirtied by a foreign object preventing a full seal.",
+  "تسريب فريون أو انسداد بصمام التمدد": "Refrigerant leak or blocked expansion valve",
+  "تسريب ماء": "Water leak",
+  "تسريب ماء من الغسالة": "Water leaking from the washer",
+  "تسريب ماء من الوحدة الداخلية": "Water leaking from the indoor unit",
+  "تسريب مستمر من الأسفل طوال الدورة": "Continuous leak from the bottom throughout the cycle",
+  "تسريب مستمر من الأسفل طوال الدورة (مو فقط أثناء التصريف) يشير لحلقة إحكام أو وصلة بمضخة التصريف تسرّب باستمرار.": "A continuous leak from the bottom throughout the cycle (not just during draining) points to a drain pump seal or connection leaking constantly.",
+  "تسريب من حوض التنشيف تحديداً يشير لحلقة إحكام تالفة حول محور دوران السلة الداخلية.": "A leak specifically from the spin tub points to a damaged seal around the inner basket's rotating shaft.",
+  "تسريب من حوض الغسيل تحديداً يشير لحلقة إحكام تالفة حول محور دوران العصا الدوارة (Pulsator) بقاع الحوض.": "A leak specifically from the wash tub points to a damaged seal around the pulsator's rotating shaft at the bottom of the tub.",
+  "تسريب من حول الباب أثناء الغسيل فقط": "Leaking around the door only during washing",
+  "تسريب من نقطة التصريف المشتركة بين الحوضين يشير مباشرة لصمام التصريف نفسه أو تلف بالخرطوم عند نقطة الاتصال.": "A leak from the shared drain point between the two tubs points directly to the drain valve itself or hose damage at the connection point.",
+  "تصرف الماء بشكل طبيعي لكن لا تنشف (Spin)": "Drains normally but doesn't spin",
+  "تفعّل واقي الحمل الحراري للكمبروسر دفاعياً — 90%": "The compressor's thermal overload protector engaging defensively — 90%",
+  "تقطير الماء للخارج تصميم طبيعي بمكيفات الشباك وليس عطلاً — العطل الحقيقي فقط عند تسرب الماء لداخل الغرفة": "Water dripping outward is a normal design feature of window units, not a fault — the real fault is only when water leaks into the room",
+  "تماس كهربائي محتمل — يحتاج فني فوراً": "Possible electrical short — needs a technician immediately",
+  "تمتلئ بالماء لكن لا تغسل (لا دوران للحوض)": "Fills with water but doesn't wash (tub doesn't turn)",
+  "تنظيف مواسير الصرف (أولاً) — أو مفتاح مستوى المياه (Float Switch) إذا استمرت المشكلة بعد التنظيف": "Clean the drain pipes (first) — or the float switch if the problem persists after cleaning",
+  "توقف الطنين من تلقاء نفسه دون فصل القاطع الرئيسي يشير لتيار مسحوب أقل، وهذا يتوافق مع كباستور ضعيف أكثر من كمبروسر مقفول (الذي يسحب تياراً أعلى بكثير). هذه قطعة رخيصة نسبياً ويُنصح بتجربتها أولاً. ملاحظة أمان: لا تكرر محاولة التشغيل بشكل متتالي — كل محاولة فاشلة تُجهد ملفات الكمبروسر وقد تحوّل عطلاً بسيطاً لعطل مكلف.": "The hum stopping on its own without tripping the main breaker points to lower current draw, which fits a weak capacitor more than a locked compressor (which draws much higher current). This is a relatively cheap part and worth trying first. Safety note: don't repeatedly retry starting it — every failed attempt stresses the compressor windings and can turn a minor fault into a costly one.",
+  "توقف الطنين من تلقاء نفسه، القاطع الرئيسي لم يفصل": "The hum stopped on its own, the main breaker didn't trip",
+  "توقف الطنين من تلقاء نفسه، القاطع لم يفصل": "The hum stopped on its own, the breaker didn't trip",
+  "توهج الشمعة بقوة يعني أنها تسحب تياراً كافياً، لكن عدم اشتعال الغاز رغم ذلك يشير لعطل بصمام الأمان نفسه أو انسداد بفوهة الحارق. هذا يتعامل مع خط غاز مباشر، يُفضّل فني للفحص والاستبدال.": "The igniter glowing strongly means it's drawing enough current, but the gas still not igniting points to a fault in the safety valve itself or a clogged burner port. Since this deals with a direct gas line, a technician is preferred for inspection and replacement.",
+  "توهج قوي وواضح، لكن الغاز لا يشتعل": "Strong, clear glow, but the gas doesn't ignite",
+  "ثرموستات (أولاً) / بطاقة تحكم": "Thermostat (first) / control board",
+  "ثرموستات أو بطاقة تحكم": "Thermostat or control board",
+  "ثرموستات التحكم بالحرارة": "Temperature control thermostat",
+  "ثرموستات الفرن": "Oven thermostat",
+  "ثرموكابل (Thermocouple)": "Thermocouple",
+  "ثرموكابل (Thermocouple) تالف": "Faulty thermocouple",
+  "ثلاجة": "Fridge",
+  "جرّب الآن بطارية جديدة بالريموت — هل تغيّر شيء بعد التجربة؟": "Try a fresh battery in the remote now — did anything change after that?",
+  "جرّب بطارية جديدة أولاً": "Try a fresh battery first",
+  "جرّب تعديل الإعداد وتقليل الازدحام — إذا استمرت المشكلة راجع فني": "Try adjusting the setting and reducing overcrowding — if it persists, see a technician",
+  "جرّب كباستور جديد أولاً (رخيص ويستبعد الاحتمال الأرخص) — إذا استمر العطل بعده، الاحتمال الأقوى كمبروسر ويحتاج فني فوراً": "Try a new capacitor first (cheap, and rules out the cheaper possibility) — if the fault persists after that, the stronger likelihood is the compressor, which needs a technician right away",
+  "جرّبت الآن وما زال لا يستجيب": "I tried it now and it still isn't responding",
+  "حساس حرارة الفرن (Oven Temperature Sensor)": "Oven temperature sensor",
+  "حساس حرارة الفرن السليم يجب أن يقرأ تقريباً 1080 أوم بحرارة الغرفة. القراءة خارج هذا النطاق أو تذبذب القراءة يعني حساساً تالفاً يرسل بيانات خاطئة للوحة التحكم.": "A healthy oven temperature sensor should read about 1080 ohms at room temperature. A reading outside this range, or a fluctuating reading, means a faulty sensor sending wrong data to the control board.",
+  "حساس حرارة الفرن غير دقيق": "Inaccurate oven temperature sensor",
+  "حساس حرارة الماء": "Water temperature sensor",
+  "حساس حراري": "Temperature sensor",
+  "حساس حراري (Thermal Sensor)": "Temperature sensor",
+  "حساس حراري (Thermistor)": "Thermistor",
+  "حساس حراري غير دقيق": "Inaccurate temperature sensor",
+  "حساس ضغط/مستوى الماء": "Pressure/water level sensor",
+  "حساس ضغط/مستوى الماء (Pressure Sensor)": "Pressure/water level sensor",
+  "حسب كود الجهاز، الحساس الحراري لا يقرأ الحرارة بدقة أو به قصر/انقطاع كهربائي.": "Based on the unit's code, the temperature sensor isn't reading accurately or has an electrical short/open circuit.",
+  "حلقة إحكام الباب (Door Boot Seal)": "Door boot seal",
+  "حلقة إحكام الباب (Door Boot Seal) تالفة": "Faulty door boot seal",
+  "حلقة إحكام حوض التنشيف": "Spin tub seal",
+  "حلقة إحكام حوض الغسيل": "Wash tub seal",
+  "حلقة إحكام مضخة التصريف": "Drain pump seal",
+  "حلقة إحكام مضخة التصريف تالفة": "Faulty drain pump seal",
+  "حلقة الباب المطاطية تالفة أو لا تُحكم الإغلاق": "Rubber door gasket is damaged or not sealing properly",
+  "حلقة باب (Door Gasket) — جرّب التنظيف أولاً": "Door gasket — try cleaning it first",
+  "حماية من حمل زائد أو عطل حقيقي بالموتور — 80%": "Overload protection or a real motor fault — 80%",
+  "حمولة غير متوازنة — ليس عطلاً بقطعة": "Unbalanced load — not a part fault",
+  "حوض الغسيل يعمل بشكل طبيعي، لكن حوض التنشيف لا يعمل": "The wash tub works normally, but the spin tub doesn't work",
+  "خرطوم ملتوٍ أو مدخل بعمق زائد داخل أنبوب الصرف يخلق تأثير سحب عكسي (Siphoning) يمنع التصريف الطبيعي حتى مع سلامة المضخة تماماً.": "A kinked hose, or one inserted too deep into the drain pipe, creates a reverse siphoning effect that prevents normal draining even if the pump is completely fine.",
+  "خروج الورقة بسهولة من نقطة بمحيط الباب يعني تسرب هواء بارد مستمر لتلك النقطة، ما يجهد الكمبروسر ويقلل كفاءة التبريد. غالباً الحل تنظيف الحلقة أولاً (قد يكون السبب أوساخ تمنع الإحكام)، وإذا استمر فاستبدالها.": "The note sliding out easily at a point around the door means cold air is continuously leaking there, which stresses the compressor and reduces cooling efficiency. The fix is often cleaning the gasket first (dirt may be preventing a tight seal), and replacing it if that doesn't help.",
+  "خطأ اتصال بعد فتح الباب": "Communication error after opening the door",
+  "خطأ الاتصال بعد فتح الباب غالباً سببه وصلة الأسلاك المارة أعلى الباب (بين جسم الثلاجة والباب) غير متصلة بإحكام.": "A communication error after opening the door is usually caused by the wire harness running above the door (between the fridge body and the door) not being securely connected.",
+  "خطر ارتفاع حرارة — أوقف الاستخدام فوراً": "Overheat hazard — stop use immediately",
+  "رائحة احتراق قوية أو شرارة أو دخان مؤشر خطر تماس كهربائي حقيقي. افصل القاطع الكهربائي فوراً ولا تحاول التشغيل مرة أخرى. هذه الحالة تحتاج فني معتمد فقط.": "A strong burning smell, sparks, or smoke is a sign of a real electrical short. Turn off the breaker immediately and don't try to run it again. This case needs a certified technician only.",
+  "رائحة احتراق قوية، شرارة، أو دخان": "Strong burning smell, sparks, or smoke",
+  "رائحة الاحتراق أو الدخان مؤشر خطر كهربائي حقيقي. افصل الكهرباء عن الجهاز فوراً ولا تحاول إعادة تشغيله. هذه الحالة تحتاج فني معتمد مباشرة، ولا يمكن تحديد قطعة بأمان دون فحص مباشر.": "A burning or smoke smell is a sign of a real electrical hazard. Disconnect power from the unit immediately and don't try to restart it. This case needs a certified technician right away, and no part can be safely identified without a direct inspection.",
+  "رائحة كبريت أو ثوم قوية بالقرب من الثلاجة": "Strong sulfur or garlic smell near the fridge",
+  "رائحة كهرباء محروقة أو دخان": "Smell of burnt electronics or smoke",
+  "راقب الثلاجة الآن واختر الوصف الأقرب لما يحدث فعلاً:": "Watch the fridge now and pick the description closest to what's actually happening:",
+  "راقب الجهاز الآن واختر الوصف الأقرب لما يحدث فعلاً:": "Watch the unit now and pick the description closest to what's actually happening:",
+  "راقب صانعة الثلج الآن واختر الأقرب:": "Watch the ice maker now and pick the closest match:",
+  "رطوبة أو بخار على لوحة اللمس": "Moisture or steam on the touch panel",
+  "رمز آخر غير موجود بالقائمة": "A different code not on this list",
+  "رمز يشير لقفل الكمبروسر": "Code indicating a locked compressor",
+  "ريلاي التشغيل (Start Relay) تالف": "Faulty start relay",
+  "ريلاي تشغيل (Start Relay)": "Start relay",
+  "زر لوحة تحكم عالق أو حساس حرارة (حسب الموديل)": "Stuck control panel button or temperature sensor (model-dependent)",
+  "سبليت (وحدة داخلية ووحدة خارجية منفصلتين)": "Split (separate indoor and outdoor units)",
+  "سكون المروحة الداخلية تماماً رغم إضاءة المؤشرات يشير غالباً لعطل بالبطاقة الإلكترونية الداخلية أو موتور المروحة نفسه. ننصح بفحص موتور المروحة أولاً (أرخص) قبل التفكير بالبطاقة الإلكترونية.": "The indoor fan being completely still despite the indicator lights being on usually points to a fault in the indoor control board or the fan motor itself. We recommend checking the fan motor first (cheaper) before considering the control board.",
+  "شباك (وحدة واحدة مدمجة بالنافذة)": "Window (single unit built into the window)",
+  "شغّل الغسالة الآن على دورة عادية، وراقب ماذا يحدث بالضبط:": "Start the washer now on a normal cycle, and watch exactly what happens:",
+  "شغّل الفرن الآن على وضع الخبز بحرارة 180 درجة، وراقب بعد بضع دقائق:": "Start the oven now on bake mode at 180 degrees, and watch after a few minutes:",
+  "شغّل الفرن الآن وراقب فوهة الحارق مباشرة:": "Start the oven now and watch the burner port directly:",
+  "شغّل المكيف الآن بالريموت أو الزر، وراقب ماذا يحدث بالضبط:": "Turn on the AC now with the remote or the button, and watch exactly what happens:",
+  "شغّل حوض الغسيل الآن، وراقب ماذا يحدث بالضبط:": "Start the wash tub now, and watch exactly what happens:",
+  "شغّل دورة تنشيف فقط الآن واستمع: هل تسمع صوت 'طقّة' قفل الباب عند بدء الدورة؟": "Run a spin-only cycle now and listen: do you hear a door-lock 'click' when the cycle starts?",
+  "شغّل مكيف الشباك الآن من الزر أو الريموت، وراقب ماذا يحدث بالضبط:": "Turn on the window unit now from the button or remote, and watch exactly what happens:",
+  "شمعة إشعال (Igniter)": "Igniter",
+  "شمعة إشعال تالفة تماماً": "Completely failed igniter",
+  "شمعة إشعال ضعيفة": "Weak igniter",
+  "صانعة الثلج لا تعمل": "Ice maker doesn't work",
+  "صمام أو خرطوم تصريف مشترك تالف": "Faulty shared drain valve/hose",
+  "صمام الغاز (Safety Valve) لا يفتح بشكل صحيح": "Gas safety valve not opening properly",
+  "صمام المياه (Water Inlet Valve)": "Water inlet valve",
+  "صمام تعبئة الماء (Water Inlet Valve)": "Water inlet valve",
+  "صمام غاز (Safety Valve) — يفضّل فني للتركيب": "Gas safety valve — a technician is preferred for installation",
+  "صمام مياه (Water Inlet Valve)": "Water inlet valve",
+  "صمام/أنبوب تصريف": "Drain valve/pipe",
+  "صمام/خرطوم تصريف": "Drain valve/hose",
+  "صوت الفحيح مع تجمد الثلج على الأنابيب توقيع شبه مؤكد لأحد سببين: تسريب في غاز التبريد، أو انسداد بصمام التمدد/الأنبوب الشعري. كلا السببين يعطيان نفس الأعراض الخارجية تماماً ولا يمكن التفريق بينهما إلا بقياس ضغط فعلي بمعدات متخصصة. كلاهما يحتاج فني بالضرورة.": "A hissing sound with ice forming on the pipes is a near-certain sign of one of two causes: a refrigerant leak, or a blocked expansion valve/capillary tube. Both causes produce exactly the same outward symptoms and can only be told apart with an actual pressure gauge check by specialized equipment. Both necessarily need a technician.",
+  "صوت طنين فقط، بدون دوران المروحة أو التبريد": "Just a humming sound, no fan spinning or cooling",
+  "صوت غريب": "Strange noise",
+  "صوت غريب (صفير / ضجيج)": "Strange noise (whistling / rattling)",
+  "صوت غريب أو اهتزاز عالٍ أثناء التنشيف": "Strange noise or loud vibration during spin",
+  "صوت غريب قوي أو اهتزاز شديد بحوض التنشيف تحديداً": "Loud strange noise or severe vibration specifically in the spin tub",
+  "صوت يصدر من صانعة الثلج لكن لا ينزل ثلج للسلة": "A sound comes from the ice maker but no ice drops into the bin",
+  "ضع يدك الآن أمام فتحة دخول الهواء للوحدة الداخلية، ثم أمام فتحة خروج الهواء البارد مباشرة: هل تحس فرق حرارة واضح بينهما، أم الفرق بسيط جداً وتقريباً نفس الحرارة؟": "Put your hand now in front of the indoor unit's air intake, then directly in front of the cold air outlet: do you feel a clear temperature difference between them, or is the difference very slight, almost the same temperature?",
+  "ضع يدك الآن أمام فتحة دخول الهواء، ثم أمام فتحة خروج الهواء البارد مباشرة: هل تحس فرق حرارة واضح، أم الفرق بسيط جداً وتقريباً نفس الحرارة؟": "Put your hand now in front of the air intake, then directly in front of the cold air outlet: do you feel a clear temperature difference, or is the difference very slight, almost the same temperature?",
+  "طنين الموتور بدون حركة فعلية نمط مألوف لكباستور تشغيل ضعيف يمنع الموتور من إكمال الدوران. جرّب الكباستور أولاً (أرخص بكثير) قبل التفكير باستبدال الموتور كاملاً.": "A humming motor with no actual movement is a familiar sign of a weak run capacitor preventing the motor from completing its rotation. Try the capacitor first (much cheaper) before considering replacing the whole motor.",
+  "طنين الموتور بدون دوران فعلي للعصا الدوارة (Pulsator) نمط مألوف لكباستور ضعيف. جرّب الكباستور أولاً — أرخص بكثير من الموتور كاملاً.": "A humming motor with no actual pulsator movement is a familiar sign of a weak capacitor. Try the capacitor first — much cheaper than the whole motor.",
+  "عائق يمنع إغلاق الباب بالكامل": "An obstruction preventing the door from closing fully",
+  "عادية (حوضين منفصلين — غسيل وتنشيف)": "Twin-tub (separate wash and spin tubs)",
+  "عدم التنظيف لفترة طويلة يقلل كفاءة التبريد بشكل كبير حتى مع سلامة باقي الأجزاء. جرّب التنظيف الشامل للوحدة الخارجية قبل شراء أي قطعة.": "Not cleaning for a long time significantly reduces cooling efficiency even if every other part is fine. Try a thorough clean of the outdoor unit before buying any part.",
+  "عدم التوهج إطلاقاً أو التوهج غير المتساوي مع نقاط سوداء دليل مباشر على تلف عنصر التسخين السفلي نفسه.": "No glow at all, or an uneven glow with black spots, is direct evidence the bottom heating element itself has failed.",
+  "عدم تغيير الفلتر لفترة طويلة يسبب انسداداً تدريجياً يمنع وصول الماء لصانعة الثلج. هذه أرخص قطعة يُنصح بتجربتها أولاً.": "Not changing the filter for a long time causes a gradual clog that blocks water from reaching the ice maker. This is the cheapest part, recommended to try first.",
+  "عدم وجود فرق حرارة يُذكر رغم عمل كل الأجزاء الظاهرة بشكل طبيعي (لا رائحة، لا فحيح، نظافة تامة، مروحة تدور) يشير لمشكلة داخلية بدائرة التبريد نفسها — إما نقص كبير بالفريون بدون تسريب مسموع، أو كمبروسر يعمل ميكانيكياً بشكل طبيعي لكن لا يضغط الغاز بكفاءة كافية داخلياً (تآكل داخلي). كلا الاحتمالين لا يمكن تأكيدهما إلا بقياس ضغط فعلي من فني، ولا توجد قطعة يمكن اقتراحها بثقة بهذه المرحلة.": "No noticeable temperature difference despite every visible part working normally (no smell, no hiss, perfectly clean, fan spinning) points to an internal problem within the refrigerant circuit itself — either a major refrigerant shortage with no audible leak, or a compressor running mechanically fine but not compressing gas efficiently internally (internal wear). Neither possibility can be confirmed except by an actual pressure gauge check from a technician, and no part can be confidently suggested at this stage.",
+  "عدم وصول أي إشارة أو صوت للموتور رغم تعبئة الماء بنجاح يشير لعطل ببطاقة التحكم الإلكترونية أو التايمر الميكانيكي (بالموديلات الأقدم) الذي لا يرسل تياراً للموتور بالتوقيت الصحيح.": "No signal or sound reaching the motor at all despite successful water filling points to a fault in the electronic control board, or the mechanical timer (on older models) not sending current to the motor at the right time.",
+  "عدّل وضعية الخرطوم (لا يتجاوز 15 سم داخل الأنبوب) وأعد الاختبار": "Adjust the hose position (no more than 15 cm inside the pipe) and re-test",
+  "عطل بالبطاقة الإلكترونية أو موتور المروحة الداخلية": "Fault in the control board or indoor fan motor",
+  "عطل بالتيار الكهربائي — يحتاج فني فوراً": "Electrical current fault — needs a technician immediately",
+  "عطل بحساس حرارة الماء يمنع الغسالة من التأكد من درجة حرارة الماء المطلوبة للدورة المختارة.": "A fault in the water temperature sensor prevents the washer from confirming the required water temperature for the selected cycle.",
+  "عطل بلوحة التحكم أو حساس الحرارة — 85%": "Fault in the control panel or temperature sensor — 85%",
+  "عطل بموتور مروحة الوحدة الداخلية": "Fault in the indoor unit's fan motor",
+  "عطل بنظام قفل الباب (دورة التنظيف الذاتي)": "Fault in the door lock system (self-clean cycle)",
+  "عطل تعبئة الماء غالباً سببه صمام التعبئة نفسه لا يفتح بشكل صحيح، أو فلتر صغير داخل الصمام مسدود بالرواسب. تحقق أولاً من فتح صنبور الماء بالكامل قبل افتراض عطل بالقطعة.": "A water fill fault is usually caused by the inlet valve itself not opening properly, or a small filter inside the valve clogged with sediment. First check that the water tap is fully open before assuming the part is faulty.",
+  "عطل في وحدة استقبال الإشارة": "Fault in the signal receiver unit",
+  "عطل كهربائي/تحكم داخلي — 85%": "Internal electrical/control fault — 85%",
+  "عطل نظام الديفروست (تجمد الملف)": "Defrost system fault (frosted coil)",
+  "على الأغلب قاطع تلامس (Contactor) بالوحدة الخارجية": "Most likely a contactor in the outdoor unit",
+  "على الأغلب كباستور أو اتساخ بالمكثف، والكمبروسر آخر احتمال": "Most likely a capacitor or dirty condenser, with the compressor as the last possibility",
+  "عنصر تسخين ديفروست / حساس ديفروست / تايمر ديفروست": "Defrost heater / defrost sensor / defrost timer",
+  "عنصر تسخين سفلي (Bake Element)": "Bake element (bottom heating element)",
+  "عنصر تسخين سفلي (Bake Element) تالف": "Faulty bake element",
+  "غاز": "Gas",
+  "غالباً بسبب حساس ضغط/مستوى الماء لا يوقف التعبئة بالوقت الصحيح، أو صمام تعبئة عالق بوضع مفتوح. تحقق من كمية المنظف المستخدمة أيضاً (رغوة زائدة قد تُفسَّر كامتلاء زائد).": "Usually caused by the pressure/water level sensor not stopping the fill at the right time, or an inlet valve stuck open. Also check the amount of detergent used (excess foam can be mistaken for overfilling).",
+  "غالباً يُحل بإعادة التشغيل الكامل (فصل الكهرباء 5 دقائق ثم إعادتها). إذا تكرر الكود، المشكلة بالبطاقة الرئيسية أو الشاشة.": "Usually resolved with a full power reset (unplug for 5 minutes, then plug back in). If the code recurs, the issue is with the main board or display.",
+  "غالباً يُحل بإعادة تشغيل كاملة (فصل الكهرباء 5 دقائق ثم إعادتها). إذا تكرر الكود، المشكلة بلوحة التحكم الرئيسية أو الفرعية.": "Usually resolved with a full power reset (unplug for 5 minutes, then plug back in). If the code recurs, the issue is with the main or sub control board.",
+  "غسالة": "Washer",
+  "فتحة تحويل الهواء (Damper) / حساس حراري": "Air damper / temperature sensor",
+  "فتحة تحويل الهواء (Damper) أو حساس حراري": "Air damper or temperature sensor",
+  "فرق واضح، الهواء الخارج أبرد فعلاً لكن غير كافٍ لتبريد الغرفة": "Clear difference, the outgoing air is indeed colder but not enough to cool the room",
+  "فرق واضح، لكن غير كافٍ لتبريد الغرفة": "Clear difference, but not enough to cool the room",
+  "فرن": "Oven",
+  "فصل القاطع الرئيسي بالكامل وبسرعة يشير لتيار مسحوب مرتفع جداً (قريب من تيار الإقلاع المقفول)، وهذا نمط أقرب لكمبروسر مقفول ميكانيكياً من كباستور عادي. مع ذلك، هذا لا يزال احتمالاً وليس تأكيداً — الفصل النهائي يحتاج قياس تيار فعلي بجهاز كلامب متر من فني. ملاحظة أمان مهمة: توقف عن تكرار محاولات التشغيل أو إعادة رفع القاطع بشكل متكرر — هذا يُسرّع تلف ملفات الكمبروسر إذا كان هو السبب فعلاً.": "The main breaker tripping fully and quickly points to a very high current draw (close to a locked-rotor current), a pattern closer to a mechanically locked compressor than a normal capacitor. Still, this remains a likelihood, not a certainty — final confirmation needs an actual clamp meter current reading from a technician. Important safety note: stop repeatedly trying to start it or resetting the breaker — this speeds up damage to the compressor windings if that is indeed the cause.",
+  "فصل القاطع فور التشغيل يشير لتماس كهربائي حقيقي بأحد العناصر أو الأسلاك. لا تكرر محاولة رفع القاطع أكثر من مرة — هذا يزيد خطر التلف أو الحريق.": "The breaker tripping as soon as it starts points to a real electrical short in one of the elements or wires. Don't repeatedly try resetting the breaker — this increases the risk of damage or fire.",
+  "فكّر بآخر مرة صار فيها هذا الطنين بالضبط: هل القاطع الكهربائي الرئيسي بلوحة كهرباء المنزل فصل بالكامل (احتجت ترفعه يدوياً)، أم توقف الطنين من تلقاء نفسه دون أن يفصل القاطع الرئيسي؟": "Think back to the last time exactly this hum happened: did the main breaker at the home's electrical panel trip fully (you had to manually reset it), or did the hum stop on its own without the main breaker tripping?",
+  "فكّر بآخر مرة صار فيها هذا الطنين بالضبط: هل القاطع الكهربائي فصل بالكامل (احتجت ترفعه يدوياً)، أم توقف الطنين من تلقاء نفسه؟": "Think back to the last time exactly this hum happened: did the breaker trip fully (you had to manually reset it), or did the hum stop on its own?",
+  "فلتر ماء": "Water filter",
+  "فلتر هواء (تنظيف/استبدال)": "Air filter (clean/replace)",
+  "فيوز حراري (Thermal Fuse) قد يكون مفتوحاً": "Thermal fuse may have tripped open",
+  "فيوز داخلي (أولاً) / بطاقة تحكم (PCB) إذا استمر العطل": "Internal fuse (first) / control board (PCB) if the fault persists",
+  "فيوز داخلي بالجهاز أو عطل بالبطاقة الإلكترونية": "Internal fuse in the unit, or a control board fault",
+  "قاطع تلامس (Contactor) — تحقق منه أولاً": "Contactor — check it first",
+  "قبل تشخيص أي عطل بالجهاز، تأكد من بطارية الريموت. إذا استمرت المشكلة بعد التغيير، عد للأداة واختر 'نعم وما زال لا يستجيب'.": "Before diagnosing any fault in the unit, check the remote's battery. If the problem persists after replacing it, come back to the tool and select 'Yes, still not responding'.",
+  "قدرة تبريد أقل من الطبيعي — 90%": "Below-normal cooling capacity — 90%",
+  "قدرة تبريد ضعيفة — أسباب متعددة محتملة": "Weak cooling capacity — multiple possible causes",
+  "قطعة قماش أو جزء من الغسيل عالق بحافة الباب يمنع مفتاح القفل من الاستشعار الصحيح لإغلاق الباب.": "A piece of fabric or clothing stuck at the door's edge prevents the lock switch from correctly sensing the door as closed.",
+  "قف بالقرب من الجهاز الآن وتحقق: هل تشم رائحة احتراق أو كهرباء محروقة، أو ترى دخان خفيف؟": "Stand near the unit now and check: do you smell burning or burnt electronics, or see light smoke?",
+  "قفل أو مفتاح استشعار الباب (Door Lock/Switch)": "Door lock/sensor switch",
+  "قفل الكمبروسر — يحتاج فني فوراً": "Locked compressor — needs a technician immediately",
+  "قفل حماية الموتور (قد يكون حمولة زائدة فقط)": "Motor protection lock (may just be overload)",
+  "قفل/مفتاح الباب (Door Lock Switch)": "Door lock switch",
+  "قلل الحمولة وانتظر 30 دقيقة، ثم أعد المحاولة قبل شراء أي قطعة": "Reduce the load and wait 30 minutes, then try again before buying any part",
+  "كباستور التشغيل تالف على الأغلب": "The run capacitor is most likely faulty",
+  "كباستور الموتور أو الموتور نفسه": "Motor capacitor or the motor itself",
+  "كباستور تشغيل (Run Capacitor)": "Run capacitor",
+  "كباستور تشغيل (جرّبه أولاً) / تنظيف المكثف الخارجي": "Run capacitor (try first) / clean the outdoor condenser",
+  "كباستور تشغيل تالف — مؤكد بصرياً": "Faulty run capacitor — visually confirmed",
+  "كباستور موتور التنشيف (جرّبه أولاً)": "Spin motor capacitor (try first)",
+  "كباستور موتور التنشيف أو الموتور نفسه": "Spin motor capacitor or the motor itself",
+  "كباستور موتور الغسالة (جرّبه أولاً)": "Washer motor capacitor (try first)",
+  "كباستور موتور الغسيل (جرّبه أولاً)": "Wash motor capacitor (try first)",
+  "كباستور موتور الغسيل أو الموتور نفسه": "Wash motor capacitor or the motor itself",
+  "كرر هذا الاختبار حول محيط الباب بالكامل كل 15 سم تقريباً": "Repeat this test all around the door perimeter roughly every 15 cm",
+  "كل شيء طبيعي، الجهاز يحاول العمل": "Everything's normal, the unit is trying to run",
+  "كلاهما دافئان، لكن أسمع صوت الكمبروسر يعمل بشكل مستمر": "Both are warm, but I hear the compressor running continuously",
+  "كلاهما دافئان، ولا أسمع أي صوت تشغيل": "Both are warm, and I don't hear any running sound",
+  "كهربائي": "Electric",
+  "لا": "No",
+  "لا تدور أو صوت احتكاك واضح": "Doesn't spin, or a clear grinding noise",
+  "لا تدور، أو صوت ضعيف/احتكاك": "Doesn't spin, or a weak/grinding noise",
+  "لا تدور، لكن أسمع صوت 'طنين'": "Doesn't spin, but I hear a 'humming' sound",
+  "لا تدور، وأسمع 'طقطقة' متكررة ثم توقف": "Doesn't spin, and I hear repeated 'clicking' then it stops",
+  "لا تصرف الماء ولا تنشف (الحوض يبقى فيه ماء)": "Doesn't drain and doesn't spin (water stays in the tub)",
+  "لا تكرر محاولة التشغيل الآن لاختبار هذا — اعتمد على ما لاحظته سابقاً فقط، لحماية الكمبروسر من الإجهاد": "Don't retry starting it now just to test this — rely only on what you noticed before, to protect the compressor from stress",
+  "لا تلمس الكباستور مباشرة أبداً — قد يحتفظ بشحنة كهربائية خطرة حتى بعد فصل التيار": "Never touch the capacitor directly — it may hold a dangerous electrical charge even after power is disconnected",
+  "لا حاجة لأي إجراء — هذا طبيعي": "No action needed — this is normal",
+  "لا ماء ولا ثلج، ولم يتغيّر فلتر الماء منذ 6 أشهر أو أكثر": "No water and no ice, and the water filter hasn't been changed in 6 months or more",
+  "لا يبدو كذلك، أو لا أستطيع رؤيته بوضوح": "Doesn't look like that, or I can't see it clearly",
+  "لا يتوهج إطلاقاً": "Doesn't glow at all",
+  "لا يعمل هو الآخر": "It doesn't work either",
+  "لا يوجد أي استجابة لحوض الغسيل إطلاقاً": "No response from the wash tub at all",
+  "لا يوجد أي استجابة، الشاشة لا تضيء": "No response at all, the display doesn't light up",
+  "لا يوجد أي استجابة، لا إضاءة ولا صوت إطلاقاً": "No response at all, no light and no sound whatsoever",
+  "لا يوجد أي توهج أو شرارة إطلاقاً": "No glow or spark at all",
+  "لا يوجد أي صوت من الموتور إطلاقاً": "No sound from the motor at all",
+  "لا يوجد رمز، أو لا أعرف أقرأه": "No code, or I don't know how to read it",
+  "لا، الغطاء لا يُغلق بإحكام": "No, the lid doesn't close securely",
+  "لا، الملف نظيف نسبياً لكن المروحة لا تدور": "No, the coil is relatively clean but the fan doesn't spin",
+  "لا، تحتاج قوة معقولة بكل النقاط": "No, it needs reasonable force at every point",
+  "لا، صمت تام حتى الطنين": "No, complete silence, not even a hum",
+  "لا، صمت تام حتى النقرة": "No, complete silence, not even a click",
+  "لا، صمت تام رغم إضاءة المؤشرات": "No, complete silence despite the indicator lights being on",
+  "لا، لا تدور إطلاقاً": "No, it doesn't spin at all",
+  "لا، لا صوت قفل إطلاقاً": "No, no lock sound at all",
+  "لا، لا كهرباء تصل إطلاقاً": "No, no power is reaching it at all",
+  "لا، لا يوجد أي ثلج عليه": "No, there's no ice on it at all",
+  "لا، لكن أسمع همهمة عالية مستمرة بدون توقف": "No, but I hear a continuous loud drone without stopping",
+  "لا، نظيف فعلاً": "No, it's actually clean",
+  "لا، وضعية الخرطوم سليمة تماماً": "No, the hose position is completely fine",
+  "لا، ولا يوجد أي رمز خطأ": "No, and there's no error code either",
+  "لا، يبدو نظيفاً فعلاً": "No, it actually looks clean",
+  "لا، يبدوان نظيفين فعلاً": "No, they both actually look clean",
+  "لم أتحقق من هذا بعد": "I haven't checked this yet",
+  "لم أجرب بعد، سأجرب أولاً": "Haven't tried yet, I'll try first",
+  "ما عندي ميزان لأتأكد": "I don't have a thermometer to check",
+  "ما ماركة الثلاجة؟": "What is the fridge's brand?",
+  "ما ماركة الغسالة الأوتوماتيك؟": "What is the automatic washer's brand?",
+  "ما ماركة الفرن الكهربائي؟": "What is the electric oven's brand?",
+  "ما ماركة المكيف؟": "What is the AC's brand?",
+  "ما ماركة فرن الغاز؟": "What is the gas oven's brand?",
+  "ما ماركة مكيف الشباك؟": "What is the window unit's brand?",
+  "ماركة أخرى": "Other brand",
+  "متكتلة بجهة واحدة بوضوح": "Clearly bunched to one side",
+  "مروحة المكثف الخلفية لا تدور أو تصدر صوت احتكاك واضح — عطل مباشر بموتور مروحة المكثف.": "The rear condenser fan doesn't spin, or makes a clear grinding noise — a direct fault in the condenser fan motor.",
+  "مشكلة أخرى (صوت / تسريب ماء / صانعة الثلج / رائحة)": "Other issue (noise / water leak / ice maker / smell)",
+  "مشكلة أخرى (صوت غريب / تسريب ماء / الريموت / رائحة)": "Other issue (strange noise / water leak / remote / smell)",
+  "مشكلة أخرى (صوت غريب / تسريب ماء)": "Other issue (strange noise / water leak)",
+  "مشكلة بتوزيع الهواء البارد للثلاجة — 80%": "Cold air distribution problem in the fridge — 80%",
+  "مشكلة بدائرة الفريون أو تدفق الهواء الداخلي — 85%": "Refrigerant circuit or indoor airflow problem — 85%",
+  "مشكلة بمكونات تشغيل الموتور — 85%": "Motor start component problem — 85%",
+  "مشكلة بمكونات تشغيل موتور التنشيف — 85%": "Spin motor start component problem — 85%",
+  "مشكلة بمكونات تشغيل موتور الغسيل — 85%": "Wash motor start component problem — 85%",
+  "مشكلة حقيقية بدائرة التبريد نفسها — 85%": "A real problem within the refrigeration circuit itself — 85%",
+  "مشكلة داخلية بدائرة التبريد نفسها — 88%": "An internal problem within the refrigeration circuit itself — 88%",
+  "مشكلة مؤكدة بدائرة الفريون — 92%": "Confirmed problem in the refrigerant circuit — 92%",
+  "مشكلة مؤكدة بنظام التصريف — 90%": "Confirmed problem in the drain system — 90%",
+  "مشكلة ميكانيكية بنظام دوران الحوض — 80%": "Mechanical problem in the tub rotation system — 80%",
+  "مضخة التصريف (Drain Pump) تالفة": "Faulty drain pump",
+  "مضخة تصريف (Drain Pump)": "Drain pump",
+  "مضخة تصريف / خرطوم صرف": "Drain pump / drain hose",
+  "مع استبعاد الاتساخ والفلتر، الاحتمال التالي هو حساس حراري لا يقرأ الحرارة بدقة. الثقة متوسطة، يُفضل تأكيد فني قبل الشراء.": "With dirt and the filter ruled out, the next likelihood is a temperature sensor not reading accurately. Confidence is moderate; a technician's confirmation is preferred before buying.",
+  "مع استبعاد الفلتر والصمام، المشكلة على الأغلب بوحدة صانعة الثلج نفسها (الموتور أو الميكانيزم الداخلي).": "With the filter and valve ruled out, the problem is most likely the ice maker unit itself (the motor or internal mechanism).",
+  "مع استبعاد انسداد الفلتر ووضعية الخرطوم، المشكلة الأرجح مضخة التصريف نفسها (موتور المضخة تالف أو الدفاعة مكسورة).": "With a clogged filter and hose position ruled out, the most likely problem is the drain pump itself (the pump motor failed or the impeller is broken).",
+  "مع التأكد من إغلاق الباب بإحكام تام وعدم وجود عوائق، العطل الأرجح بآلية القفل نفسها أو مفتاح استشعار إغلاق الباب.": "With the door confirmed fully closed and no obstructions, the most likely fault is in the lock mechanism itself or the door-closed sensor switch.",
+  "مع التأكد من البطارية، المشكلة غالباً في وحدة استقبال الريموت داخل الجهاز نفسه.": "With the battery confirmed fine, the problem is usually in the remote signal receiver inside the unit itself.",
+  "مع التأكد من سلامة القاطع والمصدر الخارجي، الاحتمال الأرجح هو فيوز داخلي بالجهاز (أرخص بكثير) وليس بالضرورة البطاقة الإلكترونية كاملة. يُنصح بفحص الفيوز الداخلي أولاً قبل شراء بطاقة تحكم.": "With the breaker and external power source confirmed fine, the most likely cause is an internal fuse in the unit (much cheaper), not necessarily the whole control board. It's advisable to check the internal fuse first before buying a control board.",
+  "مع التأكد من سلامة الكهرباء الخارجية، الاحتمال الأرجح ثرموستات لا يمرر الإشارة للكمبروسر، أو بطاقة تحكم. الثرموستات أرخص بكثير، يُنصح بفحصه أولاً.": "With external power confirmed fine, the most likely cause is a thermostat not passing the signal to the compressor, or the control board. The thermostat is much cheaper, so it's advisable to check it first.",
+  "مع تأكد إغلاق الغطاء بالكامل وعدم دوران حوض التنشيف، الاحتمال الأرجح كباستور موتور التنشيف (منفصل عادة عن موتور الغسيل بالغسالات العادية).": "With the lid confirmed fully closed and the spin tub not turning, the most likely cause is the spin motor's capacitor (usually separate from the wash motor in twin-tub washers).",
+  "مع سلامة الحلقة والمكثف، السبب الأرجح ازدحام الثلاجة بمحتوى يمنع دوران الهواء بشكل صحيح، أو إعداد حرارة مرتفع جداً. جرّب تعديل الإعداد وترك مسافات بين الأطعمة أولاً.": "With the seal and condenser both fine, the most likely cause is the fridge being overcrowded with items blocking proper airflow, or the temperature setting being too high. Try adjusting the setting and leaving gaps between food items first.",
+  "مع عمل عنصر الشواء وعدم دقة أو ضعف وضع الخبز تحديداً، الاحتمال الأرجح ثرموستات أو حساس خاص بدارة الخبز لا يعمل بدقة.": "With the broil element working and the bake mode specifically inaccurate or weak, the most likely cause is a thermostat or sensor specific to the bake circuit not working accurately.",
+  "مفتاح أمان غطاء التنشيف": "Spin lid safety switch",
+  "مفتاح أمان غطاء حوض التنشيف": "Spin tub lid safety switch",
+  "مكيف": "AC",
+  "مكيف الشباك وحدة واحدة مدمجة، فلا يوجد تفريق بين وحدة داخلية وخارجية كالسبليت": "A window unit is a single combined unit, so there's no separate indoor/outdoor unit distinction like split systems",
+  "مكيف الشباك يجب أن يكون مائلاً قليلاً للخلف (نحو الخارج) ليصرف الماء بعيداً عن الغرفة بفعل الجاذبية. إذا كان مركّباً بشكل مستوٍ تماماً أو مائل للأمام، أو إذا انسدت قناة التصريف الداخلية بالأتربة، سيتسرب الماء للداخل بدل الخارج.": "A window unit should tilt slightly backward (toward the outside) so gravity drains water away from the room. If it's installed perfectly level or tilted forward, or if the internal drain channel is clogged with dust, water will leak inward instead of outward.",
+  "مكيفات الشباك مصممة لتقطير ماء التكاثف للخارج (تحت النافذة) كجزء طبيعي من عملها، خصوصاً بالأجواء الرطبة. هذا لا يحتاج أي إصلاح أو قطعة.": "Window units are designed to drip condensate water outward (under the window) as a normal part of their operation, especially in humid weather. This needs no repair or part.",
+  "من أشيع أسباب توقف الجهاز بالكامل عن الاستجابة رغم سلامة كل الأجزاء الداخلية فعلياً. عند امتلاء حوض تصريف المياه بسبب انسداد الأنبوب، يقطع مفتاح أمان التشغيل بالكامل لحماية الجهاز من تسريب الماء للداخل. الحل غالباً تنظيف مواسير الصرف فقط، دون الحاجة لأي قطعة غيار.": "One of the most common reasons a unit stops responding entirely despite every internal part actually being fine. When the drain pan fills up due to a blocked pipe, a safety switch cuts power completely to protect the unit from leaking water inward. The fix is usually just cleaning the drain pipes, with no spare part needed.",
+  "من أي حوض يتسرب الماء بالضبط؟": "Exactly which tub is the water leaking from?",
+  "من الخلف (منطقة الكمبروسر)": "From the back (compressor area)",
+  "من الداخل (الفريزر)": "From inside (the freezer)",
+  "من الوحدة الخارجية": "From the outdoor unit",
+  "من الوحدة الداخلية (بالغرفة)": "From the indoor unit (in the room)",
+  "من حوض التنشيف": "From the spin tub",
+  "من حوض الغسيل": "From the wash tub",
+  "من صمام أو خرطوم تصريف الحوضين المشترك": "From the shared drain valve/hose of both tubs",
+  "موتور أو مجموعة قفل الباب الخاصة بدورة التنظيف الذاتي عالقة أو تالفة. لا تحاول فتح الباب بالقوة إطلاقاً.": "The motor or door lock assembly for the self-clean cycle is stuck or faulty. Never try to force the door open.",
+  "موتور مروحة إيفابريتر": "Evaporator fan motor",
+  "موتور مروحة الإيفابريتر تالف": "Faulty evaporator fan motor",
+  "موتور مروحة المكثف تالف": "Faulty condenser fan motor",
+  "موتور مروحة داخلية": "Indoor fan motor",
+  "موتور مروحة داخلية (أولاً) / بطاقة تحكم (PCB)": "Indoor fan motor (first) / control board (PCB)",
+  "موتور مروحة مكثف": "Condenser fan motor",
+  "موتور/مجموعة قفل الباب": "Door lock motor/assembly",
+  "موزعة بشكل جيد، ورغم ذلك لا تنشف": "Well distributed, and yet it doesn't spin",
+  "ميلان الجهاز غير صحيح أو انسداد قناة التصريف الداخلية": "Incorrect unit tilt, or a blocked internal drain channel",
+  "نسبة كبيرة من حالات 'الثلاجة ميتة تماماً' سببها قابس غير متصل جيداً أو قاطع كهربائي فاصل، وليس عطلاً بالثلاجة نفسها. تأكد من هذا أولاً بجهاز كهربائي آخر بنفس المصدر.": "A large share of 'completely dead fridge' cases are caused by a loosely connected plug or a tripped breaker, not a fault in the fridge itself. Confirm this first with another appliance on the same source.",
+  "نظّف الفلتر جيداً وأعد الاختبار — إذا استمرت المشكلة أعد التشخيص": "Clean the filter thoroughly and re-test — if it persists, restart the diagnosis",
+  "نظّف اللوحة وجفّفها تماماً، ثم أعد المحاولة": "Clean the panel and dry it completely, then try again",
+  "نظّف الملف وأعد الاختبار — إذا استمرت المشكلة أعد التشخيص": "Clean the coil and re-test — if it persists, restart the diagnosis",
+  "نظّف الوحدة وأعد الاختبار — إذا استمرت المشكلة أعد التشخيص": "Clean the unit and re-test — if it persists, restart the diagnosis",
+  "نظّف فوهة الحارق وأعد المحاولة — إذا استمرت المشكلة أعد التشخيص": "Clean the burner port and try again — if it persists, restart the diagnosis",
+  "نعم": "Yes",
+  "نعم تصل، لكن لا توهج بالشمعة إطلاقاً": "Yes it's reaching it, but no glow from the igniter at all",
+  "نعم يقفل، لكن الحوض لا يدور بسرعة التنشيف": "Yes it locks, but the tub doesn't spin at spin speed",
+  "نعم، أحد الأمرين أو كلاهما": "Yes, one or both of these",
+  "نعم، أحد هذه العلامات موجود": "Yes, one of these signs is present",
+  "نعم، بالضبط هذا النمط": "Yes, exactly this pattern",
+  "نعم، تحديداً أثناء التنشيف السريع": "Yes, specifically during fast spin",
+  "نعم، تخرج بسهولة في نقطة واحدة على الأقل": "Yes, it slides out easily at at least one point",
+  "نعم، تدور بشكل طبيعي": "Yes, it spins normally",
+  "نعم، طنين واضح بدون حركة": "Yes, a clear hum with no movement",
+  "نعم، فرق واضح وكبير": "Yes, a clear and large difference",
+  "نعم، متسخ بوضوح": "Yes, clearly dirty",
+  "نعم، مغطى بالثلج أو الصقيع": "Yes, covered in ice or frost",
+  "نعم، مغطى بثلج سميك جداً": "Yes, covered in very thick ice",
+  "نعم، مغطى بثلج كثيف جداً": "Yes, covered in very heavy ice",
+  "نعم، ملتوٍ أو عميق جداً": "Yes, kinked or too deep",
+  "نعم، واضح أنه منتفخ أو به تسريب": "Yes, clearly bulged or leaking",
+  "نعم، واضح أنهما متسخان": "Yes, clearly both dirty",
+  "نعم، يوجد انسداد واضح بالفلتر": "Yes, there's a clear clog in the filter",
+  "نعم، يوجد رمز واضح": "Yes, there's a clear code",
+  "نعم، يوجد طنين خفيف": "Yes, there's a faint hum",
+  "نمط 'الطقطقة المتكررة ثم التوقف' يعني غالباً تفعّل واقي الحمل الحراري بالكمبروسر لحمايته — لكن هذا لا يعني أن الكمبروسر نفسه تالف. حسب مصادر فنية متخصصة، السبب الحقيقي الأشيع هو كباستور ضعيف يمنع إكمال الإقلاع، أو اتساخ المكثف الخارجي يرفع ضغط التفريغ. جرّب الكباستور والتنظيف أولاً — أرخص بكثير من استبدال الكمبروسر.": "The 'repeated clicking then stopping' pattern usually means the compressor's thermal overload protector has engaged to protect it — but that doesn't mean the compressor itself is faulty. According to specialized technical sources, the most common real cause is a weak capacitor preventing a complete startup, or a dirty outdoor condenser raising discharge pressure. Try the capacitor and cleaning first — much cheaper than replacing the compressor.",
+  "نمط الصوت 'نقرة - طنين - نقرة' المتكرر توقيع شبه مؤكد لريلاي تشغيل تالف يمنع الكمبروسر من إكمال الإقلاع. هذه قطعة رخيصة نسبياً ويُنصح بتجربتها أولاً قبل التفكير بالكمبروسر.": "The repeating 'click - hum - click' sound pattern is a near-certain sign of a failed start relay preventing the compressor from completing startup. This is a relatively cheap part, recommended to try before considering the compressor.",
+  "هذا أشيع سبب لعطل التصريف بكثير — خيوط، شعر، أو عملات معدنية تسد الفلتر بمرور الوقت. التنظيف يحل المشكلة غالباً بدون الحاجة لأي قطعة.": "This is by far the most common cause of a drain fault — lint, hair, or coins clogging the filter over time. Cleaning usually solves it without needing any part.",
+  "هذا أشيع سبب لهذا الكود — بخار الطبخ يتكاثف على لوحة اللمس ويُفسّر كضغط زر مستمر. نظّف اللوحة بقطعة قماش جافة تماماً أولاً قبل افتراض أي عطل حقيقي.": "This is the most common cause of this code — cooking steam condenses on the touch panel and gets interpreted as a held-down button. Clean the panel with a completely dry cloth first before assuming any real fault.",
+  "هذا إنذار أمان طبيعي عندما تتكتل الملابس بجهة واحدة من الحوض أثناء التنشيف السريع. وزّع الغسيل بشكل متساوٍ وأعد المحاولة — لا حاجة لأي قطعة غيار.": "This is a normal safety alarm when clothes bunch up on one side of the tub during fast spin. Redistribute the laundry evenly and try again — no spare part needed.",
+  "هذا الحساس يخبر الغسالة بمستوى الماء بالحوض. عطله يمنع تعبئة أو تصريف الماء بالكمية الصحيحة.": "This sensor tells the washer the water level in the tub. Its failure prevents filling or draining the correct amount of water.",
+  "هذا العطل شائع جداً وحله رخيص عادة: امتلاء حوض التصريف بسبب انسداد الأنبوب يُفعّل مفتاح أمان يوقف الجهاز بالكامل": "This fault is very common and usually cheap to fix: the drain pan filling up due to a blocked pipe triggers a safety switch that shuts the whole unit down",
+  "هذا الفحص يفرّق بين ضعف بسيط بالتبريد ومشكلة حقيقية بدائرة الفريون أو كفاءة الكمبروسر": "This check tells apart mild weak cooling from a real problem in the refrigerant circuit or compressor efficiency",
+  "هذا الكود أحياناً مجرد حماية طبيعية بسبب حمولة كبيرة جداً بالغسالة — قلل الحمولة وانتظر 30 دقيقة لتبريد الموتور ثم أعد المحاولة أولاً. إذا تكرر مع حمولة عادية، فالعطل الحقيقي بالموتور أو البطاقة.": "This code is sometimes just normal protection due to too heavy a load in the washer — reduce the load and wait 30 minutes for the motor to cool, then try again first. If it recurs with a normal load, the real fault is in the motor or the board.",
+  "هذا الكود قد يعني أن عنصر التسخين عالق بالتشغيل الكامل بدون توقف، وهذا خطر حريق حقيقي. افصل القاطع الكهربائي للفرن فوراً (لا تكتفِ بإيقاف الفرن من الزر)، ولا تستخدمه إطلاقاً حتى فحصه من فني معتمد.": "This code may mean the heating element is stuck fully on without stopping, which is a real fire hazard. Turn off the oven's breaker immediately (don't just turn the oven off with the button), and don't use it at all until a certified technician checks it.",
+  "هذا الكود له تفسيران مختلفان حسب موديل الفرن تحديداً. جرّب مسح لوحة التحكم بقطعة قماش جافة أولاً (لا تكلفة) — إذا استمر الكود فالمشكلة الأرجح حساس الحرارة.": "This code has two different interpretations depending on the specific oven model. Try wiping the control panel with a dry cloth first (no cost) — if the code persists, the temperature sensor is the more likely cause.",
+  "هذا الكود يشير لعطل داخلي بالكمبروسر يمنعه من ضخ الفريون بشكل صحيح. لا يمكن تشخيصه ذاتياً أو إصلاحه بدون معدات متخصصة.": "This code indicates an internal compressor fault preventing it from pumping refrigerant properly. It can't be self-diagnosed or repaired without specialized equipment.",
+  "هذا الكود يشير لمشكلة بالتيار الكهربائي الواصل للغسالة أو بمكوناتها الداخلية. افصل الغسالة عن الكهرباء ولا تحاول التشغيل مرة أخرى قبل فحصها من فني معتمد.": "This code indicates a problem with the electrical current reaching the washer or its internal components. Unplug the washer and don't try to run it again before a certified technician checks it.",
+  "هذا الكود يعني أن الثلاجة بوضع 'Demo/Shop Mode' المخصص للمعارض، ولا يعني وجود عطل إطلاقاً. يُعطَّل من قائمة الإعدادات بالضغط على مفاتيح محددة حسب دليل الموديل.": "This code means the fridge is in 'Demo/Shop Mode' meant for showrooms, and doesn't indicate any fault at all. It's turned off from the settings menu by pressing specific keys per the model's manual.",
+  "هذا توقيع صوتي شبه مؤكد لريلاي التشغيل التالف": "This is a near-certain audio signature of a failed start relay",
+  "هذا سلوك طبيعي — ليس عطلاً": "This is normal behavior — not a fault",
+  "هذا مؤشر على تسريب في غاز التبريد (الفريون)": "This is a sign of a refrigerant gas leak",
+  "هذا مؤشر مهم على وجود تسريب في الغاز (الفريون)": "This is an important sign of a refrigerant gas leak",
+  "هذا يحدد إذا كانت المشكلة بالوحدة الداخلية نفسها أو بالوحدة الخارجية فقط": "This determines whether the problem is with the indoor unit itself or only the outdoor unit",
+  "هذا يضمن اقتراح القطعة الصحيحة المتوافقة مع جهازك تحديداً": "This ensures suggesting the correct part specifically compatible with your unit",
+  "هذه أول خطوة يتبعها أي فني قبل أي تشخيص آخر — نسبة كبيرة من حالات 'الجهاز ميت تماماً' سببها قاطع كهربائي فاصل أو مصدر كهرباء غير سليم، وليس عطلاً بالجهاز نفسه. تأكد من هذا أولاً بجهاز كهربائي آخر بنفس المصدر.": "This is the first step any technician follows before any other diagnosis — a large share of 'completely dead unit' cases are caused by a tripped breaker or a faulty power source, not a fault in the unit itself. Confirm this first with another electrical appliance on the same source.",
+  "هل الصوت أو الاهتزاز يزيد بوضوح تحديداً أثناء مرحلة التنشيف بالسرعة العالية؟": "Does the noise or vibration clearly increase specifically during the high-speed spin stage?",
+  "هل تشم رائحة غاز الآن؟": "Do you smell gas right now?",
+  "هل تصل الكهرباء للفرن (الشاشة أو إضاءة الفرن الداخلية تعمل)؟": "Is power reaching the oven (the display or interior light works)?",
+  "هل جربت الشواء (Broil) — هل عنصر الشواء العلوي يعمل بشكل طبيعي؟": "Have you tried Broil — does the top broil element work normally?",
+  "همهمة عالية مستمرة بدون توقف، مع استبعاد تجمد الملف ومروحة المكثف، تشير لمشكلة داخلية بدائرة التبريد — إما نقص فريون بدون تسريب مسموع واضح، أو كمبروسر يعمل ميكانيكياً لكن لا يضغط الغاز بكفاءة كافية. كلا الاحتمالين يحتاج قياس ضغط فعلي من فني، ولا توجد قطعة يمكن اقتراحها بثقة بهذه المرحلة.": "A continuous loud drone without stopping, with coil frost and the condenser fan ruled out, points to an internal problem in the refrigeration circuit — either a refrigerant shortage with no clearly audible leak, or a compressor running mechanically but not compressing gas efficiently enough. Both possibilities need an actual pressure gauge check from a technician, and no part can be confidently suggested at this stage.",
+  "وجود فرق حرارة واضح بين الهواء الداخل والخارج يعني دائرة الفريون تعمل جزئياً على الأقل. السبب الأرجح نقص طفيف بالفريون، أو أن سعة الجهاز (بالطن) لا تناسب حجم الغرفة أصلاً، أو تراكم غبار داخلي دقيق على الملف لم يظهر بصرياً بوضوح. يُنصح بفحص فني لقياس شحنة الفريون بدقة قبل أي شراء.": "A clear temperature difference between the incoming and outgoing air means the refrigerant circuit is working at least partially. The most likely cause is a slight refrigerant shortage, or the unit's capacity (in tons) not suiting the room size to begin with, or fine dust buildup on the coil not visually obvious. A technician's check to precisely measure the refrigerant charge is recommended before any purchase.",
+  "وحدة استقبال الريموت": "Remote signal receiver",
+  "وحدة صانعة الثلج (Ice Maker Assembly)": "Ice maker assembly",
+  "وحدة صانعة الثلج نفسها": "The ice maker unit itself",
+  "وزّع الحمولة بالتساوي داخل الحوض وأعد المحاولة": "Redistribute the load evenly in the tub and try again",
+  "وصلة أسلاك أعلى الباب غير متصلة جيداً": "Wire harness above the door not connected properly",
+  "وصول الكهرباء للفرن دون أي توهج بالشمعة إطلاقاً يشير مباشرة لشمعة إشعال تالفة بالكامل أو عدم وصول الكهرباء لها تحديداً.": "Power reaching the oven with absolutely no glow from the igniter points directly to a completely failed igniter, or power specifically not reaching it.",
+  "وضع العرض التجاري مفعّل — ليس عطلاً": "Store demo mode is on — not a fault",
+  "وضعية خرطوم التصريف غير صحيحة": "Incorrect drain hose position",
+  "يتساقط للخارج فقط، هذا طبيعي ولا قلق منه": "It only drips outward, this is normal and no concern",
+  "يتسرب فعلياً لداخل الغرفة": "It's actually leaking into the room",
+  "يتوهج بشكل طبيعي وكامل، لكن الفرن لا يسخن للحرارة المطلوبة": "Glows fully and normally, but the oven doesn't reach the required temperature",
+  "يتوهج بشكل غير متساوٍ مع نقاط سوداء أو انقطاع ظاهر": "Glows unevenly with black spots or a visible break",
+  "يسخن، لكن بحرارة غير منتظمة أو غير دقيقة": "Heats, but with irregular or inaccurate temperature",
+  "يشتعل ثم ينطفئ خلال ثوانٍ (نوع قديم بمقبض إشعال يدوي)": "Ignites then goes out within seconds (older type with a manual ignition knob)",
+  "يعمل (صوت مروحة)، لكن الهواء غير بارد": "Runs (fan sound), but the air isn't cold",
+  "يعمل الموتور (صوت طنين) لكن لا يدور القرص/العصا الدوارة": "The motor runs (humming sound) but the pulsator doesn't turn",
+  "يعمل بشكل طبيعي، المشكلة بوضع الخبز فقط": "Works normally, the problem is only in bake mode",
+  "يعمل ويبرد، لكن يتوقف ويعاود التشغيل بشكل متكرر": "Runs and cools, but repeatedly stops and restarts",
+  "يعمل، لكن الهواء غير بارد": "Runs, but the air isn't cold",
+  "يوجد توهج خافت جداً، الغاز لا يشتعل": "There's a very faint glow, the gas doesn't ignite",
+  "يوجد ملابس عالقة تمنع الإغلاق الكامل": "There's clothing stuck preventing full closure",
+  "يُغلق بإحكام تام، ورغم ذلك لا يعمل": "Closes completely securely, and yet it doesn't work",
+  "يُغلق بإحكام تام، ورغم ذلك يظهر الخطأ": "Closes completely securely, and yet the error shows",
+};
+
+const tree = {
+  appliance_select: {
+    q: "أي جهاز تبغى تشخصه؟",
+    options: [
+      { label: "مكيف", next: "device_type_select", setAppliance: "ac" },
+      { label: "ثلاجة", next: "fr_brand_select", setAppliance: "fridge" },
+      { label: "فرن", next: "ov_type_select", setAppliance: "oven" },
+      { label: "غسالة", next: "wm_type_select", setAppliance: "washer" }
+    ]
+  },
+
+  device_type_select: {
+    q: "أي نوع مكيف عندك؟",
+    options: [
+      { label: "سبليت (وحدة داخلية ووحدة خارجية منفصلتين)", next: "brand_select" },
+      { label: "شباك (وحدة واحدة مدمجة بالنافذة)", next: "window_brand_select" }
+    ]
+  },
+  brand_select: {
+    q: "ما ماركة المكيف؟",
+    hint: "هذا يضمن اقتراح القطعة الصحيحة المتوافقة مع جهازك تحديداً",
+    options: [
+      { label: "LG", next: "error_code_check", setBrand: "LG" },
+      { label: "Samsung", next: "error_code_check", setBrand: "Samsung" },
+      { label: "Gree", next: "error_code_check", setBrand: "Gree" },
+      { label: "General / Midea", next: "error_code_check", setBrand: "General/Midea" },
+      { label: "ماركة أخرى", next: "error_code_check", setBrand: "أخرى" }
+    ]
+  },
+  error_code_check: {
+    q: "انظر الآن لشاشة الوحدة الداخلية أو الريموت: هل يظهر أي رمز خطأ (حروف وأرقام تومض)؟",
+    hint: "الرموز تختلف كلياً حسب الماركة، لذا اخترنا ماركتك أولاً لعرض الأكواد الصحيحة",
+    options: [
+      { label: "نعم، يوجد رمز واضح", next: "ERROR_ROUTE" },
+      { label: "لا يوجد رمز، أو لا أعرف أقرأه", next: "start" }
+    ]
+  },
+  error_codes_LG: {
+    q: "اختر الرمز الذي يظهر على جهازك (LG):",
+    options: [
+      { label: "CH04 / FL — مواسير التصريف", next: "diag_float_switch" },
+      { label: "CH05 / E0 / CH53 — خطأ اتصال بين الوحدتين", next: "diag_contactor_or_pcb" },
+      { label: "CH10 / CA — حرارة تفريغ الكمبروسر عالية", next: "diag_thermal_sensor" },
+      { label: "CH30 — فولتية منخفضة من المصدر", next: "diag_check_breaker" },
+      { label: "CH38 — نقص فريون", next: "diag_refrigerant_leak" },
+      { label: "CH21 / CH22 / CH23 / CH26 — كمبروسر أو فريون", next: "diag_safety_smell" },
+      { label: "رمز آخر غير موجود بالقائمة", next: "start" }
+    ]
+  },
+  error_codes_Samsung: {
+    q: "اختر الرمز الذي يظهر على جهازك (Samsung):",
+    options: [
+      { label: "E1/21 أو E1/22 — عطل حساس حراري", next: "diag_thermal_sensor" },
+      { label: "E1/54 — عطل موتور مروحة أو كباستور", next: "diag_capacitor" },
+      { label: "E1/63 — عطل ذاكرة البطاقة الرئيسية", next: "diag_fuse_pcb" },
+      { label: "E5 أو E6 — عطل حساس حراري بالمبادل", next: "diag_thermal_sensor" },
+      { label: "E101 / E102 — خطأ اتصال بين الوحدتين", next: "diag_contactor_or_pcb" },
+      { label: "رمز آخر غير موجود بالقائمة", next: "start" }
+    ]
+  },
+  error_codes_Gree: {
+    q: "اختر الرمز الذي يظهر على جهازك (Gree):",
+    options: [
+      { label: "E1 — حماية ضغط عالٍ", next: "diag_dirty_condenser" },
+      { label: "E2 — حماية تجمد بالوحدة الداخلية", next: "diag_indoor_coil_ice" },
+      { label: "E3 — ضغط منخفض أو عطل مروحة خارجية", next: "diag_refrigerant_leak" },
+      { label: "E4 — حرارة تفريغ الكمبروسر عالية", next: "diag_dirty_condenser" },
+      { label: "E5 — حماية تيار زائد", next: "diag_check_breaker" },
+      { label: "E6 — خطأ اتصال بين الوحدتين", next: "diag_contactor_or_pcb" },
+      { label: "F1 — عطل حساس حرارة الهواء الداخل", next: "diag_thermal_sensor" },
+      { label: "H3 — حماية حمل زائد للكمبروسر", next: "diag_compressor_or_cap" },
+      { label: "رمز آخر غير موجود بالقائمة", next: "start" }
+    ]
+  },
+  "error_codes_General/Midea": {
+    q: "اختر الرمز الذي يظهر على جهازك (General/Midea):",
+    options: [
+      { label: "E0 — عطل ذاكرة البطاقة الداخلية", next: "diag_fuse_pcb" },
+      { label: "E1 — خطأ اتصال بين الوحدتين", next: "diag_contactor_or_pcb" },
+      { label: "E3 — عطل سرعة المروحة الداخلية", next: "diag_indoor_fan" },
+      { label: "E4 أو E5 — عطل حساس حراري", next: "diag_thermal_sensor" },
+      { label: "EC — كشف تسريب فريون", next: "diag_refrigerant_leak" },
+      { label: "EE — إنذار مستوى الماء", next: "diag_float_switch" },
+      { label: "رمز آخر غير موجود بالقائمة", next: "start" }
+    ]
+  },
+  error_codes_generic: {
+    q: "الأكواد تختلف كلياً حسب الماركة والموديل، وما عندنا قائمة مؤكدة لماركتك بعد. أفضل خطوة الآن:",
+    options: [
+      { label: "تابع التشخيص بالأعراض بدل الكود", next: "start" }
+    ]
+  },
+  start: {
+    q: "شغّل المكيف الآن بالريموت أو الزر، وراقب ماذا يحدث بالضبط:",
+    options: [
+      { label: "لا يوجد أي استجابة، لا إضاءة ولا صوت إطلاقاً", next: "power_source_check" },
+      { label: "الإضاءة/الشاشة تعمل، لكن الجهاز لا يستجيب للتشغيل الفعلي (وقد يومض ضوء أو رمز)", next: "float_check" },
+      { label: "كل شيء طبيعي، الجهاز يحاول العمل", next: "runs_check" }
+    ]
+  },
+  power_source_check: {
+    q: "اذهب الآن وتحقق فعلياً: هل القاطع الكهربائي (Breaker) الخاص بالمكيف بلوحة الكهرباء مرفوع (لم يفصل)؟ وهل تقدر تشغّل جهازاً كهربائياً آخر بنفس المصدر بنجاح؟",
+    options: [
+      { label: "لم أتحقق من هذا بعد", next: "diag_check_breaker" },
+      { label: "تحققت الآن، والكهرباء سليمة تماماً", next: "diag_fuse_pcb" }
+    ]
+  },
+  float_check: {
+    q: "انظر الآن لشاشة الوحدة الداخلية مباشرة: هل يوجد ضوء يومض أو رمز خطأ؟ وهل لاحظت مؤخراً تسريب ماء أو بطء بمواسير الصرف؟",
+    hint: "هذا العطل شائع جداً وحله رخيص عادة: امتلاء حوض التصريف بسبب انسداد الأنبوب يُفعّل مفتاح أمان يوقف الجهاز بالكامل",
+    options: [
+      { label: "نعم، أحد هذه العلامات موجود", next: "diag_float_switch" },
+      { label: "لا، ولا يوجد أي رمز خطأ", next: "indoor_fan_check" }
+    ]
+  },
+  runs_check: {
+    q: "استمع الآن جيداً للجهاز: هل تسمع أي صوت تشغيل (مروحة أو كمبروسر)؟",
+    options: [
+      { label: "لا، صمت تام رغم إضاءة المؤشرات", next: "indoor_fan_check" },
+      { label: "يعمل، لكن الهواء غير بارد", next: "cooling_check_smell" },
+      { label: "يعمل ويبرد، لكن يتوقف ويعاود التشغيل بشكل متكرر", next: "short_cycle_filter" },
+      { label: "مشكلة أخرى (صوت غريب / تسريب ماء / الريموت / رائحة)", next: "other_menu" }
+    ]
+  },
+  indoor_fan_check: {
+    q: "انظر واستمع الآن لفتحة الوحدة الداخلية بالغرفة: هل ترى/تسمع المروحة تدور عند التشغيل؟",
+    hint: "هذا يحدد إذا كانت المشكلة بالوحدة الداخلية نفسها أو بالوحدة الخارجية فقط",
+    options: [
+      { label: "لا، لا تدور إطلاقاً", next: "diag_pcb_no_run" },
+      { label: "تدور بشكل طبيعي، لكن لا صوت إطلاقاً من الوحدة الخارجية", next: "outdoor_silent_check" }
+    ]
+  },
+  outdoor_silent_check: {
+    q: "اذهب الآن بالقرب من الوحدة الخارجية واستمع جيداً: هل تسمع أي 'طنين' خفيف عند محاولة التشغيل، حتى لو لم تدُر؟",
+    options: [
+      { label: "نعم، يوجد طنين خفيف", next: "capacitor_visual_check" },
+      { label: "لا، صمت تام حتى الطنين", next: "diag_contactor_or_pcb" }
+    ]
+  },
+  capacitor_visual_check: {
+    q: "افصل الكهرباء عن الجهاز بالكامل أولاً، ثم انظر الآن لجسم الكباستور (قطعة أسطوانية صغيرة داخل صندوق الكهرباء): هل شكله منتفخ من أعلى بدل مسطح، أو به تسريب سائل؟",
+    hint: "لا تلمس الكباستور مباشرة أبداً — قد يحتفظ بشحنة كهربائية خطرة حتى بعد فصل التيار",
+    options: [
+      { label: "نعم، واضح أنه منتفخ أو به تسريب", next: "diag_capacitor_confirmed" },
+      { label: "لا يبدو كذلك، أو لا أستطيع رؤيته بوضوح", next: "breaker_behavior_check" }
+    ]
+  },
+  breaker_behavior_check: {
+    q: "فكّر بآخر مرة صار فيها هذا الطنين بالضبط: هل القاطع الكهربائي الرئيسي بلوحة كهرباء المنزل فصل بالكامل (احتجت ترفعه يدوياً)، أم توقف الطنين من تلقاء نفسه دون أن يفصل القاطع الرئيسي؟",
+    hint: "لا تكرر محاولة التشغيل الآن لاختبار هذا — اعتمد على ما لاحظته سابقاً فقط، لحماية الكمبروسر من الإجهاد",
+    options: [
+      { label: "القاطع الرئيسي فصل بالكامل وبسرعة", next: "diag_compressor_lean" },
+      { label: "توقف الطنين من تلقاء نفسه، القاطع الرئيسي لم يفصل", next: "diag_capacitor" }
+    ]
+  },
+  cooling_check_smell: {
+    q: "قف بالقرب من الجهاز الآن وتحقق: هل تشم رائحة احتراق أو كهرباء محروقة، أو ترى دخان خفيف؟",
+    options: [
+      { label: "نعم", next: "diag_safety_smell" },
+      { label: "لا", next: "cooling_check_hiss" }
+    ]
+  },
+  cooling_check_hiss: {
+    q: "اذهب للوحدة الخارجية الآن: استمع هل يوجد صوت 'فحيح' مستمر، وانظر للأنابيب النحاسية هل عليها تجمد ثلج؟",
+    hint: "هذا مؤشر مهم على وجود تسريب في الغاز (الفريون)",
+    options: [
+      { label: "نعم، أحد الأمرين أو كلاهما", next: "diag_refrigerant_leak" },
+      { label: "لا", next: "cooling_check_outdoor_fan" }
+    ]
+  },
+  cooling_check_outdoor_fan: {
+    q: "انظر الآن لمروحة الوحدة الخارجية مباشرة: هل تدور بشكل طبيعي؟",
+    options: [
+      { label: "لا تدور، لكن أسمع صوت 'طنين'", next: "diag_capacitor" },
+      { label: "لا تدور، وأسمع 'طقطقة' متكررة ثم توقف", next: "diag_compressor_or_cap" },
+      { label: "تدور بشكل طبيعي", next: "cooling_check_clean" }
+    ]
+  },
+  cooling_check_clean: {
+    q: "اذهب الآن وانظر للوحدة الخارجية والفلتر مباشرة: هل تراهما متسخين بصرياً (طبقة غبار أو أوساخ واضحة)؟",
+    options: [
+      { label: "نعم، واضح أنهما متسخان", next: "diag_dirty_condenser" },
+      { label: "لا، يبدوان نظيفين فعلاً", next: "indoor_coil_ice_check" }
+    ]
+  },
+  indoor_coil_ice_check: {
+    q: "افتح غطاء الوحدة الداخلية الآن وانظر مباشرة لملف الألمنيوم الداخلي (الملف المموج): هل تراه مغطى بطبقة ثلج أو صقيع أبيض؟",
+    options: [
+      { label: "نعم، مغطى بالثلج أو الصقيع", next: "diag_indoor_coil_ice" },
+      { label: "لا، لا يوجد أي ثلج عليه", next: "hand_temp_check" }
+    ]
+  },
+  hand_temp_check: {
+    q: "ضع يدك الآن أمام فتحة دخول الهواء للوحدة الداخلية، ثم أمام فتحة خروج الهواء البارد مباشرة: هل تحس فرق حرارة واضح بينهما، أم الفرق بسيط جداً وتقريباً نفس الحرارة؟",
+    hint: "هذا الفحص يفرّق بين ضعف بسيط بالتبريد ومشكلة حقيقية بدائرة الفريون أو كفاءة الكمبروسر",
+    options: [
+      { label: "فرق واضح، الهواء الخارج أبرد فعلاً لكن غير كافٍ لتبريد الغرفة", next: "diag_weak_cooling" },
+      { label: "الفرق بسيط جداً، تقريباً نفس حرارة الغرفة", next: "diag_refrigerant_circuit_fail" }
+    ]
+  },
+  short_cycle_filter: {
+    q: "افتح غطاء الفلتر الآن وانظر إليه مباشرة: هل يبدو متسخاً (طبقة غبار كثيفة على الشبك)؟",
+    options: [
+      { label: "نعم، متسخ بوضوح", next: "diag_dirty_filter" },
+      { label: "لا، يبدو نظيفاً فعلاً", next: "diag_thermal_sensor" }
+    ]
+  },
+  other_menu: {
+    q: "راقب الجهاز الآن واختر الوصف الأقرب لما يحدث فعلاً:",
+    options: [
+      { label: "صوت غريب (صفير / ضجيج)", next: "noise_location" },
+      { label: "تسريب ماء من الوحدة الداخلية", next: "diag_drain" },
+      { label: "الريموت لا يستجيب", next: "remote_battery" },
+      { label: "رائحة كهرباء محروقة أو دخان", next: "diag_safety_smell" }
+    ]
+  },
+  noise_location: {
+    q: "استمع الآن بعناية: من أين يصدر الصوت الغريب بالضبط؟",
+    options: [
+      { label: "من الوحدة الداخلية (بالغرفة)", next: "diag_indoor_fan" },
+      { label: "من الوحدة الخارجية", next: "cooling_check_outdoor_fan" }
+    ]
+  },
+  remote_battery: {
+    q: "جرّب الآن بطارية جديدة بالريموت — هل تغيّر شيء بعد التجربة؟",
+    options: [
+      { label: "جرّبت الآن وما زال لا يستجيب", next: "diag_remote_receiver" },
+      { label: "لم أجرب بعد، سأجرب أولاً", next: "diag_try_battery" }
+    ]
+  },
+
+  // ============ نتائج التشخيص ============
+  diag_check_breaker: {
+    result: true, level: "mid", confidence: "خطوة أولى إلزامية",
+    title: "تحقق من القاطع الكهربائي والمصدر أولاً",
+    desc: "هذه أول خطوة يتبعها أي فني قبل أي تشخيص آخر — نسبة كبيرة من حالات 'الجهاز ميت تماماً' سببها قاطع كهربائي فاصل أو مصدر كهرباء غير سليم، وليس عطلاً بالجهاز نفسه. تأكد من هذا أولاً بجهاز كهربائي آخر بنفس المصدر.",
+    part: null,
+    actionLabel: "بعد التأكد، أعد التشخيص من جديد"
+  },
+  diag_fuse_pcb: {
+    result: true, level: "mid", confidence: "65%",
+    title: "فيوز داخلي بالجهاز أو عطل بالبطاقة الإلكترونية",
+    desc: "مع التأكد من سلامة القاطع والمصدر الخارجي، الاحتمال الأرجح هو فيوز داخلي بالجهاز (أرخص بكثير) وليس بالضرورة البطاقة الإلكترونية كاملة. يُنصح بفحص الفيوز الداخلي أولاً قبل شراء بطاقة تحكم.",
+    part: "فيوز داخلي (أولاً) / بطاقة تحكم (PCB) إذا استمر العطل",
+    partIcon: "fuse"
+  },
+  diag_float_switch: {
+    result: true, level: "high", confidence: "85%",
+    title: "انسداد الصرف وتفعيل مفتاح أمان مستوى المياه",
+    desc: "من أشيع أسباب توقف الجهاز بالكامل عن الاستجابة رغم سلامة كل الأجزاء الداخلية فعلياً. عند امتلاء حوض تصريف المياه بسبب انسداد الأنبوب، يقطع مفتاح أمان التشغيل بالكامل لحماية الجهاز من تسريب الماء للداخل. الحل غالباً تنظيف مواسير الصرف فقط، دون الحاجة لأي قطعة غيار.",
+    part: "تنظيف مواسير الصرف (أولاً) — أو مفتاح مستوى المياه (Float Switch) إذا استمرت المشكلة بعد التنظيف",
+    partIcon: "floatswitch"
+  },
+  diag_pcb_no_run: {
+    result: true, level: "mid", confidence: "55%",
+    title: "عطل بالبطاقة الإلكترونية أو موتور المروحة الداخلية",
+    desc: "سكون المروحة الداخلية تماماً رغم إضاءة المؤشرات يشير غالباً لعطل بالبطاقة الإلكترونية الداخلية أو موتور المروحة نفسه. ننصح بفحص موتور المروحة أولاً (أرخص) قبل التفكير بالبطاقة الإلكترونية.",
+    part: "موتور مروحة داخلية (أولاً) / بطاقة تحكم (PCB)",
+    partIcon: "pcb"
+  },
+  diag_contactor_or_pcb: {
+    result: true, level: "mid", confidence: "50% قاطع تلامس / 35% بطاقة تحكم",
+    categoryLabel: "الكهرباء لا تصل للوحدة الخارجية إطلاقاً — 90%",
+    title: "على الأغلب قاطع تلامس (Contactor) بالوحدة الخارجية",
+    desc: "المروحة الداخلية تعمل بشكل طبيعي، لكن عدم وصول أي إشارة أو طنين للوحدة الخارجية يشير غالباً لقاطع تلامس تالف لا يمرر الكهرباء للوحدة الخارجية أصلاً، أو مشكلة بالأسلاك بين الوحدتين. هذه أرخص بكثير من البطاقة الإلكترونية، لذا يُنصح بفحصها أولاً.",
+    part: "قاطع تلامس (Contactor) — تحقق منه أولاً",
+    partIcon: "contactor"
+  },
+  diag_safety_smell: {
+    result: true, level: "danger", confidence: "تحذير أمان",
+    title: "أوقف الجهاز فوراً",
+    desc: "رائحة الاحتراق أو الدخان مؤشر خطر كهربائي حقيقي. افصل الكهرباء عن الجهاز فوراً ولا تحاول إعادة تشغيله. هذه الحالة تحتاج فني معتمد مباشرة، ولا يمكن تحديد قطعة بأمان دون فحص مباشر.",
+    part: null
+  },
+  diag_refrigerant_leak: {
+    result: true, level: "mid", confidence: "تسريب فريون أو انسداد صمام تمدد",
+    categoryLabel: "مشكلة مؤكدة بدائرة الفريون — 92%",
+    title: "تسريب فريون أو انسداد بصمام التمدد",
+    desc: "صوت الفحيح مع تجمد الثلج على الأنابيب توقيع شبه مؤكد لأحد سببين: تسريب في غاز التبريد، أو انسداد بصمام التمدد/الأنبوب الشعري. كلا السببين يعطيان نفس الأعراض الخارجية تماماً ولا يمكن التفريق بينهما إلا بقياس ضغط فعلي بمعدات متخصصة. كلاهما يحتاج فني بالضرورة.",
+    part: null
+  },
+  diag_capacitor: {
+    result: true, level: "high", confidence: "80%",
+    title: "كباستور التشغيل تالف على الأغلب",
+    desc: "توقف الطنين من تلقاء نفسه دون فصل القاطع الرئيسي يشير لتيار مسحوب أقل، وهذا يتوافق مع كباستور ضعيف أكثر من كمبروسر مقفول (الذي يسحب تياراً أعلى بكثير). هذه قطعة رخيصة نسبياً ويُنصح بتجربتها أولاً. ملاحظة أمان: لا تكرر محاولة التشغيل بشكل متتالي — كل محاولة فاشلة تُجهد ملفات الكمبروسر وقد تحوّل عطلاً بسيطاً لعطل مكلف.",
+    part: "كباستور تشغيل (Run Capacitor)",
+    partIcon: "capacitor"
+  },
+  diag_capacitor_confirmed: {
+    result: true, level: "high", confidence: "92%",
+    title: "كباستور تشغيل تالف — مؤكد بصرياً",
+    desc: "الانتفاخ أو التسريب من جسم الكباستور دليل شبه مؤكد على تلفه فعلياً — هذا أعلى مستوى ثقة يمكن الوصول له بدون أجهزة قياس متخصصة.",
+    part: "كباستور تشغيل (Run Capacitor)",
+    partIcon: "capacitor"
+  },
+  diag_compressor_lean: {
+    result: true, level: "mid", confidence: "45% كمبروسر / 35% كباستور / 20% أخرى",
+    categoryLabel: "المشكلة بمكونات تشغيل الكمبروسر الكهربائية — 95%",
+    title: "احتمال أعلى للكمبروسر — لكن التأكيد النهائي يحتاج فني",
+    desc: "فصل القاطع الرئيسي بالكامل وبسرعة يشير لتيار مسحوب مرتفع جداً (قريب من تيار الإقلاع المقفول)، وهذا نمط أقرب لكمبروسر مقفول ميكانيكياً من كباستور عادي. مع ذلك، هذا لا يزال احتمالاً وليس تأكيداً — الفصل النهائي يحتاج قياس تيار فعلي بجهاز كلامب متر من فني. ملاحظة أمان مهمة: توقف عن تكرار محاولات التشغيل أو إعادة رفع القاطع بشكل متكرر — هذا يُسرّع تلف ملفات الكمبروسر إذا كان هو السبب فعلاً.",
+    part: "جرّب كباستور جديد أولاً (رخيص ويستبعد الاحتمال الأرخص) — إذا استمر العطل بعده، الاحتمال الأقوى كمبروسر ويحتاج فني فوراً",
+    partIcon: "capacitor"
+  },
+  diag_compressor_or_cap: {
+    result: true, level: "mid", confidence: "50% كباستور / 30% اتساخ المكثف / 20% كمبروسر",
+    categoryLabel: "تفعّل واقي الحمل الحراري للكمبروسر دفاعياً — 90%",
+    title: "على الأغلب كباستور أو اتساخ بالمكثف، والكمبروسر آخر احتمال",
+    desc: "نمط 'الطقطقة المتكررة ثم التوقف' يعني غالباً تفعّل واقي الحمل الحراري بالكمبروسر لحمايته — لكن هذا لا يعني أن الكمبروسر نفسه تالف. حسب مصادر فنية متخصصة، السبب الحقيقي الأشيع هو كباستور ضعيف يمنع إكمال الإقلاع، أو اتساخ المكثف الخارجي يرفع ضغط التفريغ. جرّب الكباستور والتنظيف أولاً — أرخص بكثير من استبدال الكمبروسر.",
+    part: "كباستور تشغيل (جرّبه أولاً) / تنظيف المكثف الخارجي",
+    partIcon: "capacitor"
+  },
+  diag_indoor_coil_ice: {
+    result: true, level: "mid", confidence: "70%",
+    categoryLabel: "مشكلة بدائرة الفريون أو تدفق الهواء الداخلي — 85%",
+    title: "تجمد الملف الداخلي — غالباً نقص طفيف بالفريون",
+    desc: "تجمد الملف الداخلي مع سلامة الفلتر والمكثف الخارجي (تم استبعادهما) يشير غالباً لنقص طفيف بشحنة الفريون لم يصل بعد لدرجة إحداث صوت فحيح واضح، أو انسداد جزئي بتدفق الهواء الداخلي. كلا الاحتمالين يحتاج فحص فني بمعدات ضغط لتأكيد السبب الدقيق، ولا يمكن اقتراح قطعة بثقة قبل هذا الفحص.",
+    part: null
+  },
+  diag_weak_cooling: {
+    result: true, level: "mid", confidence: "60%",
+    categoryLabel: "قدرة تبريد أقل من الطبيعي — 90%",
+    title: "قدرة تبريد ضعيفة — أسباب متعددة محتملة",
+    desc: "وجود فرق حرارة واضح بين الهواء الداخل والخارج يعني دائرة الفريون تعمل جزئياً على الأقل. السبب الأرجح نقص طفيف بالفريون، أو أن سعة الجهاز (بالطن) لا تناسب حجم الغرفة أصلاً، أو تراكم غبار داخلي دقيق على الملف لم يظهر بصرياً بوضوح. يُنصح بفحص فني لقياس شحنة الفريون بدقة قبل أي شراء.",
+    part: null
+  },
+  diag_refrigerant_circuit_fail: {
+    result: true, level: "mid", confidence: "65%",
+    categoryLabel: "مشكلة داخلية بدائرة التبريد نفسها — 88%",
+    title: "الأغلب مشكلة حقيقية بدائرة الفريون أو كفاءة ضغط الكمبروسر",
+    desc: "عدم وجود فرق حرارة يُذكر رغم عمل كل الأجزاء الظاهرة بشكل طبيعي (لا رائحة، لا فحيح، نظافة تامة، مروحة تدور) يشير لمشكلة داخلية بدائرة التبريد نفسها — إما نقص كبير بالفريون بدون تسريب مسموع، أو كمبروسر يعمل ميكانيكياً بشكل طبيعي لكن لا يضغط الغاز بكفاءة كافية داخلياً (تآكل داخلي). كلا الاحتمالين لا يمكن تأكيدهما إلا بقياس ضغط فعلي من فني، ولا توجد قطعة يمكن اقتراحها بثقة بهذه المرحلة.",
+    part: null
+  },
+  // ============ شجرة مكيف الشباك ============
+  window_brand_select: {
+    q: "ما ماركة مكيف الشباك؟",
+    hint: "بعض القطع (خصوصاً الكباستور المزدوج) تختلف مواصفاتها حسب الماركة والسعة",
+    options: [
+      { label: "LG", next: "window_start", setBrand: "LG" },
+      { label: "Samsung", next: "window_start", setBrand: "Samsung" },
+      { label: "Gree", next: "window_start", setBrand: "Gree" },
+      { label: "General / Midea", next: "window_start", setBrand: "General/Midea" },
+      { label: "ماركة أخرى", next: "window_start", setBrand: "أخرى" }
+    ]
+  },
+  window_start: {
+    q: "شغّل مكيف الشباك الآن من الزر أو الريموت، وراقب ماذا يحدث بالضبط:",
+    hint: "مكيف الشباك وحدة واحدة مدمجة، فلا يوجد تفريق بين وحدة داخلية وخارجية كالسبليت",
+    options: [
+      { label: "لا يوجد أي استجابة، لا إضاءة ولا صوت إطلاقاً", next: "window_power_check" },
+      { label: "يعمل (صوت مروحة)، لكن الهواء غير بارد", next: "window_cooling_smell" },
+      { label: "صوت طنين فقط، بدون دوران المروحة أو التبريد", next: "window_capacitor_visual_check" },
+      { label: "مشكلة أخرى (صوت غريب / تسريب ماء)", next: "window_other_menu" }
+    ]
+  },
+  window_power_check: {
+    q: "اذهب الآن وتحقق فعلياً: هل القاطع الكهربائي مرفوع (لم يفصل)؟ وهل تقدر تشغّل جهازاً كهربائياً آخر بنفس المقبس بنجاح؟",
+    options: [
+      { label: "لم أتحقق من هذا بعد", next: "diag_check_breaker" },
+      { label: "تحققت الآن، والكهرباء سليمة تماماً", next: "diag_fuse_pcb" }
+    ]
+  },
+  window_cooling_smell: {
+    q: "قف بالقرب من الجهاز الآن وتحقق: هل تشم رائحة احتراق أو كهرباء محروقة، أو ترى دخان خفيف؟",
+    options: [
+      { label: "نعم", next: "diag_safety_smell" },
+      { label: "لا", next: "window_cooling_hiss" }
+    ]
+  },
+  window_cooling_hiss: {
+    q: "استمع الآن جيداً: هل يوجد صوت 'فحيح' مستمر من داخل الجهاز، أو تلاحظ تجمد ثلج على الملف الداخلي المكشوف؟",
+    hint: "هذا مؤشر على تسريب في غاز التبريد (الفريون)",
+    options: [
+      { label: "نعم، أحد الأمرين أو كلاهما", next: "diag_refrigerant_leak" },
+      { label: "لا", next: "window_filter_check" }
+    ]
+  },
+  window_filter_check: {
+    q: "افتح غطاء الفلتر الآن وانظر إليه مباشرة: هل يبدو متسخاً (طبقة غبار كثيفة)؟",
+    options: [
+      { label: "نعم، متسخ بوضوح", next: "diag_dirty_filter" },
+      { label: "لا، يبدو نظيفاً فعلاً", next: "window_hand_temp_check" }
+    ]
+  },
+  window_hand_temp_check: {
+    q: "ضع يدك الآن أمام فتحة دخول الهواء، ثم أمام فتحة خروج الهواء البارد مباشرة: هل تحس فرق حرارة واضح، أم الفرق بسيط جداً وتقريباً نفس الحرارة؟",
+    options: [
+      { label: "فرق واضح، لكن غير كافٍ لتبريد الغرفة", next: "diag_weak_cooling" },
+      { label: "الفرق بسيط جداً، تقريباً نفس حرارة الغرفة", next: "diag_refrigerant_circuit_fail" }
+    ]
+  },
+  window_capacitor_visual_check: {
+    q: "افصل الكهرباء عن الجهاز بالكامل أولاً، ثم انظر الآن لجسم الكباستور (عادة قطعة أسطوانية واحدة تشغّل المروحة والكمبروسر معاً بمكيفات الشباك): هل شكله منتفخ من أعلى بدل مسطح، أو به تسريب سائل؟",
+    hint: "لا تلمس الكباستور مباشرة أبداً — قد يحتفظ بشحنة كهربائية خطرة حتى بعد فصل التيار",
+    options: [
+      { label: "نعم، واضح أنه منتفخ أو به تسريب", next: "diag_capacitor_confirmed" },
+      { label: "لا يبدو كذلك، أو لا أستطيع رؤيته بوضوح", next: "window_breaker_behavior_check" }
+    ]
+  },
+  window_breaker_behavior_check: {
+    q: "فكّر بآخر مرة صار فيها هذا الطنين بالضبط: هل القاطع الكهربائي فصل بالكامل (احتجت ترفعه يدوياً)، أم توقف الطنين من تلقاء نفسه؟",
+    hint: "لا تكرر محاولة التشغيل الآن لاختبار هذا — اعتمد على ما لاحظته سابقاً فقط، لحماية الكمبروسر من الإجهاد",
+    options: [
+      { label: "القاطع فصل بالكامل وبسرعة", next: "diag_compressor_lean" },
+      { label: "توقف الطنين من تلقاء نفسه، القاطع لم يفصل", next: "diag_capacitor" }
+    ]
+  },
+  window_other_menu: {
+    q: "راقب الجهاز الآن واختر الوصف الأقرب لما يحدث فعلاً:",
+    options: [
+      { label: "صوت غريب (صفير / ضجيج)", next: "diag_indoor_fan" },
+      { label: "تسريب ماء", next: "window_leak_check" },
+      { label: "رائحة كهرباء محروقة أو دخان", next: "diag_safety_smell" }
+    ]
+  },
+  window_leak_check: {
+    q: "انظر الآن مباشرة: هل الماء يتساقط للخارج من تحت الجهاز خارج النافذة، أم يتسرب لداخل الغرفة؟",
+    hint: "تقطير الماء للخارج تصميم طبيعي بمكيفات الشباك وليس عطلاً — العطل الحقيقي فقط عند تسرب الماء لداخل الغرفة",
+    options: [
+      { label: "يتساقط للخارج فقط، هذا طبيعي ولا قلق منه", next: "diag_window_leak_normal" },
+      { label: "يتسرب فعلياً لداخل الغرفة", next: "diag_window_leak_inside" }
+    ]
+  },
+  diag_window_leak_normal: {
+    result: true, level: "high", confidence: "95%",
+    title: "هذا سلوك طبيعي — ليس عطلاً",
+    desc: "مكيفات الشباك مصممة لتقطير ماء التكاثف للخارج (تحت النافذة) كجزء طبيعي من عملها، خصوصاً بالأجواء الرطبة. هذا لا يحتاج أي إصلاح أو قطعة.",
+    part: null,
+    actionLabel: "لا حاجة لأي إجراء — هذا طبيعي"
+  },
+  diag_window_leak_inside: {
+    result: true, level: "high", confidence: "80%",
+    title: "ميلان الجهاز غير صحيح أو انسداد قناة التصريف الداخلية",
+    desc: "مكيف الشباك يجب أن يكون مائلاً قليلاً للخلف (نحو الخارج) ليصرف الماء بعيداً عن الغرفة بفعل الجاذبية. إذا كان مركّباً بشكل مستوٍ تماماً أو مائل للأمام، أو إذا انسدت قناة التصريف الداخلية بالأتربة، سيتسرب الماء للداخل بدل الخارج.",
+    part: null,
+    actionLabel: "تأكد من ميلان الجهاز للخلف قليلاً، ونظّف قناة التصريف الداخلية"
+  },
+  diag_dirty_condenser: {
+    result: true, level: "mid", confidence: "70%",
+    title: "اتساخ أو انسداد المكثف الخارجي",
+    desc: "عدم التنظيف لفترة طويلة يقلل كفاءة التبريد بشكل كبير حتى مع سلامة باقي الأجزاء. جرّب التنظيف الشامل للوحدة الخارجية قبل شراء أي قطعة.",
+    part: null,
+    actionLabel: "نظّف الوحدة وأعد الاختبار — إذا استمرت المشكلة أعد التشخيص"
+  },
+  diag_thermal_sensor: {
+    result: true, level: "mid", confidence: "55%",
+    title: "حساس حراري غير دقيق",
+    desc: "مع استبعاد الاتساخ والفلتر، الاحتمال التالي هو حساس حراري لا يقرأ الحرارة بدقة. الثقة متوسطة، يُفضل تأكيد فني قبل الشراء.",
+    part: "حساس حراري (Thermal Sensor)",
+    partIcon: "sensor"
+  },
+  diag_dirty_filter: {
+    result: true, level: "high", confidence: "75%",
+    title: "انسداد فلتر الهواء",
+    desc: "الفلتر المتسخ يقيّد تدفق الهواء ويُسبب تبريد متقطع وتوقف متكرر. نظّف أو استبدل الفلتر أولاً قبل أي تشخيص إضافي.",
+    part: "فلتر هواء (تنظيف/استبدال)",
+    partIcon: "filter"
+  },
+  diag_indoor_fan: {
+    result: true, level: "high", confidence: "80%",
+    title: "عطل بموتور مروحة الوحدة الداخلية",
+    desc: "الصوت الغريب المستمر من الوحدة الداخلية غالباً سببه بيرنق أو موتور المروحة الداخلية.",
+    part: "موتور مروحة داخلية",
+    partIcon: "fan"
+  },
+  diag_drain: {
+    result: true, level: "high", confidence: "85%",
+    title: "انسداد مواسير الصرف",
+    desc: "تسريب الماء من الوحدة الداخلية شبه دائماً بسبب انسداد قناة تصريف المياه المتكاثفة.",
+    part: "مضخة تصريف / خرطوم صرف",
+    partIcon: "drain"
+  },
+  diag_try_battery: {
+    result: true, level: "mid", confidence: "خطوة أولى",
+    title: "جرّب بطارية جديدة أولاً",
+    desc: "قبل تشخيص أي عطل بالجهاز، تأكد من بطارية الريموت. إذا استمرت المشكلة بعد التغيير، عد للأداة واختر 'نعم وما زال لا يستجيب'.",
+    part: null
+  },
+  diag_remote_receiver: {
+    result: true, level: "high", confidence: "90%",
+    title: "عطل في وحدة استقبال الإشارة",
+    desc: "مع التأكد من البطارية، المشكلة غالباً في وحدة استقبال الريموت داخل الجهاز نفسه.",
+    part: "وحدة استقبال الريموت",
+    partIcon: "remote"
+  },
+  // ============ شجرة الثلاجة (مدمجة) ============
+  fr_brand_select: {
+    q: "ما ماركة الثلاجة؟",
+    hint: "هذا يضمن اقتراح القطعة الصحيحة المتوافقة مع جهازك تحديداً",
+    options: [
+      { label: "LG", next: "fr_error_code_check", setBrand: "LG" },
+      { label: "Samsung", next: "fr_error_code_check", setBrand: "Samsung" },
+      { label: "أخرى", next: "fr_error_code_check", setBrand: "أخرى" }
+    ]
+  },
+  fr_error_code_check: {
+    q: "انظر الآن لشاشة الثلاجة: هل يظهر أي رمز خطأ (حروف وأرقام)؟",
+    hint: "الرموز تختلف كلياً حسب الماركة، لذا اخترنا ماركتك أولاً",
+    options: [
+      { label: "نعم، يوجد رمز واضح", next: "ERROR_ROUTE" },
+      { label: "لا يوجد رمز، أو لا أعرف أقرأه", next: "fr_start" }
+    ]
+  },
+  fr_error_codes_LG: {
+    q: "اختر الرمز الذي يظهر (LG):",
+    options: [
+      { label: "rS — قصر/انقطاع بحساس الثلاجة", next: "fr_diag_thermistor" },
+      { label: "CO — خطأ اتصال اللوحة والشاشة", next: "fr_diag_control_board" },
+      { label: "dH / dS — فشل أو حساس الديفروست", next: "fr_diag_defrost_system" },
+      { label: "FF / rF — عطل مروحة الفريزر/الثلاجة", next: "fr_diag_evap_fan" },
+      { label: "FS — عطل حساس حرارة الفريزر", next: "fr_diag_thermistor" },
+      { label: "gF — عطل حساس تدفق الماء", next: "fr_diag_water_filter" },
+      { label: "EID / EIU — عطل صانعة الثلج", next: "fr_diag_ice_maker_unit" },
+      { label: "33 — مشكلة ريلاي الكمبروسر", next: "fr_diag_start_relay" },
+      { label: "رمز آخر غير موجود بالقائمة", next: "fr_start" }
+    ]
+  },
+  fr_error_codes_Samsung: {
+    q: "اختر الرمز الذي يظهر (Samsung):",
+    options: [
+      { label: "88 88 أو شرطات متكررة — فقدان اتصال باللوحة", next: "fr_diag_control_board" },
+      { label: "OF OF / O FF — وضع العرض التجاري (Demo)", next: "fr_diag_demo_mode" },
+      { label: "1E / 14E / 15E — عطل بصانعة الثلج أو حساسها", next: "fr_diag_ice_maker_unit" },
+      { label: "خطأ اتصال بعد فتح الباب", next: "fr_diag_door_harness" },
+      { label: "رمز يشير لقفل الكمبروسر", next: "fr_diag_safety_compressor" },
+      { label: "رمز آخر غير موجود بالقائمة", next: "fr_start" }
+    ]
+  },
+  fr_error_codes_generic: {
+    q: "الأكواد تختلف كلياً حسب الماركة والموديل، وما عندنا قائمة مؤكدة لماركتك بعد.",
+    options: [
+      { label: "تابع التشخيص بالأعراض بدل الكود", next: "fr_start" }
+    ]
+  },
+  fr_start: {
+    q: "افتح الفريزر والثلاجة الآن وتحقق من كل قسم بيدك، وراقب الإضاءة الداخلية:",
+    options: [
+      { label: "الإضاءة الداخلية لا تعمل، لا صوت أي تشغيل", next: "fr_power_check" },
+      { label: "الفريزر بارد جداً، لكن الثلاجة دافئة أو غير باردة كفاية", next: "fr_freezer_cold_check" },
+      { label: "كلاهما دافئان، ولا أسمع أي صوت تشغيل", next: "fr_both_warm_no_sound" },
+      { label: "كلاهما دافئان، لكن أسمع صوت الكمبروسر يعمل بشكل مستمر", next: "fr_both_warm_running" },
+      { label: "التبريد يعمل لكن ضعيف نوعاً ما", next: "fr_weak_cooling_check" },
+      { label: "مشكلة أخرى (صوت / تسريب ماء / صانعة الثلج / رائحة)", next: "fr_other_menu" }
+    ]
+  },
+  fr_power_check: {
+    q: "اذهب الآن وتحقق فعلياً: هل القابس متصل جيداً والقاطع الكهربائي مرفوع؟ وهل تقدر تشغّل جهازاً آخر بنفس المقبس؟",
+    options: [
+      { label: "لم أتحقق من هذا بعد", next: "fr_diag_check_breaker" },
+      { label: "تحققت الآن، والكهرباء سليمة تماماً", next: "fr_diag_thermostat_control" }
+    ]
+  },
+  fr_freezer_cold_check: {
+    q: "افتح باب الفريزر الآن واستمع: هل تسمع صوت مروحة تدور بالداخل؟",
+    options: [
+      { label: "نعم، تدور بشكل طبيعي", next: "fr_diag_damper_thermistor" },
+      { label: "لا تدور، أو صوت ضعيف/احتكاك", next: "fr_evap_coil_ice_check" }
+    ]
+  },
+  fr_evap_coil_ice_check: {
+    q: "انظر الآن خلف اللوحة الداخلية بالفريزر (إن أمكن الوصول): هل ملف الإيفابريتر مغطى بطبقة ثلج كثيفة تسد المروحة؟",
+    options: [
+      { label: "نعم، مغطى بثلج كثيف جداً", next: "fr_diag_defrost_system" },
+      { label: "لا، الملف نظيف نسبياً لكن المروحة لا تدور", next: "fr_diag_evap_fan" }
+    ]
+  },
+  fr_both_warm_no_sound: {
+    q: "استمع الآن قرب الجزء الخلفي السفلي للثلاجة: هل تسمع نمط 'نقرة - طنين - نقرة' متكرر كل بضع دقائق؟",
+    hint: "هذا توقيع صوتي شبه مؤكد لريلاي التشغيل التالف",
+    options: [
+      { label: "نعم، بالضبط هذا النمط", next: "fr_diag_start_relay" },
+      { label: "لا، صمت تام حتى النقرة", next: "fr_diag_thermostat_control" }
+    ]
+  },
+  fr_both_warm_running: {
+    q: "افتح الفريزر الآن وانظر خلف اللوحة الداخلية: هل ملف الإيفابريتر مغطى بطبقة ثلج سميكة تسد كل شيء؟",
+    options: [
+      { label: "نعم، مغطى بثلج سميك جداً", next: "fr_diag_defrost_system" },
+      { label: "لا، لكن أسمع همهمة عالية مستمرة بدون توقف", next: "fr_diag_compressor_or_refrigerant" }
+    ]
+  },
+  fr_weak_cooling_check: {
+    q: "أغلق الباب الآن على ورقة نقدية (نصفها بالداخل ونصفها بالخارج)، ثم اسحبها: هل تخرج بسهولة تامة بدون أي مقاومة؟",
+    hint: "كرر هذا الاختبار حول محيط الباب بالكامل كل 15 سم تقريباً",
+    options: [
+      { label: "نعم، تخرج بسهولة في نقطة واحدة على الأقل", next: "fr_diag_door_gasket" },
+      { label: "لا، تحتاج قوة معقولة بكل النقاط", next: "fr_condenser_clean_check" }
+    ]
+  },
+  fr_condenser_clean_check: {
+    q: "اذهب الآن وانظر لملف المكثف (خلف أو أسفل الثلاجة): هل متسخ بطبقة غبار واضحة؟",
+    options: [
+      { label: "نعم، متسخ بوضوح", next: "fr_diag_dirty_condenser_fridge" },
+      { label: "لا، نظيف فعلاً", next: "fr_diag_overload_or_setting" }
+    ]
+  },
+  fr_other_menu: {
+    q: "راقب الثلاجة الآن واختر الوصف الأقرب لما يحدث فعلاً:",
+    options: [
+      { label: "صوت غريب", next: "fr_noise_location_check" },
+      { label: "تسريب ماء", next: "fr_leak_location_check" },
+      { label: "صانعة الثلج لا تعمل", next: "fr_ice_maker_menu" },
+      { label: "رائحة كبريت أو ثوم قوية بالقرب من الثلاجة", next: "fr_diag_gas_smell_safety" }
+    ]
+  },
+  fr_noise_location_check: {
+    q: "استمع الآن بعناية: من أين يصدر الصوت الغريب؟",
+    options: [
+      { label: "من الخلف (منطقة الكمبروسر)", next: "fr_compressor_area_fan_check" },
+      { label: "من الداخل (الفريزر)", next: "fr_evap_coil_ice_check" }
+    ]
+  },
+  fr_compressor_area_fan_check: {
+    q: "انظر الآن لمروحة المكثف الخلفية (إن أمكن الوصول): هل تدور بشكل طبيعي؟",
+    options: [
+      { label: "لا تدور أو صوت احتكاك واضح", next: "fr_diag_condenser_fan" },
+      { label: "تدور بشكل طبيعي", next: "fr_diag_compressor_or_refrigerant" }
+    ]
+  },
+  fr_leak_location_check: {
+    q: "انظر الآن مباشرة: أين موقع تسرب الماء بالضبط؟",
+    options: [
+      { label: "أسفل الثلاجة من الخلف", next: "fr_diag_drain_fridge" },
+      { label: "بالداخل (بالفريزر أو الثلاجة)", next: "fr_evap_coil_ice_check" }
+    ]
+  },
+  fr_ice_maker_menu: {
+    q: "راقب صانعة الثلج الآن واختر الأقرب:",
+    options: [
+      { label: "الفريزر بارد لكن لا ثلج ينتج، وماء الباب يعمل طبيعي", next: "fr_diag_water_valve" },
+      { label: "لا ماء ولا ثلج، ولم يتغيّر فلتر الماء منذ 6 أشهر أو أكثر", next: "fr_diag_water_filter" },
+      { label: "صوت يصدر من صانعة الثلج لكن لا ينزل ثلج للسلة", next: "fr_diag_ice_maker_unit" }
+    ]
+  },
+
+  // ============ عقد التشخيص ============
+  fr_diag_check_breaker: {
+    result: true, level: "mid", confidence: "خطوة أولى إلزامية",
+    title: "تحقق من القابس والقاطع الكهربائي أولاً",
+    desc: "نسبة كبيرة من حالات 'الثلاجة ميتة تماماً' سببها قابس غير متصل جيداً أو قاطع كهربائي فاصل، وليس عطلاً بالثلاجة نفسها. تأكد من هذا أولاً بجهاز كهربائي آخر بنفس المصدر.",
+    part: null,
+    actionLabel: "بعد التأكد، أعد التشخيص من جديد"
+  },
+  fr_diag_thermostat_control: {
+    result: true, level: "mid", confidence: "60%",
+    categoryLabel: "عطل كهربائي/تحكم داخلي — 85%",
+    title: "ثرموستات أو بطاقة تحكم",
+    desc: "مع التأكد من سلامة الكهرباء الخارجية، الاحتمال الأرجح ثرموستات لا يمرر الإشارة للكمبروسر، أو بطاقة تحكم. الثرموستات أرخص بكثير، يُنصح بفحصه أولاً.",
+    part: "ثرموستات (أولاً) / بطاقة تحكم",
+    partIcon: "pcb"
+  },
+  fr_diag_damper_thermistor: {
+    result: true, level: "mid", confidence: "65%",
+    categoryLabel: "مشكلة بتوزيع الهواء البارد للثلاجة — 80%",
+    title: "فتحة تحويل الهواء (Damper) أو حساس حراري",
+    desc: "الفريزر بارد والمروحة تدور بشكل طبيعي، لكن الثلاجة لا تستقبل هواءً بارداً كافياً. السبب الأرجح فتحة تحويل الهواء (Damper) عالقة، أو حساس حراري لا يقرأ بدقة فيمنع فتح الدفروست بالوقت الصحيح.",
+    part: "فتحة تحويل الهواء (Damper) / حساس حراري",
+    partIcon: "sensor"
+  },
+  fr_diag_defrost_system: {
+    result: true, level: "high", confidence: "75%",
+    title: "عطل نظام الديفروست (تجمد الملف)",
+    desc: "تجمد الملف الداخلي بكثافة يمنع تدفق الهواء البارد بالكامل. السبب الأرجح عنصر تسخين الديفروست لا يعمل، أو حساس/تايمر الديفروست تالف، فلا يذوب الثلج المتراكم دورياً كما يجب.",
+    part: "عنصر تسخين ديفروست / حساس ديفروست / تايمر ديفروست",
+    partIcon: "heater"
+  },
+  fr_diag_evap_fan: {
+    result: true, level: "high", confidence: "85%",
+    title: "موتور مروحة الإيفابريتر تالف",
+    desc: "الملف نظيف نسبياً لكن المروحة لا تدور أو تصدر صوت احتكاك — هذا يشير مباشرة لعطل بموتور مروحة الإيفابريتر نفسه.",
+    part: "موتور مروحة إيفابريتر",
+    partIcon: "fan"
+  },
+  fr_diag_start_relay: {
+    result: true, level: "high", confidence: "85%",
+    title: "ريلاي التشغيل (Start Relay) تالف",
+    desc: "نمط الصوت 'نقرة - طنين - نقرة' المتكرر توقيع شبه مؤكد لريلاي تشغيل تالف يمنع الكمبروسر من إكمال الإقلاع. هذه قطعة رخيصة نسبياً ويُنصح بتجربتها أولاً قبل التفكير بالكمبروسر.",
+    part: "ريلاي تشغيل (Start Relay)",
+    partIcon: "relay"
+  },
+  fr_diag_compressor_or_refrigerant: {
+    result: true, level: "mid", confidence: "تسريب فريون أو كمبروسر لا يضغط بكفاءة",
+    categoryLabel: "مشكلة حقيقية بدائرة التبريد نفسها — 85%",
+    title: "الأغلب تسريب فريون أو ضعف كفاءة الكمبروسر داخلياً",
+    desc: "همهمة عالية مستمرة بدون توقف، مع استبعاد تجمد الملف ومروحة المكثف، تشير لمشكلة داخلية بدائرة التبريد — إما نقص فريون بدون تسريب مسموع واضح، أو كمبروسر يعمل ميكانيكياً لكن لا يضغط الغاز بكفاءة كافية. كلا الاحتمالين يحتاج قياس ضغط فعلي من فني، ولا توجد قطعة يمكن اقتراحها بثقة بهذه المرحلة.",
+    part: null
+  },
+  fr_diag_door_gasket: {
+    result: true, level: "high", confidence: "80%",
+    title: "حلقة الباب المطاطية تالفة أو لا تُحكم الإغلاق",
+    desc: "خروج الورقة بسهولة من نقطة بمحيط الباب يعني تسرب هواء بارد مستمر لتلك النقطة، ما يجهد الكمبروسر ويقلل كفاءة التبريد. غالباً الحل تنظيف الحلقة أولاً (قد يكون السبب أوساخ تمنع الإحكام)، وإذا استمر فاستبدالها.",
+    part: "حلقة باب (Door Gasket) — جرّب التنظيف أولاً",
+    partIcon: "gasket"
+  },
+  fr_diag_dirty_condenser_fridge: {
+    result: true, level: "mid", confidence: "70%",
+    title: "اتساخ ملف المكثف",
+    desc: "اتساخ ملف المكثف يقلل كفاءة تفريغ الحرارة بشكل كبير حتى مع سلامة باقي الأجزاء. نظّفه بفرشاة ناعمة أو مكنسة قبل أي شراء.",
+    part: null,
+    actionLabel: "نظّف الملف وأعد الاختبار — إذا استمرت المشكلة أعد التشخيص"
+  },
+  fr_diag_overload_or_setting: {
+    result: true, level: "mid", confidence: "55%",
+    title: "ازدحام المحتوى أو إعداد حرارة غير مناسب",
+    desc: "مع سلامة الحلقة والمكثف، السبب الأرجح ازدحام الثلاجة بمحتوى يمنع دوران الهواء بشكل صحيح، أو إعداد حرارة مرتفع جداً. جرّب تعديل الإعداد وترك مسافات بين الأطعمة أولاً.",
+    part: null,
+    actionLabel: "جرّب تعديل الإعداد وتقليل الازدحام — إذا استمرت المشكلة راجع فني"
+  },
+  fr_diag_condenser_fan: {
+    result: true, level: "high", confidence: "85%",
+    title: "موتور مروحة المكثف تالف",
+    desc: "مروحة المكثف الخلفية لا تدور أو تصدر صوت احتكاك واضح — عطل مباشر بموتور مروحة المكثف.",
+    part: "موتور مروحة مكثف",
+    partIcon: "fan"
+  },
+  fr_diag_drain_fridge: {
+    result: true, level: "high", confidence: "85%",
+    title: "انسداد قناة التصريف الخارجية",
+    desc: "تسريب الماء من أسفل الثلاجة من الخلف شبه دائماً بسبب انسداد قناة أو صمام التصريف الخارجي.",
+    part: "صمام/أنبوب تصريف",
+    partIcon: "drain"
+  },
+  fr_diag_water_valve: {
+    result: true, level: "mid", confidence: "70%",
+    title: "صمام المياه (Water Inlet Valve)",
+    desc: "الفريزر بارد وماء الباب يعمل، لكن صانعة الثلج لا تستقبل ماء — الاحتمال الأرجح صمام المياه الخاص بصانعة الثلج لا يفتح بشكل صحيح.",
+    part: "صمام مياه (Water Inlet Valve)",
+    partIcon: "watervalve"
+  },
+  fr_diag_water_filter: {
+    result: true, level: "high", confidence: "75%",
+    title: "انسداد فلتر الماء",
+    desc: "عدم تغيير الفلتر لفترة طويلة يسبب انسداداً تدريجياً يمنع وصول الماء لصانعة الثلج. هذه أرخص قطعة يُنصح بتجربتها أولاً.",
+    part: "فلتر ماء",
+    partIcon: "filter"
+  },
+  fr_diag_ice_maker_unit: {
+    result: true, level: "mid", confidence: "70%",
+    title: "وحدة صانعة الثلج نفسها",
+    desc: "مع استبعاد الفلتر والصمام، المشكلة على الأغلب بوحدة صانعة الثلج نفسها (الموتور أو الميكانيزم الداخلي).",
+    part: "وحدة صانعة الثلج (Ice Maker Assembly)",
+    partIcon: "icemaker"
+  },
+  fr_diag_thermistor: {
+    result: true, level: "mid", confidence: "60%",
+    title: "حساس حراري (Thermistor)",
+    desc: "حسب كود الجهاز، الحساس الحراري لا يقرأ الحرارة بدقة أو به قصر/انقطاع كهربائي.",
+    part: "حساس حراري",
+    partIcon: "sensor"
+  },
+  fr_diag_control_board: {
+    result: true, level: "mid", confidence: "60%",
+    title: "بطاقة تحكم — خطأ اتصال داخلي",
+    desc: "غالباً يُحل بإعادة التشغيل الكامل (فصل الكهرباء 5 دقائق ثم إعادتها). إذا تكرر الكود، المشكلة بالبطاقة الرئيسية أو الشاشة.",
+    part: "بطاقة تحكم",
+    partIcon: "pcb"
+  },
+  fr_diag_demo_mode: {
+    result: true, level: "high", confidence: "95%",
+    title: "وضع العرض التجاري مفعّل — ليس عطلاً",
+    desc: "هذا الكود يعني أن الثلاجة بوضع 'Demo/Shop Mode' المخصص للمعارض، ولا يعني وجود عطل إطلاقاً. يُعطَّل من قائمة الإعدادات بالضغط على مفاتيح محددة حسب دليل الموديل.",
+    part: null,
+    actionLabel: "أوقف وضع العرض من إعدادات الجهاز — لا حاجة لأي قطعة"
+  },
+  fr_diag_door_harness: {
+    result: true, level: "high", confidence: "80%",
+    title: "وصلة أسلاك أعلى الباب غير متصلة جيداً",
+    desc: "خطأ الاتصال بعد فتح الباب غالباً سببه وصلة الأسلاك المارة أعلى الباب (بين جسم الثلاجة والباب) غير متصلة بإحكام.",
+    part: null,
+    actionLabel: "افصل الكهرباء، أعد توصيل وصلة الأسلاك أعلى الباب بإحكام، ثم أعد التشغيل"
+  },
+  fr_diag_safety_compressor: {
+    result: true, level: "danger", confidence: "تحذير",
+    title: "قفل الكمبروسر — يحتاج فني فوراً",
+    desc: "هذا الكود يشير لعطل داخلي بالكمبروسر يمنعه من ضخ الفريون بشكل صحيح. لا يمكن تشخيصه ذاتياً أو إصلاحه بدون معدات متخصصة.",
+    part: null
+  },
+  fr_diag_gas_smell_safety: {
+    result: true, level: "danger", confidence: "تحذير أمان",
+    title: "أوقف الثلاجة فوراً — احتمال تسريب غاز قابل للاشتعال",
+    desc: "الثلاجات الحديثة تستخدم غاز تبريد (R600a) قابل للاشتعال. رائحة كبريت أو ثوم قوية قرب الثلاجة (وليست من الطعام) مؤشر خطر حقيقي. افصل الثلاجة من القابس مباشرة فقط، لا تلمس أي مفتاح كهربائي قريب، هوّي المكان جيداً، واتصل بفني فوراً.",
+    part: null
+  },
+
+  // ============ شجرة الفرن (كهربائي + غاز) ============
+  ov_type_select: {
+    q: "أي نوع فرن عندك؟",
+    options: [
+      { label: "كهربائي", next: "ov_brand_select", setBrand: null },
+      { label: "غاز", next: "ov_gas_safety_first" }
+    ]
+  },
+  ov_brand_select: {
+    q: "ما ماركة الفرن الكهربائي؟",
+    options: [
+      { label: "LG", next: "ov_error_code_check", setBrand: "LG" },
+      { label: "Samsung", next: "ov_error_code_check", setBrand: "Samsung" },
+      { label: "أخرى", next: "ov_error_code_check", setBrand: "أخرى" }
+    ]
+  },
+  ov_error_code_check: {
+    q: "انظر الآن لشاشة الفرن: هل يظهر أي رمز خطأ (حروف وأرقام)؟",
+    hint: "أكواد الحرارة الزائدة تحديداً خطرة — سنفحصها بعناية إن وُجدت",
+    options: [
+      { label: "نعم، يوجد رمز واضح", next: "ERROR_ROUTE" },
+      { label: "لا يوجد رمز، أو لا أعرف أقرأه", next: "ov_elec_start" }
+    ]
+  },
+  ov_error_codes_LG: {
+    q: "اختر الرمز الذي يظهر (فرن LG):",
+    options: [
+      { label: "F1 – F4 — عطل حساس الحرارة", next: "diag_oven_temp_sensor" },
+      { label: "F2 — قد يكون ارتفاع حرارة خطير", next: "diag_oven_overheat_safety" },
+      { label: "F9 / F10 / F20 — عطل قفل الباب", next: "diag_oven_door_lock" },
+      { label: "F11 — خطأ اتصال بين اللوحات", next: "diag_oven_control_board" },
+      { label: "F3 — زر عالق أو حساس حرارة (حسب الموديل)", next: "diag_oven_keypad_or_sensor" },
+      { label: "رمز آخر غير موجود بالقائمة", next: "ov_elec_start" }
+    ]
+  },
+  ov_error_codes_Samsung: {
+    q: "اختر الرمز الذي يظهر (فرن Samsung):",
+    options: [
+      { label: "C-20 / tE — عطل حساس الحرارة", next: "diag_oven_temp_sensor" },
+      { label: "C-21 — حرارة الفرن مرتفعة جداً", next: "diag_oven_overheat_safety" },
+      { label: "C-F0 — فقدان اتصال بين اللوحات", next: "diag_oven_control_board" },
+      { label: "SE / C-F2 — زر لوحة تحكم عالق", next: "diag_oven_keypad_moisture" },
+      { label: "E-08 — لم يصل للحرارة المطلوبة", next: "diag_oven_temp_sensor" },
+      { label: "رمز آخر غير موجود بالقائمة", next: "ov_elec_start" }
+    ]
+  },
+  ov_error_codes_generic: {
+    q: "الأكواد تختلف حسب الماركة والموديل، وما عندنا قائمة مؤكدة لماركتك بعد.",
+    options: [
+      { label: "تابع التشخيص بالأعراض بدل الكود", next: "ov_elec_start" }
+    ]
+  },
+  ov_elec_start: {
+    q: "شغّل الفرن الآن على وضع الخبز بحرارة 180 درجة، وراقب بعد بضع دقائق:",
+    options: [
+      { label: "لا يوجد أي استجابة، الشاشة لا تضيء", next: "power_source_check" },
+      { label: "الشاشة تعمل لكن لا يسخن إطلاقاً", next: "ov_elec_element_glow_check" },
+      { label: "يسخن، لكن بحرارة غير منتظمة أو غير دقيقة", next: "ov_elec_temp_check" },
+      { label: "رائحة احتراق قوية، شرارة، أو دخان", next: "diag_oven_safety_smell" },
+      { label: "القاطع الكهربائي يفصل فور التشغيل", next: "diag_oven_electrical_short" }
+    ]
+  },
+  ov_elec_element_glow_check: {
+    q: "افتح باب الفرن الآن وانظر لعنصر التسخين السفلي (الحلزوني بقاع الفرن): هل يتوهج بلون أحمر-برتقالي عند التشغيل؟",
+    options: [
+      { label: "لا يتوهج إطلاقاً", next: "diag_bake_element" },
+      { label: "يتوهج بشكل غير متساوٍ مع نقاط سوداء أو انقطاع ظاهر", next: "diag_bake_element" },
+      { label: "يتوهج بشكل طبيعي وكامل، لكن الفرن لا يسخن للحرارة المطلوبة", next: "ov_elec_thermal_fuse_check" }
+    ]
+  },
+  ov_elec_thermal_fuse_check: {
+    q: "هل جربت الشواء (Broil) — هل عنصر الشواء العلوي يعمل بشكل طبيعي؟",
+    options: [
+      { label: "لا يعمل هو الآخر", next: "diag_oven_thermal_fuse" },
+      { label: "يعمل بشكل طبيعي، المشكلة بوضع الخبز فقط", next: "diag_oven_thermostat" }
+    ]
+  },
+  ov_elec_temp_check: {
+    q: "إذا توفر لديك ميزان حرارة للفرن، ضعه بالداخل وقارن القراءة بعد 20 دقيقة مع الإعداد: هل الفرق كبير (أكثر من 15-20 درجة)؟",
+    options: [
+      { label: "نعم، فرق واضح وكبير", next: "diag_oven_temp_sensor" },
+      { label: "ما عندي ميزان لأتأكد", next: "diag_oven_control_board" }
+    ]
+  },
+
+  ov_gas_safety_first: {
+    q: "هل تشم رائحة غاز الآن؟",
+    options: [
+      { label: "نعم", next: "diag_oven_gas_leak_now" },
+      { label: "لا", next: "ov_gas_brand_select" }
+    ]
+  },
+  ov_gas_brand_select: {
+    q: "ما ماركة فرن الغاز؟",
+    options: [
+      { label: "LG", next: "ov_gas_error_code_check", setBrand: "LG" },
+      { label: "Samsung", next: "ov_gas_error_code_check", setBrand: "Samsung" },
+      { label: "أخرى", next: "ov_gas_start", setBrand: "أخرى" }
+    ]
+  },
+  ov_gas_error_code_check: {
+    q: "انظر الآن لشاشة الفرن: هل يظهر أي رمز خطأ (حروف وأرقام)؟",
+    hint: "أكواد الحرارة الزائدة تحديداً خطرة — سنفحصها بعناية إن وُجدت",
+    options: [
+      { label: "نعم، يوجد رمز واضح", next: "ERROR_ROUTE" },
+      { label: "لا يوجد رمز، أو لا أعرف أقرأه", next: "ov_gas_start" }
+    ]
+  },
+  ov_gas_start: {
+    q: "شغّل الفرن الآن وراقب فوهة الحارق مباشرة:",
+    options: [
+      { label: "لا يوجد أي توهج أو شرارة إطلاقاً", next: "ov_gas_power_check" },
+      { label: "يوجد توهج خافت جداً، الغاز لا يشتعل", next: "diag_igniter_weak" },
+      { label: "توهج قوي وواضح، لكن الغاز لا يشتعل", next: "diag_gas_valve_oven" },
+      { label: "يشتعل ثم ينطفئ خلال ثوانٍ (نوع قديم بمقبض إشعال يدوي)", next: "diag_thermocouple_oven" },
+      { label: "اشتعال غير منتظم مع صوت 'بوووف' خفيف", next: "diag_burner_port_clog" }
+    ]
+  },
+  ov_gas_power_check: {
+    q: "هل تصل الكهرباء للفرن (الشاشة أو إضاءة الفرن الداخلية تعمل)؟",
+    options: [
+      { label: "لا، لا كهرباء تصل إطلاقاً", next: "power_source_check" },
+      { label: "نعم تصل، لكن لا توهج بالشمعة إطلاقاً", next: "diag_igniter_dead" }
+    ]
+  },
+
+  // ============ عقد تشخيص الفرن ============
+  diag_oven_temp_sensor: {
+    result: true, level: "mid", confidence: "70%",
+    title: "حساس حرارة الفرن غير دقيق",
+    desc: "حساس حرارة الفرن السليم يجب أن يقرأ تقريباً 1080 أوم بحرارة الغرفة. القراءة خارج هذا النطاق أو تذبذب القراءة يعني حساساً تالفاً يرسل بيانات خاطئة للوحة التحكم.",
+    part: "حساس حرارة الفرن (Oven Temperature Sensor)",
+    partIcon: "sensor"
+  },
+  diag_oven_overheat_safety: {
+    result: true, level: "danger", confidence: "تحذير أمان",
+    title: "خطر ارتفاع حرارة — أوقف الاستخدام فوراً",
+    desc: "هذا الكود قد يعني أن عنصر التسخين عالق بالتشغيل الكامل بدون توقف، وهذا خطر حريق حقيقي. افصل القاطع الكهربائي للفرن فوراً (لا تكتفِ بإيقاف الفرن من الزر)، ولا تستخدمه إطلاقاً حتى فحصه من فني معتمد.",
+    part: null
+  },
+  diag_oven_door_lock: {
+    result: true, level: "mid", confidence: "70%",
+    title: "عطل بنظام قفل الباب (دورة التنظيف الذاتي)",
+    desc: "موتور أو مجموعة قفل الباب الخاصة بدورة التنظيف الذاتي عالقة أو تالفة. لا تحاول فتح الباب بالقوة إطلاقاً.",
+    part: "موتور/مجموعة قفل الباب",
+    partIcon: "generic"
+  },
+  diag_oven_control_board: {
+    result: true, level: "mid", confidence: "60%",
+    title: "بطاقة تحكم — خطأ اتصال داخلي",
+    desc: "غالباً يُحل بإعادة تشغيل كاملة (فصل الكهرباء 5 دقائق ثم إعادتها). إذا تكرر الكود، المشكلة بلوحة التحكم الرئيسية أو الفرعية.",
+    part: "بطاقة تحكم",
+    partIcon: "pcb"
+  },
+  diag_oven_keypad_or_sensor: {
+    result: true, level: "mid", confidence: "55%",
+    categoryLabel: "عطل بلوحة التحكم أو حساس الحرارة — 85%",
+    title: "زر لوحة تحكم عالق أو حساس حرارة (حسب الموديل)",
+    desc: "هذا الكود له تفسيران مختلفان حسب موديل الفرن تحديداً. جرّب مسح لوحة التحكم بقطعة قماش جافة أولاً (لا تكلفة) — إذا استمر الكود فالمشكلة الأرجح حساس الحرارة.",
+    part: null,
+    actionLabel: "امسح لوحة التحكم أولاً وأعد المحاولة"
+  },
+  diag_oven_keypad_moisture: {
+    result: true, level: "high", confidence: "75%",
+    title: "رطوبة أو بخار على لوحة اللمس",
+    desc: "هذا أشيع سبب لهذا الكود — بخار الطبخ يتكاثف على لوحة اللمس ويُفسّر كضغط زر مستمر. نظّف اللوحة بقطعة قماش جافة تماماً أولاً قبل افتراض أي عطل حقيقي.",
+    part: null,
+    actionLabel: "نظّف اللوحة وجفّفها تماماً، ثم أعد المحاولة"
+  },
+  diag_bake_element: {
+    result: true, level: "high", confidence: "90%",
+    title: "عنصر تسخين سفلي (Bake Element) تالف",
+    desc: "عدم التوهج إطلاقاً أو التوهج غير المتساوي مع نقاط سوداء دليل مباشر على تلف عنصر التسخين السفلي نفسه.",
+    part: "عنصر تسخين سفلي (Bake Element)",
+    partIcon: "heater"
+  },
+  diag_oven_thermal_fuse: {
+    result: true, level: "mid", confidence: "60%",
+    title: "فيوز حراري (Thermal Fuse) قد يكون مفتوحاً",
+    desc: "إذا لم يعمل أي من عنصري الخبز والشواء رغم توهج كلاهما جزئياً أو عدم استجابة الفرن للحرارة المطلوبة، فيوز الحرارة الواقي قد يكون مفتوحاً (قطع الدائرة أماناً). هذا يحتاج فحصاً فنياً للتأكيد لأنه غالباً بالداخل خلف عزل الفرن.",
+    part: null
+  },
+  diag_oven_thermostat: {
+    result: true, level: "mid", confidence: "55%",
+    title: "ثرموستات التحكم بالحرارة",
+    desc: "مع عمل عنصر الشواء وعدم دقة أو ضعف وضع الخبز تحديداً، الاحتمال الأرجح ثرموستات أو حساس خاص بدارة الخبز لا يعمل بدقة.",
+    part: "ثرموستات الفرن",
+    partIcon: "thermostat"
+  },
+  diag_oven_safety_smell: {
+    result: true, level: "danger", confidence: "تحذير أمان",
+    title: "أوقف الفرن فوراً — خطر كهربائي",
+    desc: "رائحة احتراق قوية أو شرارة أو دخان مؤشر خطر تماس كهربائي حقيقي. افصل القاطع الكهربائي فوراً ولا تحاول التشغيل مرة أخرى. هذه الحالة تحتاج فني معتمد فقط.",
+    part: null
+  },
+  diag_oven_electrical_short: {
+    result: true, level: "danger", confidence: "تحذير أمان",
+    title: "تماس كهربائي محتمل — يحتاج فني فوراً",
+    desc: "فصل القاطع فور التشغيل يشير لتماس كهربائي حقيقي بأحد العناصر أو الأسلاك. لا تكرر محاولة رفع القاطع أكثر من مرة — هذا يزيد خطر التلف أو الحريق.",
+    part: null
+  },
+  diag_oven_gas_leak_now: {
+    result: true, level: "danger", confidence: "تحذير أمان عاجل",
+    title: "أوقف كل شيء فوراً — رائحة غاز",
+    desc: "أغلق صمام الغاز الرئيسي فوراً، افتح النوافذ والأبواب، لا تشغّل أو تطفئ أي مفتاح كهربائي (حتى الإضاءة)، اخرج من المكان، واتصل بالدفاع المدني أو شركة الغاز فوراً من مكان آمن. لا تكمل أي خطوة تشخيصية أخرى.",
+    part: null
+  },
+  diag_igniter_weak: {
+    result: true, level: "high", confidence: "85%",
+    title: "شمعة إشعال ضعيفة",
+    desc: "التوهج الخافت يعني أن الشمعة لا تسحب تياراً كافياً لفتح صمام الغاز رغم أنها لا تزال تعمل جزئياً. هذا نمط شائع جداً وموثق لشمعة إشعال متدهورة تحتاج استبدالاً.",
+    part: "شمعة إشعال (Igniter)",
+    partIcon: "heater"
+  },
+  diag_igniter_dead: {
+    result: true, level: "high", confidence: "80%",
+    title: "شمعة إشعال تالفة تماماً",
+    desc: "وصول الكهرباء للفرن دون أي توهج بالشمعة إطلاقاً يشير مباشرة لشمعة إشعال تالفة بالكامل أو عدم وصول الكهرباء لها تحديداً.",
+    part: "شمعة إشعال (Igniter)",
+    partIcon: "heater"
+  },
+  diag_gas_valve_oven: {
+    result: true, level: "mid", confidence: "60%",
+    categoryLabel: "الشمعة تعمل، لكن الغاز لا يصل أو لا يشتعل — 85%",
+    title: "صمام الغاز (Safety Valve) لا يفتح بشكل صحيح",
+    desc: "توهج الشمعة بقوة يعني أنها تسحب تياراً كافياً، لكن عدم اشتعال الغاز رغم ذلك يشير لعطل بصمام الأمان نفسه أو انسداد بفوهة الحارق. هذا يتعامل مع خط غاز مباشر، يُفضّل فني للفحص والاستبدال.",
+    part: "صمام غاز (Safety Valve) — يفضّل فني للتركيب",
+    partIcon: "watervalve"
+  },
+  diag_thermocouple_oven: {
+    result: true, level: "high", confidence: "85%",
+    title: "ثرموكابل (Thermocouple) تالف",
+    desc: "الاشتعال ثم الانطفاء السريع بالأفران القديمة ذات مقبض الإشعال اليدوي توقيع كلاسيكي لثرموكابل تالف لا يُبقي صمام الغاز مفتوحاً بعد تحرير المقبض.",
+    part: "ثرموكابل (Thermocouple)",
+    partIcon: "sensor"
+  },
+  diag_burner_port_clog: {
+    result: true, level: "mid", confidence: "70%",
+    title: "انسداد فوهة الحارق بالأوساخ",
+    desc: "الاشتعال غير المنتظم مع صوت انفجار خفيف غالباً بسبب بقايا طعام أو أوساخ تسد بعض فتحات الحارق. نظّفها بفرشاة ناعمة قبل افتراض أي عطل بالقطع.",
+    part: null,
+    actionLabel: "نظّف فوهة الحارق وأعد المحاولة — إذا استمرت المشكلة أعد التشخيص"
+  },
+
+  // ============ شجرة الغسالة (أوتوماتيك + عادية) ============
+  wm_type_select: {
+    q: "أي نوع غسالة عندك؟",
+    options: [
+      { label: "أوتوماتيك (حوض واحد)", next: "wm_auto_brand_select" },
+      { label: "عادية (حوضين منفصلين — غسيل وتنشيف)", next: "wm_twin_start" }
+    ]
+  },
+
+  // ---------- أوتوماتيك ----------
+  wm_auto_brand_select: {
+    q: "ما ماركة الغسالة الأوتوماتيك؟",
+    options: [
+      { label: "LG", next: "wm_error_code_check", setBrand: "LG" },
+      { label: "Samsung", next: "wm_error_code_check", setBrand: "Samsung" },
+      { label: "أخرى", next: "wm_error_code_check", setBrand: "أخرى" }
+    ]
+  },
+  wm_error_code_check: {
+    q: "انظر الآن لشاشة الغسالة: هل يظهر أي رمز خطأ (حروف وأرقام)؟",
+    options: [
+      { label: "نعم، يوجد رمز واضح", next: "ERROR_ROUTE" },
+      { label: "لا يوجد رمز، أو لا أعرف أقرأه", next: "wm_auto_start" }
+    ]
+  },
+  wm_error_codes_LG: {
+    q: "اختر الرمز الذي يظهر (LG):",
+    options: [
+      { label: "OE — عطل تصريف", next: "wm_drain_check" },
+      { label: "IE — عطل تعبئة الماء", next: "diag_wm_water_inlet" },
+      { label: "UE — حمولة غير متوازنة", next: "diag_wm_unbalanced" },
+      { label: "dE — عطل بالباب", next: "diag_wm_door_lock" },
+      { label: "tE — عطل حساس الحرارة", next: "diag_wm_temp_sensor" },
+      { label: "PE — عطل حساس الضغط/مستوى الماء", next: "diag_wm_pressure_sensor" },
+      { label: "LE — قفل الموتور أو حمولة زائدة", next: "diag_wm_motor_lock_safety" },
+      { label: "AE — تسريب ماء (إنذار أمان)", next: "diag_wm_leak_safety" },
+      { label: "FE — امتلاء زائد بالماء", next: "diag_wm_overfill" },
+      { label: "رمز آخر غير موجود بالقائمة", next: "wm_auto_start" }
+    ]
+  },
+  wm_error_codes_Samsung: {
+    q: "اختر الرمز الذي يظهر (Samsung):",
+    options: [
+      { label: "4E / 1E — عطل تعبئة الماء", next: "diag_wm_water_inlet" },
+      { label: "5E / SE — عطل تصريف", next: "wm_drain_check" },
+      { label: "OE / 0E — امتلاء زائد", next: "diag_wm_overfill" },
+      { label: "UE / UR — حمولة غير متوازنة", next: "diag_wm_unbalanced" },
+      { label: "dE / dC — عطل بالباب", next: "diag_wm_door_lock" },
+      { label: "9C1 / UC — عطل بالتيار الكهربائي", next: "diag_wm_electrical_safety" },
+      { label: "رمز آخر غير موجود بالقائمة", next: "wm_auto_start" }
+    ]
+  },
+  wm_error_codes_generic: {
+    q: "الأكواد تختلف حسب الماركة والموديل، وما عندنا قائمة مؤكدة لماركتك بعد.",
+    options: [
+      { label: "تابع التشخيص بالأعراض بدل الكود", next: "wm_auto_start" }
+    ]
+  },
+  wm_auto_start: {
+    q: "شغّل الغسالة الآن على دورة عادية، وراقب ماذا يحدث بالضبط:",
+    options: [
+      { label: "لا يوجد أي استجابة، لا إضاءة ولا صوت إطلاقاً", next: "power_source_check" },
+      { label: "الباب لا يقفل، أو يظهر خطأ متعلق بالباب", next: "wm_door_check" },
+      { label: "تمتلئ بالماء لكن لا تغسل (لا دوران للحوض)", next: "wm_no_agitate_check" },
+      { label: "لا تصرف الماء ولا تنشف (الحوض يبقى فيه ماء)", next: "wm_drain_check" },
+      { label: "تصرف الماء بشكل طبيعي لكن لا تنشف (Spin)", next: "wm_spin_only_check" },
+      { label: "تسريب ماء من الغسالة", next: "wm_leak_check" },
+      { label: "صوت غريب أو اهتزاز عالٍ أثناء التنشيف", next: "wm_noise_check" }
+    ]
+  },
+  wm_door_check: {
+    q: "افحص الباب الآن: هل يُغلق تماماً بإحكام، أم يوجد قطعة قماش أو جزء من الملابس عالق يمنع الإغلاق الكامل؟",
+    options: [
+      { label: "يوجد ملابس عالقة تمنع الإغلاق الكامل", next: "diag_wm_door_obstruction" },
+      { label: "يُغلق بإحكام تام، ورغم ذلك يظهر الخطأ", next: "diag_wm_door_lock" }
+    ]
+  },
+  wm_no_agitate_check: {
+    q: "استمع الآن جيداً: هل تسمع صوت طنين من الموتور بدون أي حركة فعلية للحوض؟",
+    options: [
+      { label: "نعم، طنين واضح بدون حركة", next: "diag_wm_motor_capacitor" },
+      { label: "لا يوجد أي صوت من الموتور إطلاقاً", next: "diag_wm_control_board" }
+    ]
+  },
+  wm_drain_check: {
+    q: "ابحث الآن عن غطاء فلتر مضخة التصريف (عادة بمقدمة الغسالة أسفلها) وافتحه بحذر بعد وضع منشفة: هل تجد انسداداً بخيوط أو عملات معدنية؟",
+    hint: "افصل الغسالة عن الكهرباء أولاً قبل فتح أي غطاء بالأسفل",
+    options: [
+      { label: "نعم، يوجد انسداد واضح بالفلتر", next: "diag_wm_drain_filter" },
+      { label: "الفلتر نظيف، أو غير متوفر بهذا الموديل", next: "wm_drain_hose_check" }
+    ]
+  },
+  wm_drain_hose_check: {
+    q: "تحقق الآن من خرطوم التصريف الخلفي: هل هو ملتوٍ، أو مدخل بعمق أكثر من 15 سم داخل أنبوب الصرف بالحائط؟",
+    options: [
+      { label: "نعم، ملتوٍ أو عميق جداً", next: "diag_wm_drain_hose_position" },
+      { label: "لا، وضعية الخرطوم سليمة تماماً", next: "diag_wm_drain_pump" }
+    ]
+  },
+  wm_spin_only_check: {
+    q: "افتح الغطاء الآن وانظر: هل الحمولة موزعة بشكل متساوٍ بالحوض، أم متكتلة بجهة واحدة؟",
+    options: [
+      { label: "متكتلة بجهة واحدة بوضوح", next: "diag_wm_unbalanced" },
+      { label: "موزعة بشكل جيد، ورغم ذلك لا تنشف", next: "wm_spin_lock_check" }
+    ]
+  },
+  wm_spin_lock_check: {
+    q: "شغّل دورة تنشيف فقط الآن واستمع: هل تسمع صوت 'طقّة' قفل الباب عند بدء الدورة؟",
+    options: [
+      { label: "لا، لا صوت قفل إطلاقاً", next: "diag_wm_door_lock" },
+      { label: "نعم يقفل، لكن الحوض لا يدور بسرعة التنشيف", next: "diag_wm_motor_capacitor" }
+    ]
+  },
+  wm_leak_check: {
+    q: "انظر الآن بدقة: من أين يتسرب الماء بالضبط؟",
+    options: [
+      { label: "تسريب مستمر من الأسفل طوال الدورة", next: "diag_wm_drain_pump_seal" },
+      { label: "تسريب من حول الباب أثناء الغسيل فقط", next: "diag_wm_door_seal" }
+    ]
+  },
+  wm_noise_check: {
+    q: "هل الصوت أو الاهتزاز يزيد بوضوح تحديداً أثناء مرحلة التنشيف بالسرعة العالية؟",
+    options: [
+      { label: "نعم، تحديداً أثناء التنشيف السريع", next: "diag_wm_bearing_suspension" },
+      { label: "الصوت موجود بكل المراحل بنفس المستوى تقريباً", next: "diag_wm_motor_capacitor" }
+    ]
+  },
+
+  // ---------- عادية (نصف أوتوماتيك بحوضين) ----------
+  wm_twin_start: {
+    q: "شغّل حوض الغسيل الآن، وراقب ماذا يحدث بالضبط:",
+    hint: "الغسالة العادية وحدتان منفصلتان تماماً (غسيل وتنشيف)، فلكل منهما تشخيص خاص بها",
+    options: [
+      { label: "لا يوجد أي استجابة لحوض الغسيل إطلاقاً", next: "power_source_check" },
+      { label: "يعمل الموتور (صوت طنين) لكن لا يدور القرص/العصا الدوارة", next: "diag_wm_twin_wash_motor_or_cap" },
+      { label: "حوض الغسيل يعمل بشكل طبيعي، لكن حوض التنشيف لا يعمل", next: "wm_twin_spin_check" },
+      { label: "تسريب ماء", next: "wm_twin_leak_check" },
+      { label: "صوت غريب قوي أو اهتزاز شديد بحوض التنشيف تحديداً", next: "diag_wm_twin_spin_bearing" }
+    ]
+  },
+  wm_twin_spin_check: {
+    q: "أغلق غطاء حوض التنشيف تماماً وشغّله الآن: هل يُغلق الغطاء بإحكام كامل؟",
+    hint: "أغلب أنواع الغسالات العادية لن تشغّل حوض التنشيف بدون إغلاق الغطاء تماماً لأسباب أمان",
+    options: [
+      { label: "لا، الغطاء لا يُغلق بإحكام", next: "diag_wm_twin_lid_switch" },
+      { label: "يُغلق بإحكام تام، ورغم ذلك لا يعمل", next: "diag_wm_twin_spin_motor_or_cap" }
+    ]
+  },
+  wm_twin_leak_check: {
+    q: "من أي حوض يتسرب الماء بالضبط؟",
+    options: [
+      { label: "من حوض الغسيل", next: "diag_wm_twin_wash_seal" },
+      { label: "من حوض التنشيف", next: "diag_wm_twin_spin_seal" },
+      { label: "من صمام أو خرطوم تصريف الحوضين المشترك", next: "diag_wm_twin_drain_valve" }
+    ]
+  },
+
+  // ============ عقد تشخيص الغسالة ============
+  diag_wm_water_inlet: {
+    result: true, level: "high", confidence: "75%",
+    title: "صمام تعبئة الماء (Water Inlet Valve)",
+    desc: "عطل تعبئة الماء غالباً سببه صمام التعبئة نفسه لا يفتح بشكل صحيح، أو فلتر صغير داخل الصمام مسدود بالرواسب. تحقق أولاً من فتح صنبور الماء بالكامل قبل افتراض عطل بالقطعة.",
+    part: "صمام تعبئة الماء (Water Inlet Valve)",
+    partIcon: "watervalve"
+  },
+  diag_wm_drain_filter: {
+    result: true, level: "high", confidence: "85%",
+    title: "انسداد فلتر مضخة التصريف",
+    desc: "هذا أشيع سبب لعطل التصريف بكثير — خيوط، شعر، أو عملات معدنية تسد الفلتر بمرور الوقت. التنظيف يحل المشكلة غالباً بدون الحاجة لأي قطعة.",
+    part: null,
+    actionLabel: "نظّف الفلتر جيداً وأعد الاختبار — إذا استمرت المشكلة أعد التشخيص"
+  },
+  diag_wm_drain_hose_position: {
+    result: true, level: "high", confidence: "80%",
+    title: "وضعية خرطوم التصريف غير صحيحة",
+    desc: "خرطوم ملتوٍ أو مدخل بعمق زائد داخل أنبوب الصرف يخلق تأثير سحب عكسي (Siphoning) يمنع التصريف الطبيعي حتى مع سلامة المضخة تماماً.",
+    part: null,
+    actionLabel: "عدّل وضعية الخرطوم (لا يتجاوز 15 سم داخل الأنبوب) وأعد الاختبار"
+  },
+  diag_wm_drain_pump: {
+    result: true, level: "mid", confidence: "70%",
+    categoryLabel: "مشكلة مؤكدة بنظام التصريف — 90%",
+    title: "مضخة التصريف (Drain Pump) تالفة",
+    desc: "مع استبعاد انسداد الفلتر ووضعية الخرطوم، المشكلة الأرجح مضخة التصريف نفسها (موتور المضخة تالف أو الدفاعة مكسورة).",
+    part: "مضخة تصريف (Drain Pump)",
+    partIcon: "drain"
+  },
+  diag_wm_door_obstruction: {
+    result: true, level: "high", confidence: "90%",
+    title: "عائق يمنع إغلاق الباب بالكامل",
+    desc: "قطعة قماش أو جزء من الغسيل عالق بحافة الباب يمنع مفتاح القفل من الاستشعار الصحيح لإغلاق الباب.",
+    part: null,
+    actionLabel: "أخرج القطعة العالقة وأعد إغلاق الباب بإحكام"
+  },
+  diag_wm_door_lock: {
+    result: true, level: "mid", confidence: "65%",
+    title: "قفل أو مفتاح استشعار الباب (Door Lock/Switch)",
+    desc: "مع التأكد من إغلاق الباب بإحكام تام وعدم وجود عوائق، العطل الأرجح بآلية القفل نفسها أو مفتاح استشعار إغلاق الباب.",
+    part: "قفل/مفتاح الباب (Door Lock Switch)",
+    partIcon: "doorlock"
+  },
+  diag_wm_temp_sensor: {
+    result: true, level: "mid", confidence: "65%",
+    title: "حساس حرارة الماء",
+    desc: "عطل بحساس حرارة الماء يمنع الغسالة من التأكد من درجة حرارة الماء المطلوبة للدورة المختارة.",
+    part: "حساس حرارة الماء",
+    partIcon: "sensor"
+  },
+  diag_wm_pressure_sensor: {
+    result: true, level: "mid", confidence: "65%",
+    title: "حساس ضغط/مستوى الماء (Pressure Sensor)",
+    desc: "هذا الحساس يخبر الغسالة بمستوى الماء بالحوض. عطله يمنع تعبئة أو تصريف الماء بالكمية الصحيحة.",
+    part: "حساس ضغط/مستوى الماء",
+    partIcon: "sensor"
+  },
+  diag_wm_motor_lock_safety: {
+    result: true, level: "mid", confidence: "50%",
+    categoryLabel: "حماية من حمل زائد أو عطل حقيقي بالموتور — 80%",
+    title: "قفل حماية الموتور (قد يكون حمولة زائدة فقط)",
+    desc: "هذا الكود أحياناً مجرد حماية طبيعية بسبب حمولة كبيرة جداً بالغسالة — قلل الحمولة وانتظر 30 دقيقة لتبريد الموتور ثم أعد المحاولة أولاً. إذا تكرر مع حمولة عادية، فالعطل الحقيقي بالموتور أو البطاقة.",
+    part: null,
+    actionLabel: "قلل الحمولة وانتظر 30 دقيقة، ثم أعد المحاولة قبل شراء أي قطعة"
+  },
+  diag_wm_leak_safety: {
+    result: true, level: "danger", confidence: "تحذير أمان",
+    title: "أوقف الغسالة فوراً — إنذار تسريب ماء",
+    desc: "افصل الغسالة عن الكهرباء فوراً وأغلق صنبور تغذية الماء بالكامل. هذا إنذار أمان حساس مصمم لمنع أضرار مائية كبيرة، ويحتاج فحصاً فنياً مباشراً قبل أي استخدام آخر.",
+    part: null
+  },
+  diag_wm_overfill: {
+    result: true, level: "mid", confidence: "60%",
+    title: "امتلاء زائد بالماء",
+    desc: "غالباً بسبب حساس ضغط/مستوى الماء لا يوقف التعبئة بالوقت الصحيح، أو صمام تعبئة عالق بوضع مفتوح. تحقق من كمية المنظف المستخدمة أيضاً (رغوة زائدة قد تُفسَّر كامتلاء زائد).",
+    part: null
+  },
+  diag_wm_unbalanced: {
+    result: true, level: "high", confidence: "90%",
+    title: "حمولة غير متوازنة — ليس عطلاً بقطعة",
+    desc: "هذا إنذار أمان طبيعي عندما تتكتل الملابس بجهة واحدة من الحوض أثناء التنشيف السريع. وزّع الغسيل بشكل متساوٍ وأعد المحاولة — لا حاجة لأي قطعة غيار.",
+    part: null,
+    actionLabel: "وزّع الحمولة بالتساوي داخل الحوض وأعد المحاولة"
+  },
+  diag_wm_electrical_safety: {
+    result: true, level: "danger", confidence: "تحذير أمان",
+    title: "عطل بالتيار الكهربائي — يحتاج فني فوراً",
+    desc: "هذا الكود يشير لمشكلة بالتيار الكهربائي الواصل للغسالة أو بمكوناتها الداخلية. افصل الغسالة عن الكهرباء ولا تحاول التشغيل مرة أخرى قبل فحصها من فني معتمد.",
+    part: null
+  },
+  diag_wm_motor_capacitor: {
+    result: true, level: "mid", confidence: "55%",
+    categoryLabel: "مشكلة بمكونات تشغيل الموتور — 85%",
+    title: "كباستور الموتور أو الموتور نفسه",
+    desc: "طنين الموتور بدون حركة فعلية نمط مألوف لكباستور تشغيل ضعيف يمنع الموتور من إكمال الدوران. جرّب الكباستور أولاً (أرخص بكثير) قبل التفكير باستبدال الموتور كاملاً.",
+    part: "كباستور موتور الغسالة (جرّبه أولاً)",
+    partIcon: "capacitor"
+  },
+  diag_wm_control_board: {
+    result: true, level: "mid", confidence: "55%",
+    title: "بطاقة تحكم (PCB) أو تايمر",
+    desc: "عدم وصول أي إشارة أو صوت للموتور رغم تعبئة الماء بنجاح يشير لعطل ببطاقة التحكم الإلكترونية أو التايمر الميكانيكي (بالموديلات الأقدم) الذي لا يرسل تياراً للموتور بالتوقيت الصحيح.",
+    part: "بطاقة تحكم / تايمر",
+    partIcon: "pcb"
+  },
+  diag_wm_drain_pump_seal: {
+    result: true, level: "mid", confidence: "65%",
+    title: "حلقة إحكام مضخة التصريف تالفة",
+    desc: "تسريب مستمر من الأسفل طوال الدورة (مو فقط أثناء التصريف) يشير لحلقة إحكام أو وصلة بمضخة التصريف تسرّب باستمرار.",
+    part: "حلقة إحكام مضخة التصريف",
+    partIcon: "gasket"
+  },
+  diag_wm_door_seal: {
+    result: true, level: "high", confidence: "80%",
+    title: "حلقة إحكام الباب (Door Boot Seal) تالفة",
+    desc: "تسريب حول الباب أثناء الغسيل تحديداً (بالغسالات الأمامية التحميل) يشير مباشرة لحلقة إحكام الباب المطاطية التالفة أو المتسخة بجسم غريب يمنع الإغلاق الكامل.",
+    part: "حلقة إحكام الباب (Door Boot Seal)",
+    partIcon: "gasket"
+  },
+  diag_wm_bearing_suspension: {
+    result: true, level: "mid", confidence: "50%",
+    categoryLabel: "مشكلة ميكانيكية بنظام دوران الحوض — 80%",
+    title: "بلي (Bearing) الحوض أو نظام التعليق (Suspension)",
+    desc: "اهتزاز شديد تحديداً أثناء التنشيف السريع يشير لتآكل بلي الحوض أو ضعف بمساعدات التعليق (Shock Absorbers) بالغسالات الأمامية التحميل. هذا يحتاج فحصاً فنياً لتحديد أيهما بالضبط، لأن كليهما يتطلب فك الغسالة جزئياً للتأكيد.",
+    part: null
+  },
+  diag_wm_twin_wash_motor_or_cap: {
+    result: true, level: "mid", confidence: "60%",
+    categoryLabel: "مشكلة بمكونات تشغيل موتور الغسيل — 85%",
+    title: "كباستور موتور الغسيل أو الموتور نفسه",
+    desc: "طنين الموتور بدون دوران فعلي للعصا الدوارة (Pulsator) نمط مألوف لكباستور ضعيف. جرّب الكباستور أولاً — أرخص بكثير من الموتور كاملاً.",
+    part: "كباستور موتور الغسيل (جرّبه أولاً)",
+    partIcon: "capacitor"
+  },
+  diag_wm_twin_lid_switch: {
+    result: true, level: "high", confidence: "85%",
+    title: "مفتاح أمان غطاء حوض التنشيف",
+    desc: "أغلب الغسالات العادية بها مفتاح أمان يمنع دوران حوض التنشيف إلا مع إغلاق الغطاء بالكامل. عدم الإغلاق الكامل يعني عدم تفعيل هذا المفتاح إطلاقاً.",
+    part: "مفتاح أمان غطاء التنشيف",
+    partIcon: "doorlock"
+  },
+  diag_wm_twin_spin_motor_or_cap: {
+    result: true, level: "mid", confidence: "60%",
+    categoryLabel: "مشكلة بمكونات تشغيل موتور التنشيف — 85%",
+    title: "كباستور موتور التنشيف أو الموتور نفسه",
+    desc: "مع تأكد إغلاق الغطاء بالكامل وعدم دوران حوض التنشيف، الاحتمال الأرجح كباستور موتور التنشيف (منفصل عادة عن موتور الغسيل بالغسالات العادية).",
+    part: "كباستور موتور التنشيف (جرّبه أولاً)",
+    partIcon: "capacitor"
+  },
+  diag_wm_twin_spin_bearing: {
+    result: true, level: "mid", confidence: "55%",
+    title: "بلي (Bearing) حوض التنشيف متآكل",
+    desc: "اهتزاز أو صوت قوي بحوض التنشيف تحديداً أثناء الدوران السريع يشير لتآكل بالبلي الداعم للحوض الداخلي.",
+    part: "بلي حوض التنشيف",
+    partIcon: "generic"
+  },
+  diag_wm_twin_wash_seal: {
+    result: true, level: "mid", confidence: "65%",
+    title: "حلقة إحكام حوض الغسيل",
+    desc: "تسريب من حوض الغسيل تحديداً يشير لحلقة إحكام تالفة حول محور دوران العصا الدوارة (Pulsator) بقاع الحوض.",
+    part: "حلقة إحكام حوض الغسيل",
+    partIcon: "gasket"
+  },
+  diag_wm_twin_spin_seal: {
+    result: true, level: "mid", confidence: "65%",
+    title: "حلقة إحكام حوض التنشيف",
+    desc: "تسريب من حوض التنشيف تحديداً يشير لحلقة إحكام تالفة حول محور دوران السلة الداخلية.",
+    part: "حلقة إحكام حوض التنشيف",
+    partIcon: "gasket"
+  },
+  diag_wm_twin_drain_valve: {
+    result: true, level: "high", confidence: "80%",
+    title: "صمام أو خرطوم تصريف مشترك تالف",
+    desc: "تسريب من نقطة التصريف المشتركة بين الحوضين يشير مباشرة لصمام التصريف نفسه أو تلف بالخرطوم عند نقطة الاتصال.",
+    part: "صمام/خرطوم تصريف",
+    partIcon: "drain"
+  }
+};
+
+// ============ محرك التشغيل ============
+let history = ["appliance_select"];
+let feedbackGiven = {};
+let stats = { total: 0, confirmed: 0 };
+
+// ---- نظام حد الاستخدام المجاني (مربوط بخادم حقيقي، لا يمكن تخطيه من المتصفح) ----
+const API_URL = "https://tsoubglpjezhmaacqynk.supabase.co/functions/v1/diagnostic-api";
+const FREE_LIMIT = 3; // نفس الرقم مضبوط بالخادم أيضاً — التغيير هنا للعرض فقط
+let usageStatus = { used: 0, limit: FREE_LIMIT, remaining: FREE_LIMIT };
+
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRzb3ViZ2xwamV6aG1hYWNxeW5rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg2MzU1NDgsImV4cCI6MjEwNDIxMTU0OH0.swNOES-clBhQUgecdOFLA6MMO8X0MHqcUHds838fXX8";
+async function apiCall(payload){
+  try {
+    const res = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": SUPABASE_ANON_KEY,
+        "Authorization": "Bearer " + SUPABASE_ANON_KEY
+      },
+      body: JSON.stringify(payload)
+    });
+    return await res.json();
+  } catch(e){
+    console.error("API error:", e);
+    return null;
+  }
+}
+async function refreshUsageStatus(){
+  const res = await apiCall({ action: "get_status" });
+  if(res && typeof res.used === "number"){
+    usageStatus = res;
+  }
+  updateUsageBadge();
+}
+function updateUsageBadge(){
+  const badge = document.getElementById('usageBadge');
+  if(!badge) return;
+  badge.textContent = usageStatus.remaining > 0
+    ? `${t('متبقي لك')} ${usageStatus.remaining} ${t('من')} ${usageStatus.limit} ${t('تشخيصات مجانية')}`
+    : t('انتهت تشخيصاتك المجانية لهذه الفترة');
+}
+
+const cardRoot = document.getElementById('cardRoot');
+const progressFill = document.getElementById('progressFill');
+const progressLabel = document.getElementById('progressLabel');
+const statsBar = document.getElementById('statsBar');
+refreshUsageStatus();
+
+function estimateDepth(){
+  // تقدير تقريبي لعمق الشجرة لعرض progress
+  return Math.min(history.length, 5);
+}
+
+function render(){
+  const nodeId = history[history.length-1];
+
+  if(nodeId === "LIMIT_REACHED"){
+    progressFill.style.width = '100%';
+    progressLabel.textContent = t('النتيجة');
+    cardRoot.innerHTML = `
+      <div class="result-title">${t('شكراً لكم لاستخدام الأداة 🙏')}</div>
+      <div class="result-desc">
+        ${t('الأداة حالياً تحت التجربة لغرض التطوير، وانتهت محاولاتك المجانية المتاحة بهذه المرحلة.')}
+        ${t('تابعنا لمعرفة موعد الإطلاق الكامل قريباً.')}
+      </div>
+    `;
+    return;
+  }
+
+  const node = tree[nodeId];
+  const depth = estimateDepth();
+  progressFill.style.width = (node.result ? 100 : (depth/5)*90) + '%';
+  progressLabel.textContent = node.result ? t('النتيجة') : `${t('الخطوة')} ${history.length}`;
+
+  if(!node.result){
+    let html = '';
+    if(history.length > 1){
+      html += `<button class="back-btn" onclick="goBack()">${t('‹ رجوع')}</button>`;
+    }
+    if(selectedBrand && nodeId !== 'brand_select' && nodeId !== 'fr_brand_select'){
+      html += `<span class="tag" style="margin-bottom:12px;">${t('الجهاز')}: ${selectedBrand}</span>`;
+    }
+    html += `<div class="q-title">${t(node.q)}</div>`;
+    if(node.hint){ html += `<div class="q-hint">${t(node.hint)}</div>`; }
+    html += `<div class="options">`;
+    node.options.forEach((opt,i)=>{
+      const brandAttr = opt.setBrand ? opt.setBrand : '';
+      const applianceAttr = opt.setAppliance ? opt.setAppliance : '';
+      html += `<button class="opt-btn" onclick="choose('${opt.next}', '${brandAttr}', '${applianceAttr}')">${t(opt.label)}</button>`;
+    });
+    html += `</div>`;
+    cardRoot.innerHTML = html;
+  } else {
+    let badgeClass = 'badge-high';
+    if(node.level === 'mid') badgeClass = 'badge-mid';
+    if(node.level === 'danger') badgeClass = 'badge-danger';
+
+    let html = `<button class="back-btn" onclick="goBack()">${t('‹ رجوع')}</button>`;
+    if(node.categoryLabel){
+      html += `<span class="result-badge badge-high" style="margin-left:8px;">${t('✓ مؤكد')}: ${t(node.categoryLabel)}</span>`;
+    }
+    html += `<span class="result-badge ${badgeClass}">${t('دقة السبب المحدد')}: ${node.confidence}</span>`;
+    html += `<div class="result-title">${t(node.title)}</div>`;
+    html += `<div class="result-desc">${t(node.desc)}</div>`;
+
+    if(node.part){
+      const brandLine = selectedBrand ? `<p class="part-label" style="margin-top:8px;">${t('متوافقة مع')}: ${selectedBrand}</p>` : '';
+      const iconKey = node.partIcon && partIcons[node.partIcon] ? node.partIcon : 'generic';
+      const iconHtml = `<div class="part-icon">${partIcons[iconKey]}</div><p style="font-size:11px;color:var(--muted);margin:-4px 0 12px;">${t('رسم توضيحي تخطيطي — ليس صورة للقطعة الفعلية')}</p>`;
+      html += `<div class="part-box" style="text-align:center;">
+        ${iconHtml}
+        <p class="part-label">${t('القطعة المقترحة')}</p>
+        <p class="part-name">${t(node.part)}</p>
+        ${brandLine}
+      </div>`;
+    } else if(node.level === 'danger'){
+      html += `<button class="cta-btn danger">${t('اتصل بفني معتمد الآن')}</button>`;
+    } else {
+      const label = node.actionLabel ? t(node.actionLabel) : t("هذه الحالة تحتاج فحص فني مباشر");
+      html += `<button class="cta-btn ghost">${label}</button>`;
+    }
+
+    html += `<button class="cta-btn ghost" onclick="restart()" style="margin-top:0;">${t('ابدأ تشخيص جديد')}</button>`;
+
+    html += `<div class="feedback-row" id="fbRow">
+      <p>${t('هل كان هذا التشخيص صحيحاً؟')}</p>
+      <button class="fb-btn" onclick="giveFeedback(true)">${t('✅ نعم صحيح')}</button>
+      <button class="fb-btn" onclick="giveFeedback(false)">${t('❌ غير دقيق')}</button>
+    </div>`;
+
+    cardRoot.innerHTML = html;
+  }
+  renderStats();
+}
+
+async function choose(next, brand, appliance){
+  if(brand){ selectedBrand = brand; }
+  if(appliance){ currentAppliance = appliance; }
+  if(next === "ERROR_ROUTE"){
+    let prefix = "error_codes_";
+    let fallback = "error_codes_generic";
+    if(currentAppliance === "fridge"){ prefix = "fr_error_codes_"; fallback = "fr_error_codes_generic"; }
+    if(currentAppliance === "oven"){ prefix = "ov_error_codes_"; fallback = "ov_error_codes_generic"; }
+    if(currentAppliance === "washer"){ prefix = "wm_error_codes_"; fallback = "wm_error_codes_generic"; }
+    const key = prefix + selectedBrand;
+    next = tree[key] ? key : fallback;
+  }
+  if(tree[next] && tree[next].result){
+    cardRoot.innerHTML = `<p style="text-align:center;color:var(--muted);padding:30px 0;">${t('جاري التحقق...')}</p>`;
+    const res = await apiCall({ action: "check_and_use", appliance: currentAppliance, brand: selectedBrand });
+    if(res && typeof res.used === "number"){
+      usageStatus = { used: res.used, limit: res.limit, remaining: Math.max(0, res.limit - res.used) };
+      updateUsageBadge();
+    }
+    // مهم: لو فشل الاتصال بالخادم لأي سبب (شبكة، سيرفر، إلخ)، نسمح بالاستمرار افتراضياً
+    // بدل منع المستخدم ظلماً. المنع الفعلي يصير فقط إذا الخادم رد صراحة بأن الحد انتهى.
+    if(res && res.allowed === false){
+      history.push("LIMIT_REACHED");
+      render();
+      return;
+    }
+  }
+  history.push(next);
+  render();
+}
+function goBack(){
+  if(history.length > 1){ history.pop(); render(); }
+}
+function restart(){
+  selectedBrand = null;
+  currentAppliance = null;
+  history = ["appliance_select"];
+  render();
+}
+function giveFeedback(correct){
+  stats.total += 1;
+  if(correct) stats.confirmed += 1;
+  const row = document.getElementById('fbRow');
+  if(correct){
+    logFeedback(true, '');
+    row.innerHTML = `<p class="thanks">${t('شكراً، تم تسجيل ملاحظتك — هذا يساعد على تحسين دقة الأداة.')}</p>`;
+  } else {
+    row.innerHTML = `
+      <p style="width:100%;font-size:13px;color:var(--muted);margin-bottom:8px;">${t('وش كانت المشكلة الفعلية؟ (اختياري، يساعدنا كثير نطوّر الدقة)')}</p>
+      <textarea id="fbNote" rows="2" style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:8px;color:var(--cream);font-family:'Tajawal',sans-serif;font-size:13px;margin-bottom:8px;box-sizing:border-box;" placeholder="${t('مثال: طلع فعلياً موتور تالف مو كباستور')}"></textarea>
+      <button class="cta-btn" style="margin-bottom:0;" onclick="submitFeedbackNote()">${t('إرسال')}</button>
+    `;
+  }
+  renderStats();
+}
+function submitFeedbackNote(){
+  const noteEl = document.getElementById('fbNote');
+  const note = noteEl ? noteEl.value : '';
+  logFeedback(false, note);
+  document.getElementById('fbRow').innerHTML = `<p class="thanks">${t('شكراً على ملاحظتك التفصيلية — هذا يساعدنا كثير نطوّر الدقة.')}</p>`;
+}
+function logFeedback(correct, note){
+  const nodeId = history[history.length-1];
+  apiCall({
+    action: "feedback",
+    appliance: currentAppliance,
+    brand: selectedBrand,
+    diagnosisTitle: (tree[nodeId] && tree[nodeId].title) || '',
+    correct: correct,
+    note: note
+  });
+}
+function renderStats(){
+  if(stats.total === 0){ statsBar.innerHTML = ''; return; }
+  const pct = Math.round((stats.confirmed/stats.total)*100);
+  statsBar.innerHTML = `<span>${t('عدد التقييمات هذه الجلسة')}: ${stats.total}</span><span>·</span><span>${t('دقة مؤكدة')}: ${pct}%</span>`;
+}
+
+render();
+</script>
+</body>
+</html>
